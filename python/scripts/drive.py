@@ -16,31 +16,31 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 # SOFTWARE.
 #
-# Note: The DeepDriving project on this repository is derived from the DeepDriving project devloped by the princeton 
+# Note: The DeepDriving project on pithis repository is derived from the DeepDriving project devloped by the princeton
 # university (http://deepdriving.cs.princeton.edu/). The above license only applies to the parts of the code, which 
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-import appJar
-import appJarHelper as GUIHelper
 import speed_dreams as sd
+from kivydd.app import CAppThread, Widget
 
-def main():
-  Memory = sd.CSharedMemory()
-  Memory.setSyncMode(True)
-  Memory.indicateReady()
+class DriveWindow(Widget):
+  LayoutFile = "drive.kv"
 
-  GUI = appJar.gui()
-  GUIHelper.addImage(GUI, "Recorded Image", Memory.Image)
+class CApplication(CAppThread):
+  def initMemory(self):
+    Memory = sd.CSharedMemory()
+    return Memory
 
-  def doMemoryUpdate():
+  def doLoop(self, Memory, App):
     if Memory.read():
-      GUIHelper.setImage(GUI, "Recorded Image", Memory.Image)
-      Memory.indicateReady()
+      App.update()
 
-  GUI.registerEvent(doMemoryUpdate)
-  GUI.setPollTime(10)
-  GUI.go()
+    else:
+      import time
+      time.sleep(0.05)
+
+    return True
 
 if __name__ == '__main__':
-  main()
+  CApplication("drive").run(DriveWindow)

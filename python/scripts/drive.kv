@@ -1,0 +1,66 @@
+#:kivy 1.10.0
+#:import MDLabel kivymd.label
+#:import DriveImage kivydd.widgets
+#:import UpdateLabel kivydd.widgets
+
+#<Widget>:
+#    canvas.after:
+#        Color:
+#            rgba: 0, 0, 0, 1
+#        Line:
+#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+#        Color:
+#            rgba: 1, 1, 1, 1
+
+<MDLabel>:
+    padding: (3, 3)
+
+<DriveWindow>:
+    BoxLayout:
+        size: root.size
+        orientation: "vertical"
+        spacing: 4
+        padding: [2, 2, 2, 2]
+
+        BoxLayout:
+            size: 1, 30
+            size_hint: 1, None
+            orientation: "horizontal"
+
+            UpdateLabel:
+                text: "Unknown"
+                _UpdateFunc: lambda: str(app._Memory.Data.Game.TrackName)
+
+            UpdateLabel:
+                text: "Race ID: Unknown"
+                _UpdateFunc: lambda: "Race ID: "+str(app._Memory.Data.Game.UniqueRaceID)
+
+        BoxLayout:
+            size: root.size
+            orientation: "horizontal"
+
+            MDLabel:
+                text: "Situation"
+                halign: "center"
+
+            BoxLayout:
+                size: 320, 1
+                size_hint: None, 1
+                orientation: "vertical"
+
+                UpdateLabel:
+                    size: 1, 30
+                    size_hint: 1, None
+                    text: "Frame: Unknown"
+                    _UpdateFunc: lambda: "Frame: "+str(app._Memory.Data.Sync.WriteNumber)
+
+                DriveImage:
+                    _Memory: app._Memory
+                    size: 320, 240
+                    size_hint: None, None
+
+                MDLabel:
+                    text: "Control"
+                    halign: "center"
+
+
