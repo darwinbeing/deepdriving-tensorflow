@@ -1,3 +1,4 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
-/python/modules/appJar/__pycache__/*.pyc
 *.pyc
+library/build
+library/install
