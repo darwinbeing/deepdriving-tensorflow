@@ -19,42 +19,30 @@
  */
 
 /**
- * @file situation_wrapper.h
+ * @file datatypes.h
  * @author Andre Netzeband
- * @date 22.05.2017
+ * @date 23.05.2017
  *
- * @brief Wrapper over the situation visualization class.
+ * @brief Defines datatypes for the situation view.
  *
  */
 
-#ifndef DD_SITUATION_WRAPPER_H
-#define DD_SITUATION_WRAPPER_H
+#ifndef DD_DATATYPES_H
+#define DD_DATATYPES_H
 
-// 3rd Party includes
-#include <cv.h>
-
-// project includes
-#include <dd/common/settings.h>
-#include <dd/situation/datatypes.h>
-
-#ifdef __cplusplus
-extern "C"
+/// @brief Defines a color value.
+typedef struct
 {
-#endif
+  double R;
+  double G;
+  double B;
+} Color_t;
 
-/// @brief Creates a situation view object.
-/// @return Returns the created object.
-DLL_API void * CSituationView_create(Size_t Size, Color_t Color);
+/// @brief Defines a size value.
+typedef struct
+{
+  double Width;
+  double Height;
+} Size_t;
 
-/// @brief Destory a situation view object.
-/// @param pObject is the object to destory.
-DLL_API void CSituationView_destroy(void * pObject);
-
-/// @return Returns the situation image object.
-DLL_API uint8_t * CSituationView_getImage(void * pObject);
-
-#ifdef __cplusplus
-};
-#endif
-
-#endif //DD_SITUATION_WRAPPER_H
+#endif //DD_DATATYPES_H

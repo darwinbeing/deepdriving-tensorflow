@@ -8,6 +8,7 @@ set(${SUBPROJECT}_SOURCE
 set(${SUBPROJECT}_HEADER
         ../common/includes/dd/common/settings.h
         includes/dd/situation/situation_wrapper.h
+        includes/dd/situation/datatypes.h
         src/includes/dd/situation/CSituationView.h
         )
 

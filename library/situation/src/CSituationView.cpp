@@ -34,6 +34,7 @@
 // 3rd party-libraries
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <dd/situation/datatypes.h>
 
 // project includes
 #include "includes/dd/situation/CSituationView.h"
@@ -43,10 +44,16 @@ namespace dd
 namespace situation
 {
 
-CSituationView::CSituationView():
+CSituationView::CSituationView(Size_t &rSize, Color_t &rColor):
     mpSituationImage(NULL)
 {
-  mpSituationImage = new cv::Mat(320, 500, CV_8UC3, cv::Scalar(0, 255, 0));
+  uint8_t const R = (uint8_t)(rColor.R*255.0);
+  uint8_t const G = (uint8_t)(rColor.G*255.0);
+  uint8_t const B = (uint8_t)(rColor.B*255.0);
+
+  mpSituationImage = new cv::Mat((int)rSize.Width, (int)rSize.Height,
+                                 CV_8UC3,
+                                 cv::Scalar(B, G, R));
 }
 
 CSituationView::~CSituationView()

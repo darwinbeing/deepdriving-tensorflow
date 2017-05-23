@@ -30,8 +30,11 @@
 #ifndef DD_CSITUATIONVIEW_H
 #define DD_CSITUATIONVIEW_H
 
-// 3rd party-libraries
+// 3rd party-libraries includes
 #include <opencv2/core/core.hpp>
+
+// project includes
+#include <dd/situation/datatypes.h>
 
 namespace dd
 {
@@ -42,7 +45,7 @@ class CSituationView
 {
   public:
     /// @brief Constructor.
-    CSituationView();
+    CSituationView(Size_t &rSize, Color_t &rColor);
 
     /// @brief Destructor.
     ~CSituationView();

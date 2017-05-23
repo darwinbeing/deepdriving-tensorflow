@@ -43,9 +43,9 @@ extern "C"
 {
 #endif
 
-DLL_API void * CSituationView_create()
+DLL_API void * CSituationView_create(Size_t Size, Color_t Color)
 {
-  return new CSituationView();
+  return new CSituationView(Size, Color);
 }
 
 DLL_API void CSituationView_destroy(void * pObject)
