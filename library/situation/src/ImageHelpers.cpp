@@ -19,25 +19,41 @@
  */
 
 /**
- * @file settings.h
+ * @file ImageHelpers.cpp
  * @author Andre Netzeband
- * @date 22.05.2017
+ * @date 23.05.2017
  *
- * @brief Common settings for the whole project.
+ * @brief Implements some image helper methods.
  *
  */
 
-#ifndef DD_SETTINGS_H
-#define DD_SETTINGS_H
+// 3rd party-libraries
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 
-#ifdef COMPILE_DLL
-  #define DLL_API __declspec(dllexport)
-#else
-  #define DLL_API __declspec(dllimport)
-#endif
+// project includes
+#include <dd/situation/ImageHelpers.h>
 
-#ifndef NULL
-  #define NULL (0)
-#endif
+cv::Mat * loadImage(char * pImagePath, char * pFileName)
+{
+  using namespace boost::filesystem;
 
-#endif //DD_SETTINGS_H
+  path const ImagePath(pImagePath);
+  path const FileName(pFileName);
+  path const FilePath = ImagePath / FileName;
+
+  cv::Mat * pImage = new cv::Mat(cv::imread(FilePath.string().c_str()));
+
+  assert(pImage->data);
+
+  return pImage;
+}
+
+void delImage(cv::Mat ** ppImage)
+{
+  if (*ppImage)
+  {
+    delete(*ppImage);
+    *ppImage = NULL;
+  }
+}

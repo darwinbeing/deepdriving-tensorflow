@@ -32,9 +32,11 @@
 
 // 3rd party-libraries includes
 #include <opencv2/core/core.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 // project includes
 #include <dd/situation/datatypes.h>
+#include <dd/situation/CSituation.h>
 
 namespace dd
 {
@@ -62,8 +64,41 @@ class CSituationView
     void update(Indicators_t *pReal, Indicators_t *pEstimated);
 
   protected:
-    cv::Scalar mBackgroundColor;
-    cv::Mat * mpSituationImage;
+    /// @return Returns the number of lanes.
+    /// @param rReal      Is the real situation description.
+    /// @param rEstimated Is the estimated situation description.
+    int guessLanes(CSituation &rReal, CSituation &rEstimated);
+
+    /// @brief Creates a new empty background image.
+    void createBackground();
+
+    /// @brief Calculates the lane position inside the situation view.
+    /// @param rReal      Is the real situation description.
+    /// @param rEstimated Is the estimated situation description.
+    int getLanePosition(CSituation &rReal, CSituation &rEstimated);
+
+    /// @brief Calculates the lane position inside the situation view.
+    /// @param rSituation  Is the situation description.
+    int getLanePosition(CSituation &rSituation);
+
+    /// @brief Adds the lanes to the image.
+    /// @param Lanes        Is the number of lanes.
+    /// @param LanePosition Is the position of the lane.
+    void addLanes(int Lanes, int LanePosition);
+
+    /// @brief Adds lane markings to the image.
+    /// @param Lanes        Is the number of lanes.
+    /// @param LanePosition Is the position of the lane.
+    /// @param rSituation   Is the real situation, which contains the current speed.
+    void addLaneMarkings(int Lanes, int LanePosition, CSituation &rSituation);
+
+    cv::Scalar               mBackgroundColor;
+    cv::Mat                * mpSituationImage;
+    cv::Mat                * mpLane1;
+    cv::Mat                * mpLane2;
+    cv::Mat                * mpLane3;
+    int                      mMarkingHead;
+    boost::posix_time::ptime mLastTime;
 };
 
 }

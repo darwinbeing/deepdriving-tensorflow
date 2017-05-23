@@ -4,6 +4,8 @@ set(${SUBPROJECT}_SOURCE
         src/situation_wrapper.cpp
         src/CSituationView.cpp
         src/IndicatorValues.cpp
+        src/ImageHelpers.cpp
+        src/CSituation.cpp
         )
 
 set(${SUBPROJECT}_HEADER
@@ -12,6 +14,8 @@ set(${SUBPROJECT}_HEADER
         includes/dd/situation/datatypes.h
         src/includes/dd/situation/CSituationView.h
         src/includes/dd/situation/IndicatorValues.h
+        src/includes/dd/situation/ImageHelpers.h
+        src/includes/dd/situation/CSituation.h
         )
 
 set(${SUBPROJECT}_FILES
@@ -43,3 +47,8 @@ ENDIF()
 
 target_link_libraries(${SUBPROJECT} ${OpenCV_LIBS})
 INSTALL(DIRECTORY "includes" DESTINATION ".")
+
+ADD_DEFINITIONS("-DBOOST_ALL_NO_LIB")
+find_package(Boost 1.55 REQUIRED COMPONENTS filesystem date_time)
+include_directories(${Boost_INCLUDE_DIRS})
+target_link_libraries(${SUBPROJECT} Boost::filesystem Boost::date_time)

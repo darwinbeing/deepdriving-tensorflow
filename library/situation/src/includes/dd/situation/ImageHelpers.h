@@ -19,25 +19,30 @@
  */
 
 /**
- * @file settings.h
+ * @file ImageHelpers.h
  * @author Andre Netzeband
- * @date 22.05.2017
+ * @date 23.05.2017
  *
- * @brief Common settings for the whole project.
+ * @brief Defines some helper methods for images.
  *
  */
 
-#ifndef DD_SETTINGS_H
-#define DD_SETTINGS_H
+#ifndef DD_IMAGEHELPERS_H
+#define DD_IMAGEHELPERS_H
 
-#ifdef COMPILE_DLL
-  #define DLL_API __declspec(dllexport)
-#else
-  #define DLL_API __declspec(dllimport)
-#endif
+// 3rd party-libraries
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
-#ifndef NULL
-  #define NULL (0)
-#endif
 
-#endif //DD_SETTINGS_H
+/// @brief Loads an image from a file.
+/// @param pImagePath Is the directory from this file.
+/// @param pFileName  Is the name of this file.
+/// @return Returns a cv::Mat object.
+cv::Mat * loadImage(char * pImagePath, char * pFileName);
+
+/// @brief Deletes the memory of a cv::Mat object, if it is defined.
+/// @param ppImage Is the image to delete. If this *ppImage is 0, nothing will be deleted. After deletion the *ppImage will be 0.
+void delImage(cv::Mat ** ppImage);
+
+#endif //DD_IMAGEHELPERS_H
