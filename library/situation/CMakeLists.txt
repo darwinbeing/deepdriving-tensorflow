@@ -3,6 +3,7 @@ set(SUBPROJECT "dd-situation-view")
 set(${SUBPROJECT}_SOURCE
         src/situation_wrapper.cpp
         src/CSituationView.cpp
+        src/IndicatorValues.cpp
         )
 
 set(${SUBPROJECT}_HEADER
@@ -10,6 +11,7 @@ set(${SUBPROJECT}_HEADER
         includes/dd/situation/situation_wrapper.h
         includes/dd/situation/datatypes.h
         src/includes/dd/situation/CSituationView.h
+        src/includes/dd/situation/IndicatorValues.h
         )
 
 set(${SUBPROJECT}_FILES

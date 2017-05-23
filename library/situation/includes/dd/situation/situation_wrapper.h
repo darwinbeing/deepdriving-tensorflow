@@ -43,15 +43,34 @@ extern "C"
 #endif
 
 /// @brief Creates a situation view object.
+/// @param Size       Is the size of the situation view.
+/// @param Color      Is the background-color of the situation view.
+/// @param pImagePath Is the path where the images can be found.
 /// @return Returns the created object.
-DLL_API void * CSituationView_create(Size_t Size, Color_t Color);
+DLL_API void * CSituationView_create(Size_t Size, Color_t Color, char * pImagePath);
 
 /// @brief Destory a situation view object.
-/// @param pObject is the object to destory.
+/// @param pObject     Is the object to destory.
 DLL_API void CSituationView_destroy(void * pObject);
 
 /// @return Returns the situation image object.
+/// @param pObject     The Object of the situation view.
 DLL_API uint8_t * CSituationView_getImage(void * pObject);
+
+/// @brief Updates the situation view image.
+/// @param pObject     The object to update.
+/// @param pReal      Are the real indicators that describe the situation.
+/// @param pEstimated Are the estimated indicators that describe the situation.
+DLL_API void CSituationView_update(void * pObject, Indicators_t *pReal, Indicators_t *pEstimated);
+
+/// @return Returns the invalid indicators values.
+DLL_API Indicators_t const * getInvalidIndicators();
+
+/// @return Returns the max indicator values.
+DLL_API Indicators_t const * getMaxIndicators();
+
+/// @return Returns the min indicator values.
+DLL_API Indicators_t const * getMinIndicators();
 
 #ifdef __cplusplus
 };

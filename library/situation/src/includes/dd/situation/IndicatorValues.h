@@ -19,50 +19,22 @@
  */
 
 /**
- * @file datatypes.h
+ * @file IndicatorValues.h
  * @author Andre Netzeband
  * @date 23.05.2017
  *
- * @brief Defines datatypes for the situation view.
+ * @brief Contains maximum and minimum indicator values.
  *
  */
 
-#ifndef DD_DATATYPES_H
-#define DD_DATATYPES_H
+#ifndef DD_INDICATORVALUES_H
+#define DD_INDICATORVALUES_H
 
-/// @brief Defines a color value.
-typedef struct
-{
-  double R;
-  double G;
-  double B;
-} Color_t;
+// project includes
+#include <dd/situation/datatypes.h>
 
-/// @brief Defines a size value.
-typedef struct
-{
-  double Width;
-  double Height;
-} Size_t;
+extern Indicators_t const gInvalidIndicators;
+extern Indicators_t const gMaxIndicators;
+extern Indicators_t const gMinIndicators;
 
-/// @brief The indicators to describe the near situations.
-typedef struct
-{
-  double Speed;
-  double Fast;
-  double Angle;
-  double LL;
-  double ML;
-  double MR;
-  double RR;
-  double DistLL;
-  double DistMM;
-  double DistRR;
-  double L;
-  double M;
-  double R;
-  double DistL;
-  double DistR;
-} Indicators_t;
-
-#endif //DD_DATATYPES_H
+#endif //DD_INDICATORVALUES_H

@@ -45,7 +45,10 @@ class CSituationView
 {
   public:
     /// @brief Constructor.
-    CSituationView(Size_t &rSize, Color_t &rColor);
+    /// @param rSize      Is the Size of the Situation View.
+    /// @param rColor     Is the Background-Color of the Situation View.
+    /// @param pImagePath Is the path of the images.
+    CSituationView(Size_t &rSize, Color_t &rColor, char * pImagePath);
 
     /// @brief Destructor.
     ~CSituationView();
@@ -53,7 +56,13 @@ class CSituationView
     /// @return Returns the situation image.
     cv::Mat * getImage();
 
+    /// @brief Updates the situation view image.
+    /// @param pReal      Are the real indicators that describe the situation.
+    /// @param pEstimated Are the estimated indicators that describe the situation.
+    void update(Indicators_t *pReal, Indicators_t *pEstimated);
+
   protected:
+    cv::Scalar mBackgroundColor;
     cv::Mat * mpSituationImage;
 };
 

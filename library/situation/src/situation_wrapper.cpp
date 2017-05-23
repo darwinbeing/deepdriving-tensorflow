@@ -35,6 +35,7 @@
 // project includes
 #include <dd/situation/situation_wrapper.h>
 #include <dd/situation/CSituationView.h>
+#include <dd/situation/IndicatorValues.h>
 
 using namespace dd::situation;
 
@@ -43,9 +44,9 @@ extern "C"
 {
 #endif
 
-DLL_API void * CSituationView_create(Size_t Size, Color_t Color)
+DLL_API void * CSituationView_create(Size_t Size, Color_t Color, char * pImagePath)
 {
-  return new CSituationView(Size, Color);
+  return new CSituationView(Size, Color, pImagePath);
 }
 
 DLL_API void CSituationView_destroy(void * pObject)
@@ -57,8 +58,28 @@ DLL_API void CSituationView_destroy(void * pObject)
 DLL_API uint8_t * CSituationView_getImage(void * pObject)
 {
   assert(pObject);
-
   return ((CSituationView*)pObject)->getImage()->data;
+}
+
+DLL_API void CSituationView_update(void * pObject, Indicators_t *pReal, Indicators_t *pEstimated)
+{
+  assert(pObject);
+  ((CSituationView*)pObject)->update(pReal, pEstimated);
+}
+
+DLL_API Indicators_t const * getInvalidIndicators()
+{
+  return &gInvalidIndicators;
+}
+
+DLL_API Indicators_t const * getMaxIndicators()
+{
+  return &gMaxIndicators;
+}
+
+DLL_API Indicators_t const * getMinIndicators()
+{
+  return &gMinIndicators;
 }
 
 #ifdef __cplusplus

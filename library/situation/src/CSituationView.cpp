@@ -44,16 +44,18 @@ namespace dd
 namespace situation
 {
 
-CSituationView::CSituationView(Size_t &rSize, Color_t &rColor):
+CSituationView::CSituationView(Size_t &rSize, Color_t &rColor, char * pImagePath):
     mpSituationImage(NULL)
 {
   uint8_t const R = (uint8_t)(rColor.R*255.0);
   uint8_t const G = (uint8_t)(rColor.G*255.0);
   uint8_t const B = (uint8_t)(rColor.B*255.0);
+  mBackgroundColor = cv::Scalar(B, G, R);
 
-  mpSituationImage = new cv::Mat((int)rSize.Width, (int)rSize.Height,
+  mpSituationImage = new cv::Mat((int)rSize.Width,
+                                 (int)rSize.Height,
                                  CV_8UC3,
-                                 cv::Scalar(B, G, R));
+                                 mBackgroundColor);
 }
 
 CSituationView::~CSituationView()
@@ -69,6 +71,19 @@ cv::Mat * CSituationView::getImage()
 {
   assert(mpSituationImage);
   return mpSituationImage;
+}
+
+void CSituationView::update(Indicators_t *pReal, Indicators_t *pEstimated)
+{
+  if (pReal)
+  {
+    printf("LL: %f\n", pReal->LL);
+  }
+
+  if (pEstimated)
+  {
+    printf("RR: %f\n", pEstimated->RR);
+  }
 }
 
 }
