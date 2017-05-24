@@ -97,6 +97,8 @@ void CSituationView::update(Indicators_t *pReal, Indicators_t *pEstimated)
   int const LanePosition = getLanePosition(Real, Estimated);
   addLanes(Lanes, LanePosition);
   addLaneMarkings(Lanes, LanePosition, Real);
+  addHostCar(Real, Estimated);
+  addObstacles(LanePosition, Real, Estimated);
 }
 
 int CSituationView::guessLanes(CSituation &rReal, CSituation &rEstimated)
@@ -246,6 +248,172 @@ void CSituationView::addLaneMarkings(int Lanes, int LanePosition, CSituation &rS
   }
 }
 
+void CSituationView::addHostCar(CSituation &rReal, CSituation &rEstimated)
+{
+  if (rReal.isValid())
+  {
+    addHostCar(rReal, true);
+  }
+
+  if (rEstimated.isValid())
+  {
+    addHostCar(rEstimated, false);
+  }
+}
+
+static void getCarBoxFromAngle( float * pP1x, float * pP1y,
+                                float * pP2x, float * pP2y,
+                                float * pP3x, float * pP3y,
+                                float * pP4x, float * pP4y,
+                                float Angle)
+{
+  Angle = -Angle;
+  *pP1x = -14 * cos(Angle) + 28 * sin(Angle);
+  *pP1y =  14 * sin(Angle) + 28 * cos(Angle);
+  *pP2x =  14 * cos(Angle) + 28 * sin(Angle);
+  *pP2y = -14 * sin(Angle) + 28 * cos(Angle);
+  *pP3x =  14 * cos(Angle) - 28 * sin(Angle);
+  *pP3y = -14 * sin(Angle) - 28 * cos(Angle);
+  *pP4x = -14 * cos(Angle) - 28 * sin(Angle);
+  *pP4y =  14 * sin(Angle) - 28 * cos(Angle);
+}
+
+void CSituationView::addHostCar(CSituation &rSituation, bool IsGroundTruth)
+{
+  float P1x, P1y, P2x, P2y, P3x, P3y, P4x, P4y;
+  getCarBoxFromAngle(&P1x, &P1y, &P2x, &P2y, &P3x, &P3y, &P4x, &P4y, (float)rSituation.get()->Angle);
+
+  double const CarPosition = mpSituationImage->size().width / 2.0;
+  cv::Point Points[4];
+
+  Points[0].x = (int)(P1x + CarPosition);
+  Points[0].y = (int)(P1y + 600);
+  Points[1].x = (int)(P2x + CarPosition);
+  Points[1].y = (int)(P2y + 600);
+  Points[2].x = (int)(P3x + CarPosition);
+  Points[2].y = (int)(P3y + 600);
+  Points[3].x = (int)(P4x + CarPosition);
+  Points[3].y = (int)(P4y + 600);
+
+  if (IsGroundTruth)
+  {
+    cv::fillConvexPoly(*mpSituationImage, Points, 4, cv::Scalar(0, 0, 255));
+  }
+  else
+  {
+    int NumberOfPoints = 4;
+    cv::Point const * pPoints = Points;
+    cv::polylines(*mpSituationImage, &pPoints, &NumberOfPoints, 1, 1, cv::Scalar(0, 255, 0), 2, CV_AA);
+  }
+}
+
+
+void CSituationView::addObstacles(int LanePosition, CSituation &rReal, CSituation &rEstimated)
+{
+  if (rReal.isValid())
+  {
+    addObstacles(LanePosition, rReal, true);
+  }
+
+  if (rEstimated.isValid())
+  {
+    addObstacles(LanePosition, rEstimated, false);
+  }
+}
+
+
+void CSituationView::addObstacles(int LanePosition, CSituation &rSituation, bool IsGroundTruth)
+{
+  int const Lanes = rSituation.getNumberOfLanes();
+
+  if (rSituation.isCarInLane())
+  {
+    if (Lanes == 3 || Lanes == 1)
+    {
+      if (rSituation.isLeftLane() && rSituation.isDistLLValid())
+      {
+        drawObstacle(LanePosition - 50, (int)(rSituation.get()->DistLL*12), IsGroundTruth);
+      }
+
+      if (rSituation.isDistMMValid())
+      {
+        drawObstacle(LanePosition, (int)(rSituation.get()->DistMM*12), IsGroundTruth);
+      }
+
+      if (rSituation.isRightLane() && rSituation.isDistRRValid())
+      {
+        drawObstacle(LanePosition + 50, (int)(rSituation.get()->DistRR*12), IsGroundTruth);
+      }
+    }
+    else if (Lanes == 2)
+    {
+      if (rSituation.isLeftLane())
+      {
+        if (rSituation.isDistLLValid())
+        {
+          drawObstacle(LanePosition - 22, (int)(rSituation.get()->DistLL*12), IsGroundTruth);
+        }
+
+        if (rSituation.isDistMMValid())
+        {
+          drawObstacle(LanePosition + 22, (int)(rSituation.get()->DistMM*12), IsGroundTruth);
+        }
+      }
+      else if (rSituation.isRightLane())
+      {
+        if (rSituation.isDistRRValid())
+        {
+          drawObstacle(LanePosition + 22, (int)(rSituation.get()->DistRR*12), IsGroundTruth);
+        }
+
+        if (rSituation.isDistMMValid())
+        {
+          drawObstacle(LanePosition - 22, (int)(rSituation.get()->DistMM*12), IsGroundTruth);
+        }
+      }
+
+    }
+  }
+  else if (rSituation.isCarOnLane())
+  {
+    if (Lanes == 2)
+    {
+      if (rSituation.isLeftLane() && rSituation.isDistLValid())
+      {
+        drawObstacle(LanePosition - 22, (int)(rSituation.get()->DistL*12), IsGroundTruth);
+      }
+
+      if (rSituation.isRightLane() && rSituation.isDistRValid())
+      {
+        drawObstacle(LanePosition + 22, (int)(rSituation.get()->DistR*12), IsGroundTruth);
+      }
+    }
+    else
+    {
+      if (rSituation.isLeftLane() && rSituation.isDistLValid())
+      {
+        drawObstacle(LanePosition, (int)(rSituation.get()->DistL*12), IsGroundTruth);
+      }
+      else if (rSituation.isRightLane() && rSituation.isDistRValid())
+      {
+        drawObstacle(LanePosition, (int)(rSituation.get()->DistR*12), IsGroundTruth);
+      }
+    }
+  }
+
+}
+
+void CSituationView::drawObstacle(int X, int Y, bool Filled)
+{
+  if (Filled)
+  {
+    cv::rectangle(*mpSituationImage, cv::Point(X - 14, 600 - Y - 28), cv::Point(X + 14, 600 - Y + 28), cv::Scalar(0, 255, 255), -1);
+  }
+  else
+  {
+    cv::rectangle(*mpSituationImage, cv::Point(X - 14, 600 - Y - 28), cv::Point(X + 14, 600 - Y + 28), cv::Scalar(237, 99, 157), 2);
+  }
+}
 
 }
 }

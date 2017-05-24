@@ -31,6 +31,7 @@
 #include <dd/situation/CSituation.h>
 #include <dd/situation/IndicatorValues.h>
 #include <dd/common/settings.h>
+#include <dd/situation/datatypes.h>
 
 CSituation::CSituation(Indicators_t * pIndicators):
     mpIndicators(pIndicators)
@@ -131,4 +132,29 @@ bool CSituation::isRightLane() const
 double CSituation::getLaneWidth() const
 {
   return 4.0;
+}
+
+bool CSituation::isDistLLValid() const
+{
+  return (mpIndicators->DistLL >= gMinIndicators.DistLL) && (mpIndicators->DistLL <= gMaxIndicators.DistLL);
+}
+
+bool CSituation::isDistMMValid() const
+{
+  return (mpIndicators->DistMM >= gMinIndicators.DistMM) && (mpIndicators->DistMM <= gMaxIndicators.DistMM);
+}
+
+bool CSituation::isDistRRValid() const
+{
+  return (mpIndicators->DistRR >= gMinIndicators.DistRR) && (mpIndicators->DistRR <= gMaxIndicators.DistRR);
+}
+
+bool CSituation::isDistLValid() const
+{
+  return (mpIndicators->DistL >= gMinIndicators.DistL) && (mpIndicators->DistL <= gMaxIndicators.DistL);
+}
+
+bool CSituation::isDistRValid() const
+{
+  return (mpIndicators->DistR >= gMinIndicators.DistR) && (mpIndicators->DistR <= gMaxIndicators.DistR);
 }

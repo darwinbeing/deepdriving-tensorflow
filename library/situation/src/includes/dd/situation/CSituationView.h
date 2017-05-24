@@ -92,6 +92,34 @@ class CSituationView
     /// @param rSituation   Is the real situation, which contains the current speed.
     void addLaneMarkings(int Lanes, int LanePosition, CSituation &rSituation);
 
+    /// @brief Adds a host car to the image.
+    /// @param rReal      Is the real situation description.
+    /// @param rEstimated Is the estimated situation description.
+    void addHostCar(CSituation &rReal, CSituation &rEstimated);
+
+    /// @brief Adds a host car to the image.
+    /// @param rSituation    Is the situation description.
+    /// @param IsGroundTruth Indicates, if the information belongs to the ground truth or not.
+    void addHostCar(CSituation &rSituation, bool IsGroundTruth);
+
+    /// @brief Adds obstacles to the image.
+    /// @param LanePosition Is the positon of the lane.
+    /// @param rReal        Is the real situation description.
+    /// @param rEstimated   Is the estimated situation description.
+    void addObstacles(int LanePosition, CSituation &rReal, CSituation &rEstimated);
+
+    /// @brief Adds obstacles to the image.
+    /// @param LanePosition  Is the positon of the lane.
+    /// @param rSituation    Is the situation description.
+    /// @param IsGroundTruth Indicates, if the information belongs to the ground truth or not.
+    void addObstacles(int LanePosition, CSituation &rSituation, bool IsGroundTruth);
+
+    /// @brief Draws an obstacle to the image.
+    /// @param X      Is the X position of the obstacle.
+    /// @param Y      Is the Y position of the obstacle.
+    /// @param Filled Indicates if the obstacle should be filled or not.
+    void drawObstacle(int X, int Y, bool Filled);
+
     cv::Scalar               mBackgroundColor;
     cv::Mat                * mpSituationImage;
     cv::Mat                * mpLane1;

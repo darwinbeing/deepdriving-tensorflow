@@ -67,6 +67,21 @@ class CSituation
     /// @brief Returns the width of a lane.
     double getLaneWidth() const;
 
+    /// @return Returns true, if the value DistLL is valid.
+    bool isDistLLValid() const;
+
+    /// @return Returns true, if the value DistMM is valid.
+    bool isDistMMValid() const;
+
+    /// @return Returns true, if the value DistRR is valid.
+    bool isDistRRValid() const;
+
+    /// @return Returns true, if the value DistL is valid.
+    bool isDistLValid() const;
+
+    /// @return Returns true, if the value DistR is valid.
+    bool isDistRValid() const;
+
   private:
     Indicators_t * mpIndicators;
 };
