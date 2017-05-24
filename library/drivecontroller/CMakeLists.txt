@@ -1,21 +1,15 @@
-set(SUBPROJECT "dd-situation-view")
+set(SUBPROJECT "dd-drivecontroller")
 
 set(${SUBPROJECT}_SOURCE
-        src/situation_wrapper.cpp
-        src/CSituationView.cpp
-        src/IndicatorValues.cpp
-        src/ImageHelpers.cpp
-        src/CSituation.cpp
+        src/controller_wrapper.cpp
+        src/CDriveController.cpp
         )
 
 set(${SUBPROJECT}_HEADER
         ../common/includes/dd/common/settings.h
         ../common/includes/dd/common/datatypes.h
-        includes/dd/situation/situation_wrapper.h
-        src/includes/dd/situation/CSituationView.h
-        src/includes/dd/situation/IndicatorValues.h
-        src/includes/dd/situation/ImageHelpers.h
-        src/includes/dd/situation/CSituation.h
+        includes/dd/drivecontroller/controller_wrapper.h
+        src/includes/dd/drivecontroller/CDriveController.h
         )
 
 set(${SUBPROJECT}_FILES
@@ -45,10 +39,3 @@ IF(${SUBPROJECT}_SOURCE)
             COMMENT "Installing ${SUBPROJECT}")
 ENDIF()
 
-target_link_libraries(${SUBPROJECT} ${OpenCV_LIBS})
-INSTALL(DIRECTORY "includes" DESTINATION ".")
-
-ADD_DEFINITIONS("-DBOOST_ALL_NO_LIB")
-find_package(Boost 1.55 REQUIRED COMPONENTS filesystem date_time)
-include_directories(${Boost_INCLUDE_DIRS})
-target_link_libraries(${SUBPROJECT} Boost::filesystem Boost::date_time)

@@ -4,6 +4,7 @@ set(${SUBPROJECT}_SOURCE)
 
 set(${SUBPROJECT}_HEADER
         includes/dd/common/settings.h
+        includes/dd/common/datatypes.h
         )
 
 set(${SUBPROJECT}_FILES

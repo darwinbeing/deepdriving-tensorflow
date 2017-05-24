@@ -41,7 +41,7 @@
 #include <dd/situation/CSituationView.h>
 #include <dd/situation/ImageHelpers.h>
 #include <dd/situation/CSituation.h>
-#include <dd/situation/datatypes.h>
+#include <dd/common/datatypes.h>
 
 #define LANE1_FILENAME "semantic_1lane.png"
 #define LANE2_FILENAME "semantic_2lane.png"

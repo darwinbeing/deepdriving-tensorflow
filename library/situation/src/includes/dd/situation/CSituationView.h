@@ -35,7 +35,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 // project includes
-#include <dd/situation/datatypes.h>
+#include <dd/common/datatypes.h>
 #include <dd/situation/CSituation.h>
 
 namespace dd

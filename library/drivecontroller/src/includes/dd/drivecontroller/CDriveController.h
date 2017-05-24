@@ -19,22 +19,37 @@
  */
 
 /**
- * @file IndicatorValues.h
+ * @file CDriveController.h
  * @author Andre Netzeband
- * @date 23.05.2017
+ * @date 22.05.2017
  *
- * @brief Contains maximum and minimum indicator values.
+ * @brief The drive controller class.
  *
  */
 
-#ifndef DD_INDICATORVALUES_H
-#define DD_INDICATORVALUES_H
+#ifndef DD_CDRIVECONTROLLER_H
+#define DD_CDRIVECONTROLLER_H
 
 // project includes
 #include <dd/common/datatypes.h>
 
-extern Indicators_t const gInvalidIndicators;
-extern Indicators_t const gMaxIndicators;
-extern Indicators_t const gMinIndicators;
+namespace dd
+{
+namespace drivecontroller
+{
 
-#endif //DD_INDICATORVALUES_H
+class CDriveController
+{
+  public:
+    /// @brief Constructor.
+    CDriveController();
+
+    /// @brief Destructor.
+    ~CDriveController();
+};
+
+}
+}
+
+
+#endif //DD_CDRIVECONTROLLER_H

@@ -31,7 +31,7 @@
 #include <dd/situation/CSituation.h>
 #include <dd/situation/IndicatorValues.h>
 #include <dd/common/settings.h>
-#include <dd/situation/datatypes.h>
+#include <dd/common/datatypes.h>
 
 CSituation::CSituation(Indicators_t * pIndicators):
     mpIndicators(pIndicators)

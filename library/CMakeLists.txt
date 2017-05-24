@@ -5,8 +5,9 @@ project(${PROJECT})
 add_subdirectory(common)
 add_subdirectory(situation)
 add_subdirectory(python)
+add_subdirectory(drivecontroller)
 
 add_custom_target(install_${PROJECT}
         $(MAKE) install
-        DEPENDS dd-situation-view
+        DEPENDS dd-situation-view dd-drivecontroller
         COMMENT "Installing ${PROJECT}")

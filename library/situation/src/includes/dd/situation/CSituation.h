@@ -31,7 +31,7 @@
 #define DD_CSITUATION_H
 
 // project includes
-#include <dd/situation/datatypes.h>
+#include <dd/common/datatypes.h>
 
 class CSituation
 {

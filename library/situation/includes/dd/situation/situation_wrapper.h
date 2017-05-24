@@ -35,7 +35,7 @@
 
 // project includes
 #include <dd/common/settings.h>
-#include <dd/situation/datatypes.h>
+#include <dd/common/datatypes.h>
 
 #ifdef __cplusplus
 extern "C"
