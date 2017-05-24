@@ -65,4 +65,12 @@ typedef struct
   double DistR;
 } Indicators_t;
 
+/// @brief Stores commands for the TORCS game.
+typedef struct
+{
+  double Steering;
+  double Accelerating;
+  double Breaking;
+} Control_t;
+
 #endif //DD_DATATYPES_H

@@ -40,12 +40,19 @@ extern "C"
 #endif
 
 /// @brief Creates a drive controller object.
+/// @param Lanes Is the number of lanes.
 /// @return Returns the created object.
-DLL_API void * CDriveController_create();
+DLL_API void * CDriveController_create(uint32_t Lanes);
 
 /// @brief Destory a drive controller object.
 /// @param pObject     Is the object to destroy.
 DLL_API void CDriveController_destroy(void * pObject);
+
+/// @brief Controls the car.
+/// @param pObject     Is the drive controller object.
+/// @param pIndicators Are the situation indicators.
+/// @param pControl    Are the control commands.
+DLL_API void CDriveController_control(void * pObject, Indicators_t const * pIndicators, Control_t * pControl);
 
 #ifdef __cplusplus
 };

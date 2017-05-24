@@ -43,15 +43,23 @@ extern "C"
 {
 #endif
 
-DLL_API void * CDriveController_create()
+DLL_API void * CDriveController_create(uint32_t Lanes)
 {
-  return new CDriveController();
+  return new CDriveController((int)Lanes);
 }
 
 DLL_API void CDriveController_destroy(void * pObject)
 {
   assert(pObject);
   delete((CDriveController*)pObject);
+}
+
+DLL_API void CDriveController_control(void * pObject, Indicators_t const * pIndicators, Control_t * pControl)
+{
+  assert(pObject);
+  assert(pIndicators);
+  assert(pControl);
+  ((CDriveController*)pObject)->control(*pIndicators, *pControl);
 }
 
 #ifdef __cplusplus

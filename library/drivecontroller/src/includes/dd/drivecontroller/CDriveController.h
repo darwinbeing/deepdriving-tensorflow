@@ -42,10 +42,40 @@ class CDriveController
 {
   public:
     /// @brief Constructor.
-    CDriveController();
+    /// @param Lanes Is the number of lanes.
+    CDriveController(int Lanes);
 
     /// @brief Destructor.
     ~CDriveController();
+
+    /// @brief Controls the car dependent on the current indicators.
+    /// @param rIndicators Are the current situation indicators.
+    /// @param rControl    Are the current car controls.
+    void control(Indicators_t const &rIndicators, Control_t &rControl);
+
+  private:
+    void controlLane1(Indicators_t const &rIndicators, Control_t &rControl);
+    void controlLane2(Indicators_t const &rIndicators, Control_t &rControl);
+    void controlLane3(Indicators_t const &rIndicators, Control_t &rControl);
+
+    int mLanes;
+    double slow_down;
+    double pre_dist_L;
+    double pre_dist_R;
+    int left_clear;
+    int left_timer;
+    int right_clear;
+    int right_timer;
+    int timer_set;
+    int lane_change;
+    double steer_trend;
+    double steering_record[5];
+    double coe_steer;
+    double center_line;
+    double pre_ML;
+    double pre_MR;
+    int steering_head;
+    double desired_speed;
 };
 
 }

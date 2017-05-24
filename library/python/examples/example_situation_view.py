@@ -1,7 +1,7 @@
 import dd.situation_view as ddsv
 import cv2
 
-SituationView = ddsv.CSituationView(Size=(320, 660), Background=(0.161, 0.392, 0.008))
+SituationView = ddsv.CSituationView()
 
 SituationView.Real.Speed = 20;
 SituationView.Real.LL = -6;
