@@ -28,6 +28,7 @@ from kivy.lang import Builder
 
 class MainApp(App):
   _Memory = None
+  _Labels = None
   theme_cls = ThemeManager()
 
   def __init__(self, MainWindow, Memory, **kwargs):
@@ -36,6 +37,7 @@ class MainApp(App):
     self._UpdateFunctions = {}
     self._MainWindow = MainWindow
     self._Memory = Memory
+    self._Window = None
 
   def update(self):
     self._UpdateTrigger()
@@ -43,6 +45,12 @@ class MainApp(App):
   def _update(self, *args):
     for Object in self._UpdateFunctions.keys():
       self._UpdateFunctions[Object]()
+
+  def deleteAll(self):
+    self._UpdateFunctions = {}
+    self._Window.clear_widgets()
+    self._Memory = None
+    self._Labels = None
 
   def build(self):
     try:
@@ -53,8 +61,11 @@ class MainApp(App):
     if LayoutFile != None:
       Builder.load_file(LayoutFile)
 
-    Window = self._MainWindow()
-    return Window
+    self._Window = self._MainWindow()
+    return self._Window
 
   def registerUpdateFunc(self, Object, Function):
     self._UpdateFunctions[Object] = Function
+
+  def setLabels(self, Labels):
+    self._Labels = Labels

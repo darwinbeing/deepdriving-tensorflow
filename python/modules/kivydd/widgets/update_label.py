@@ -34,6 +34,9 @@ class UpdateLabel(MDLabel):
     MyApp = App.get_running_app()
     MyApp.registerUpdateFunc(self, self.updateText)
 
+  def __del__(self):
+    self._UpdateFunc = None
+
   def updateText(self, *args):
     if self._UpdateFunc != None:
       self.text = self._UpdateFunc()

@@ -21,7 +21,14 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
+from kivy.config import Config
+Config.set('graphics','resizable',1)
+from kivy.core.window import Window
+Window.size = (645, 700)
+
 import speed_dreams as sd
+import dd.drive_controller as dddc
+import dd
 from kivydd.app import CAppThread, Widget
 
 class DriveWindow(Widget):
@@ -30,17 +37,60 @@ class DriveWindow(Widget):
 class CApplication(CAppThread):
   def initMemory(self):
     Memory = sd.CSharedMemory()
+    Memory.setSyncMode(True)
     return Memory
 
+  def initApp(self, Memory, App):
+    App.setLabels(Memory.Data.Labels)
+
+  _LastRaceID = 0
   def doLoop(self, Memory, App):
     if Memory.read():
+      if Memory.Data.Game.UniqueRaceID != self._LastRaceID:
+        self._initRace(Memory)
+      self.control(Memory)
       App.update()
+      Memory.indicateReady()
 
     else:
       import time
-      time.sleep(0.05)
+      time.sleep(0.01)
 
     return True
+
+  _DriveController = None
+  _Indicators      = None
+  _Control         = None
+  def _initRace(self, Memory):
+    print("Initialize a new race...")
+    self._DriveController = dddc.CDriveController(Memory.Data.Game.Lanes)
+    self._Indicators = dd.Indicators_t()
+    self._Control    = dd.Control_t()
+    self._LastRaceID = Memory.Data.Game.UniqueRaceID
+
+  def control(self, Memory):
+    self._Indicators.Speed  = Memory.Data.Game.Speed
+    self._Indicators.Fast   = Memory.Data.Labels.Fast
+    self._Indicators.Angle  = Memory.Data.Labels.Angle
+    self._Indicators.LL     = Memory.Data.Labels.LL
+    self._Indicators.ML     = Memory.Data.Labels.ML
+    self._Indicators.MR     = Memory.Data.Labels.MR
+    self._Indicators.RR     = Memory.Data.Labels.RR
+    self._Indicators.DistLL = Memory.Data.Labels.DistLL
+    self._Indicators.DistMM = Memory.Data.Labels.DistMM
+    self._Indicators.DistRR = Memory.Data.Labels.DistRR
+    self._Indicators.L      = Memory.Data.Labels.L
+    self._Indicators.M      = Memory.Data.Labels.M
+    self._Indicators.R      = Memory.Data.Labels.R
+    self._Indicators.DistL  = Memory.Data.Labels.DistL
+    self._Indicators.DistR  = Memory.Data.Labels.DistR
+
+    self._DriveController.control(self._Indicators, self._Control)
+
+    Memory.Data.Control.IsControlling = 1
+    Memory.Data.Control.Steering      = self._Control.Steering
+    Memory.Data.Control.Accelerating  = self._Control.Accelerating
+    Memory.Data.Control.Breaking      = self._Control.Breaking
 
 if __name__ == '__main__':
   CApplication("drive").run(DriveWindow)

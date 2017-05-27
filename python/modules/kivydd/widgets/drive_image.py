@@ -38,6 +38,14 @@ class DriveImage(Widget):
     MyApp = App.get_running_app()
     MyApp.registerUpdateFunc(self, self.updateTexture)
 
+  def __del__(self):
+    self._Memory = None
+    self._Texture = None
+
+  def _updateRect(self, Instance, Value):
+    self._Rectangle.pos = Instance.pos
+    self._Rectangle.size = Instance.size
+
 
   def _initTexture(self):
     if self._Memory != None:
@@ -48,8 +56,8 @@ class DriveImage(Widget):
       self._populateTexture()
 
       with self.canvas:
-        Rectangle(texture=self._Texture, pos=self.pos, size=self.size)
-
+        self._Rectangle = Rectangle(texture=self._Texture, pos=self.pos, size=self.size)
+        self.bind(size=self._updateRect, pos=self._updateRect)
 
   def updateTexture(self, *args):
     if self._Texture == None:

@@ -23,3 +23,4 @@
 
 from .drive_image import DriveImage
 from .update_label import UpdateLabel
+from .situation_view import SituationView

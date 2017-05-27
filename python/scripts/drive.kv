@@ -2,15 +2,16 @@
 #:import MDLabel kivymd.label
 #:import DriveImage kivydd.widgets
 #:import UpdateLabel kivydd.widgets
+#:import AspectRatioLayout kivydd.layouts
 
-#<Widget>:
-#    canvas.after:
-#        Color:
-#            rgba: 0, 0, 0, 1
-#        Line:
-#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-#        Color:
-#            rgba: 1, 1, 1, 1
+<Widget>:
+    canvas.after:
+        Color:
+            rgba: 0, 0, 0, 1
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+        Color:
+            rgba: 1, 1, 1, 1
 
 <MDLabel>:
     padding: (3, 3)
@@ -39,9 +40,16 @@
             size: root.size
             orientation: "horizontal"
 
-            MDLabel:
-                text: "Situation"
-                halign: "center"
+            AspectRatioLayout:
+                ratio: 660/320
+
+                SituationView:
+                    _DrawReal: True
+                    _Memory: app._Memory
+                    _DrawEstimated: True
+                    _Labels: app._Labels
+                    text: "Situation"
+                    halign: "center"
 
             BoxLayout:
                 size: 320, 1

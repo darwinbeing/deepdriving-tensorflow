@@ -43,6 +43,7 @@ class CAppThread():
     self._Memory = self.initMemory()
     self._App = MainApp(MainWindow, self._Memory)
     self._App.title = self._Name
+    self.initApp(self._Memory, self._App)
     self._Thread = threading.Thread(target=self._mainLoop)
     self._IsExit = False
     self._Thread.start()
@@ -53,6 +54,8 @@ class CAppThread():
     self._Thread.join()
     self._Thread = None
     self._Memory = None
+    self._App.deleteAll()
+    self._App    = None
 
   def _mainLoop(self):
     while self._IsExit == False:
@@ -61,6 +64,9 @@ class CAppThread():
 
   def initMemory(self):
     return None
+
+  def initApp(self, Memory, App):
+    pass
 
   def doLoop(self, Memory, App):
     return True
