@@ -76,6 +76,10 @@ class CDriveController
     double pre_MR;
     int steering_head;
     double desired_speed;
+
+    static float const mMaxSpeed;
+    static float const mMaxCurvySpeed;
+
 };
 
 }

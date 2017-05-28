@@ -39,6 +39,10 @@ namespace dd
 namespace drivecontroller
 {
 
+
+float const CDriveController::mMaxSpeed      = 21;
+float const CDriveController::mMaxCurvySpeed = 16.5;
+
 CDriveController::CDriveController(int Lanes)
 {
   mLanes = Lanes;
@@ -91,12 +95,18 @@ void CDriveController::controlLane1(Indicators_t const &rIndicators, Control_t &
 {
   slow_down=100;
 
-  if (rIndicators.DistMM<15) {
-    double v_max=20;
+  if (rIndicators.DistMM < 25)
+  {
+    double v_max=mMaxSpeed;
     double c=2.772;
     double d=-0.693;
-    slow_down=v_max*(1-exp(-c/v_max*rIndicators.DistMM-d));  // optimal vilcity car-following model
+    slow_down=v_max*(1-exp(-c/v_max*(rIndicators.DistMM)-d));  // optimal vilocity car-following model
     if (slow_down<0) slow_down=0;
+  }
+
+  if (rIndicators.DistMM < 10)
+  {
+    slow_down=0;
   }
 
   if (-rIndicators.ML+rIndicators.MR<5.5) {
@@ -114,8 +124,8 @@ void CDriveController::controlLane1(Indicators_t const &rIndicators, Control_t &
     coe_steer=0.3;
   }
 
-  static float const road_width = 8.0;
-  rControl.Steering = (rIndicators.Angle - center_line/road_width) / 0.541052/coe_steer;   // steering control, "rControl.Steering" [-1,1] is the value sent back to TORCS
+  static float const road_width = 4.0;
+  rControl.Steering = (rIndicators.Angle - center_line/road_width)/coe_steer;
 
   if (coe_steer>1 && rControl.Steering>0.1)   // reshape the steering control curve
     rControl.Steering=rControl.Steering*(2.5*rControl.Steering+0.75);
@@ -124,15 +134,22 @@ void CDriveController::controlLane1(Indicators_t const &rIndicators, Control_t &
   steering_head++;
   if (steering_head==5) steering_head=0;
 
-  if (rIndicators.Fast==1) desired_speed=20;
-  else desired_speed=20-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5;
+  if (rIndicators.Fast==1)
+  {
+    desired_speed=mMaxSpeed;
+  }
+  else
+  {
+    desired_speed=mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
+  }
+
   if (desired_speed<10) desired_speed=10;
 
   if (slow_down<desired_speed) desired_speed=slow_down;
 
   ///////////////////////////// speed control
   if (desired_speed>=rIndicators.Speed) {
-    rControl.Accelerating = 0.2*(desired_speed-rIndicators.Speed+1);
+    rControl.Accelerating = 0.1*(desired_speed-rIndicators.Speed+1);
     if (rControl.Accelerating>1) rControl.Accelerating=1.0;
     rControl.Breaking = 0.0;
   } else {
@@ -141,12 +158,19 @@ void CDriveController::controlLane1(Indicators_t const &rIndicators, Control_t &
     rControl.Accelerating = 0.0;
   }
   ///////////////////////////// END speed control
+
+  ///// Emergency Break
+  if (slow_down < 0.1)
+  {
+    rControl.Accelerating = 0.0;
+    rControl.Breaking     = 1.0;
+  }
+  /////
+
 }
 
 void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &rControl)
 {
-  float const MaxSpeed      = 22;
-  float const MaxCurvySpeed = 17.5;
   slow_down=100;
 
   if (pre_dist_L<20 && rIndicators.DistLL<20) {   // left lane is occupied or not
@@ -198,7 +222,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
   }
 
     ///////////////////////////////////////////////// prefer to stay in the right lane
-  else if (lane_change==0 && rIndicators.DistMM>=15) {
+  else if (lane_change==0 && rIndicators.DistMM>=25) {
 
     steer_trend=steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4];  // am I turning or not
 
@@ -213,7 +237,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
 
   if (rIndicators.DistMM < 25)
   {
-    double v_max=MaxSpeed;
+    double v_max=mMaxSpeed;
     double c=2.772;
     double d=-0.693;
     slow_down=v_max*(1-exp(-c/v_max*(rIndicators.DistMM)-d));  // optimal vilocity car-following model
@@ -327,8 +351,15 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
   if (steering_head==5) steering_head=0;
 
 
-  if (rIndicators.Fast==1) desired_speed=MaxSpeed;
-  else desired_speed=MaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
+  if (rIndicators.Fast==1)
+  {
+    desired_speed=mMaxSpeed;
+  }
+  else
+  {
+    desired_speed=mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
+  }
+
   if (desired_speed<10) desired_speed=10;
 
   if (slow_down<desired_speed) desired_speed=slow_down;
@@ -389,15 +420,15 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
   }
 
 
-  if (lane_change == 0 && rIndicators.DistMM < 15)
+  if (lane_change == 0 && rIndicators.DistMM < 25)
   {  // if current lane is occupied
 
     steer_trend = steering_record[0] + steering_record[1] + steering_record[2] + steering_record[3] + steering_record[4];  // am I turning or not
 
-    if (rIndicators.LL > -8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2)
+    if (rIndicators.LL > -8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2 && rIndicators.Fast == 1)
     {  // move to left lane
       lane_change = -2;
-      coe_steer = 6;
+      coe_steer = 2;
       right_clear = 0;
       right_timer = 0;
       left_clear = 0;
@@ -405,61 +436,66 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       timer_set = 60;
     }
 
-    else if (rIndicators.RR < 8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2)
+    else if (rIndicators.RR < 8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && rIndicators.Fast == 1)
     {  // move to right lane
       lane_change = 2;
-      coe_steer = 6;
+      coe_steer = 2;
       left_clear = 0;
       left_timer = 0;
       right_clear = 0;
       right_timer = 30;
       timer_set = 60;
     }
-
-    else
-    {
-      double v_max = 20;
-      double c = 2.772;
-      double d = -0.693;
-      slow_down = v_max * (1 - exp(-c / v_max * rIndicators.DistMM - d));  // optimal velocity car-following model
-      if (slow_down < 0) slow_down = 0;
-    }
   }
 
     ///////////////////////////////////////////////// prefer to stay in the central lane
-  else if (lane_change == 0 && rIndicators.DistMM >= 15)
+  else if (lane_change == 0 && rIndicators.DistMM >= 25)
   {
 
     steer_trend = steering_record[0] + steering_record[1] + steering_record[2] + steering_record[3] + steering_record[4];  // am I turning or not
 
-    if (rIndicators.RR > 8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2)
+    if (rIndicators.RR > 8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2 && rIndicators.Fast == 1)
     {  // in right lane, move to central lane
       lane_change = -2;
-      coe_steer = 6;
+      coe_steer = 2;
       left_clear = 0;
       left_timer = 30;
     }
 
-    else if (rIndicators.LL < -8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2)
+    else if (rIndicators.LL < -8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && rIndicators.Fast == 1)
     {  // in left lane, move to central lane
       lane_change = 2;
-      coe_steer = 6;
+      coe_steer = 2;
       right_clear = 0;
       right_timer = 30;
     }
   }
   ///////////////////////////////////////////////// END prefer to stay in the central lane
 
+  if (rIndicators.DistMM < 25)
+  {
+    double v_max=mMaxSpeed;
+    double c=2.772;
+    double d=-0.693;
+    slow_down=v_max*(1-exp(-c/v_max*(rIndicators.DistMM)-d));  // optimal vilocity car-following model
+    if (slow_down<0) slow_down=0;
+  }
+
+  if (rIndicators.DistMM < 10)
+  {
+    slow_down=0;
+  }
+
   ///////////////////////////////////////////////// implement lane changing or car-following
   if (lane_change == 0)
   {
     if (-rIndicators.ML + rIndicators.MR < 5.5)
     {
-      coe_steer = 1.5;
+      coe_steer = 1;
       center_line = (rIndicators.ML + rIndicators.MR) / 2;
       pre_ML = rIndicators.ML;
       pre_MR = rIndicators.MR;
-      if (rIndicators.M < 1)
+      if ((rIndicators.M < 1) && (rIndicators.M > -1))
         coe_steer = 0.4;
     }
     else
@@ -477,13 +513,26 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
     if (-rIndicators.ML + rIndicators.MR < 5.5)
     {
       center_line = (rIndicators.LL + rIndicators.ML) / 2;
-      if (rIndicators.L > -5 && rIndicators.M < 1.5)
-        center_line = (center_line + (rIndicators.L + rIndicators.M) / 2) / 2;
+      if (rIndicators.L>-5 && (rIndicators.M < 1.5) && (rIndicators.M > -1.5))
+      {
+        if (-rIndicators.L > 3)
+        {
+          center_line=(center_line+(rIndicators.L+rIndicators.M)/2)/2;
+        }
+        else
+        {
+          coe_steer  = 1;
+          if (rIndicators.M < 1.25)
+          {
+            lane_change = 0;
+          }
+        }
+      }
     }
     else
     {
       center_line = (rIndicators.L + rIndicators.M) / 2;
-      coe_steer = 20;
+      coe_steer = 1;
       lane_change = -1;
     }
   }
@@ -508,13 +557,26 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
     if (-rIndicators.ML + rIndicators.MR < 5.5)
     {
       center_line = (rIndicators.RR + rIndicators.MR) / 2;
-      if (rIndicators.R < 5 && rIndicators.M < 1.5)
-        center_line = (center_line + (rIndicators.R + rIndicators.M) / 2) / 2;
+      if (rIndicators.R<5 && (rIndicators.M < 1.5) && (rIndicators.M > -1.5))
+      {
+        if (rIndicators.R > 3)
+        {
+          center_line=(center_line+(rIndicators.R+rIndicators.M)/2)/2;
+        }
+        else
+        {
+          coe_steer  = 1;
+          if (rIndicators.M > -1.25)
+          {
+            lane_change = 0;
+          }
+        }
+      }
     }
     else
     {
       center_line = (rIndicators.R + rIndicators.M) / 2;
-      coe_steer = 20;
+      coe_steer = 1;
       lane_change = 1;
     }
   }
@@ -535,8 +597,8 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
   }
   ///////////////////////////////////////////////// END implement lane changing or car-following
 
-  static float const road_width = 8.0;
-  rControl.Steering = (rIndicators.Angle - center_line / road_width) / 0.541052 / coe_steer;  // steering control, "rControl.Steering" [-1,1] is the value sent back to TORCS
+  static float const road_width = 12.0;
+  rControl.Steering = (rIndicators.Angle - center_line/road_width)/coe_steer;
 
   if (lane_change == 0 && coe_steer > 1 && rControl.Steering > 0.1)   // reshape the steering control curve
     rControl.Steering = rControl.Steering * (2.5 * rControl.Steering + 0.75);
@@ -546,16 +608,21 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
   if (steering_head == 5) steering_head = 0;
 
 
-  if (rIndicators.Fast == 1) desired_speed = 20;
-  else desired_speed = 20 - fabs(steering_record[0] + steering_record[1] + steering_record[2] + steering_record[3] + steering_record[4]) * 4.5;
-  if (desired_speed < 10) desired_speed = 10;
+  if (rIndicators.Fast==1)
+  {
+    desired_speed=mMaxSpeed;
+  }
+  else
+  {
+    desired_speed=mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
+  }
 
   if (slow_down < desired_speed) desired_speed = slow_down;
 
   ///////////////////////////// speed control
   if (desired_speed >= rIndicators.Speed)
   {
-    rControl.Accelerating = 0.2 * (desired_speed - rIndicators.Speed + 1);
+    rControl.Accelerating = 0.1 * (desired_speed - rIndicators.Speed + 1);
     if (rControl.Accelerating > 1) rControl.Accelerating = 1.0;
     rControl.Breaking = 0.0;
   }
@@ -566,6 +633,15 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
     rControl.Accelerating = 0.0;
   }
   ///////////////////////////// END speed control}
+
+  ///// Emergency Break
+  if (slow_down < 0.1)
+  {
+    rControl.Accelerating = 0.0;
+    rControl.Breaking     = 1.0;
+  }
+  /////
+
 }
 
 }
