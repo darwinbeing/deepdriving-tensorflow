@@ -3,3 +3,5 @@
 library/build
 library/install
 misc.xml
+workspace.xml
+tasks.xml
