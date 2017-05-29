@@ -29,6 +29,7 @@ from kivy.graphics import Rectangle, Color
 
 import numpy as np
 
+_BACKGROUND_COLOR = (ddsv._BACKGROUND_COLOR[0], ddsv._BACKGROUND_COLOR[1], ddsv._BACKGROUND_COLOR[2], 1.0)
 
 class SituationView(Widget):
   _Texture             = None

@@ -23,4 +23,4 @@
 
 from .drive_image import DriveImage
 from .update_label import UpdateLabel
-from .situation_view import SituationView
+from .situation_view import SituationView, _BACKGROUND_COLOR

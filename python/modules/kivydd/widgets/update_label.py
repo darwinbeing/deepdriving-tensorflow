@@ -22,11 +22,10 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import kivy
-from kivymd.label import MDLabel
 from kivy.app import App
+from kivy.uix.label import Label
 
-#class UpdateLabel(kivy.uix.label.Label):
-class UpdateLabel(MDLabel):
+class UpdateLabel(Label):
   _UpdateFunc = None
 
   def __init__(self, **kwargs):

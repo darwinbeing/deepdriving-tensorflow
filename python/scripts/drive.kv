@@ -7,13 +7,13 @@
 <Widget>:
     canvas.after:
         Color:
-            rgba: 0, 0, 0, 1
+            rgba: 1, 1, 1, 1
         Line:
             rectangle: self.x+1,self.y+1,self.width-1,self.height-1
         Color:
             rgba: 1, 1, 1, 1
 
-<MDLabel>:
+<Label>:
     padding: (3, 3)
 
 <DriveWindow>:
@@ -67,7 +67,7 @@
                     size: 320, 240
                     size_hint: None, None
 
-                MDLabel:
+                Label:
                     text: "Control"
                     halign: "center"
 

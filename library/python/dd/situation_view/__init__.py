@@ -1,1 +1,1 @@
-from .wrapper import CSituationView
+from .wrapper import CSituationView, _BACKGROUND_COLOR

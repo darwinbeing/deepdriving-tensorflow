@@ -23,13 +23,11 @@
 
 import kivy
 from kivy.app import App
-from kivymd.theming import ThemeManager
 from kivy.lang import Builder
 
 class MainApp(App):
   _Memory = None
   _Labels = None
-  theme_cls = ThemeManager()
 
   def __init__(self, MainWindow, Memory, **kwargs):
     super().__init__(**kwargs)

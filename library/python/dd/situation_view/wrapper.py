@@ -17,6 +17,7 @@ except:
     pass
 
 _LIBRARY = ctypes.cdll.LoadLibrary(_LIBRARY_FILE)
+_BACKGROUND_COLOR = (0.161, 0.392, 0.008)
 
 class Size_t(ctypes.Structure):
     _fields_ = [
@@ -35,7 +36,7 @@ class Color_t(ctypes.Structure):
 
 class CSituationView():
     def __init__(self):
-        Background=(0.161, 0.392, 0.008)
+        Background=_BACKGROUND_COLOR
         self._Width = 320
         self._Height = 660
         self._Channels = 3
