@@ -22,21 +22,50 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import kivy
-from kivy.app import App
-from kivy.uix.label import Label
-from .background_label import BackgroundLabel
+from kivy.uix.button import Button
+from kivy.lang import Builder
+from kivy.properties import StringProperty
+import os
 
-class UpdateLabel(BackgroundLabel):
-  _UpdateFunc = None
+_CURRENT_SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
+kivy.resources.resource_add_path(_CURRENT_SCRIPT_PATH)
+
+Builder.load_string("""
+<LightButton>:
+  Image:
+    source: self.parent._CurrentImage
+    size: (14, 14)
+    y: self.parent.y + self.parent.height / 2 - self.height / 2
+    x: self.parent.x + self.width / 2
+""")
+
+class LightButton(Button):
+  _IsOn = False
+  _CurrentImage = StringProperty("light_off.png")
 
   def __init__(self, **kwargs):
+    self.register_event_type('on_enable')
+    self.register_event_type('on_disable')
     super().__init__(**kwargs)
-    MyApp = App.get_running_app()
-    MyApp.registerUpdateFunc(self, self.updateText)
+    self.bind(on_press=self.onPressed)
+    self._updateLight(self._IsOn)
+    kivy.clock.Clock.schedule_once(self._updateLight, 0)
 
-  def __del__(self):
-    self._UpdateFunc = None
+  def onPressed(self, Instance):
+    self._IsOn = not self._IsOn
+    self._updateLight(self._IsOn)
 
-  def updateText(self, *args):
-    if self._UpdateFunc != None:
-      self.text = self._UpdateFunc()
+  def _updateLight(self, *args):
+    if self._IsOn:
+      self._CurrentImage = "light_on.png"
+      self.dispatch('on_enable', self._IsOn)
+
+    else:
+      self._CurrentImage = "light_off.png"
+      self.dispatch('on_disable', self._IsOn)
+
+  def on_enable(self, *args):
+    pass
+
+  def on_disable(self, *args):
+    pass

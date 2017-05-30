@@ -24,19 +24,22 @@
 import kivy
 from kivy.app import App
 from kivy.uix.label import Label
-from .background_label import BackgroundLabel
+from kivy.properties import ListProperty
+from kivy.lang import Builder
 
-class UpdateLabel(BackgroundLabel):
-  _UpdateFunc = None
+Builder.load_string("""
+<BackgroundLabel>:
+  padding: (3, 3)
+  _BackgroundColor: [0, 0, 0, 0.2]
+  canvas.before:
+    Color:
+      rgba: self._BackgroundColor
+      
+    RoundedRectangle:
+      pos: (self.pos[0] + self.padding[0], self.pos[1] + self.padding[1])
+      size: (self.size[0] - self.padding[0]*2, self.size[1] - self.padding[1]*2)
+      radius: [3, ]
+""")
 
-  def __init__(self, **kwargs):
-    super().__init__(**kwargs)
-    MyApp = App.get_running_app()
-    MyApp.registerUpdateFunc(self, self.updateText)
-
-  def __del__(self):
-    self._UpdateFunc = None
-
-  def updateText(self, *args):
-    if self._UpdateFunc != None:
-      self.text = self._UpdateFunc()
+class BackgroundLabel(Label):
+  _BackgroundColor = ListProperty([0, 0, 0, 0.1])

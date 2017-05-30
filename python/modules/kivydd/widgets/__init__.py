@@ -24,3 +24,5 @@
 from .drive_image import DriveImage
 from .update_label import UpdateLabel
 from .situation_view import SituationView, _BACKGROUND_COLOR
+from .background_label import BackgroundLabel
+from .light_button import LightButton
