@@ -3,18 +3,17 @@
 #:import DriveImage kivydd.widgets
 #:import UpdateLabel kivydd.widgets
 #:import AspectRatioLayout kivydd.layouts
+#:import BackgroundLabel kivydd.widgets
+#:import LightButton kivydd.widgets
 
-<Widget>:
-    canvas.after:
-        Color:
-            rgba: 1, 1, 1, 1
-        Line:
-            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-        Color:
-            rgba: 1, 1, 1, 1
-
-<Label>:
-    padding: (3, 3)
+#<Widget>:
+#    canvas.after:
+#        Color:
+#            rgba: 1, 1, 1, 1
+#        Line:
+#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+#        Color:
+#            rgba: 1, 1, 1, 1
 
 <DriveWindow>:
     BoxLayout:
@@ -48,8 +47,6 @@
                     _Memory: app._Memory
                     _DrawEstimated: True
                     _Labels: app._Labels
-                    text: "Situation"
-                    halign: "center"
 
             BoxLayout:
                 size: 320, 1
@@ -67,8 +64,41 @@
                     size: 320, 240
                     size_hint: None, None
 
-                Label:
-                    text: "Control"
-                    halign: "center"
+                BoxLayout:
+                    padding: (3, 3)
+                    size: root.size
+                    orientation: "vertical"
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        LightButton:
+                            _IsOn: False
+                            size: 200, 1
+                            size_hint: None, 1
+                            text: "Drive"
+                            on_enable: app._Main.enableDriver()
+                            on_disable: app._Main.disableDriver()
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        LightButton:
+                            _IsOn: True
+                            size: 200, 1
+                            size_hint: None, 1
+                            text: "AI"
+                            on_enable: app._Main.enableAI()
+                            on_disable: app._Main.disableAI()
+
+                    Label:
+                        text: ""
+                        halign: "center"
 
 

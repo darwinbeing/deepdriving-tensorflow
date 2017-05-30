@@ -42,6 +42,20 @@ class CApplication(CAppThread):
     Memory.setSyncMode(True)
     return Memory
 
+  _IsAIEnabled = True
+  def enableAI(self):
+    self._IsAIEnabled = True
+
+  def disableAI(self):
+    self._IsAIEnabled = False
+
+  _IsDriverEnabled = False
+  def enableDriver(self):
+    self._IsDriverEnabled = True
+
+  def disableDriver(self):
+    self._IsDriverEnabled = False
+
   def initApp(self, Memory, App):
     App.setLabels(Memory.Data.Labels)
 
@@ -89,7 +103,7 @@ class CApplication(CAppThread):
 
     self._DriveController.control(self._Indicators, self._Control)
 
-    Memory.Data.Control.IsControlling = 1
+    Memory.Data.Control.IsControlling = self._IsDriverEnabled
     Memory.Data.Control.Steering      = self._Control.Steering
     Memory.Data.Control.Accelerating  = self._Control.Accelerating
     Memory.Data.Control.Breaking      = self._Control.Breaking
