@@ -41,7 +41,7 @@ class CAppThread():
   def run(self, MainWindow):
     kivy.require('1.10.0')
     self._Memory = self.initMemory()
-    self._App = MainApp(MainWindow, self._Memory)
+    self._App = MainApp(MainWindow, self._Memory, self)
     self._App.title = self._Name
     self.initApp(self._Memory, self._App)
     self._Thread = threading.Thread(target=self._mainLoop)

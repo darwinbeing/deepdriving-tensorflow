@@ -28,14 +28,16 @@ from kivy.lang import Builder
 class MainApp(App):
   _Memory = None
   _Labels = None
+  _Main   = None
 
-  def __init__(self, MainWindow, Memory, **kwargs):
+  def __init__(self, MainWindow, Memory, MainObject, **kwargs):
     super().__init__(**kwargs)
     self._UpdateTrigger = kivy.clock.Clock.create_trigger(self._update)
     self._UpdateFunctions = {}
     self._MainWindow = MainWindow
     self._Memory = Memory
     self._Window = None
+    self._Main = MainObject
 
   def update(self):
     self._UpdateTrigger()
