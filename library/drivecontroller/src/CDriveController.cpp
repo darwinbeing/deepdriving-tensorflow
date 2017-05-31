@@ -1,4 +1,15 @@
 /**
+ * Attention: The original Drive-Controller was implemented by Chenyi Chen
+ * in context of the original DeepDriving project (http://deepdriving.cs.princeton.edu/).
+ *
+ * The following implementation contains several small adaptions and enhancements necessary
+ * for working well with SpeedDreams. However the overall copyright and license is the same
+ * as for the original project. Since the original files does not contain any license text, it
+ * cannot be added to this file. Thus following license text only applies for the changes and
+ * enhancements. Keep this in mind, when using the code in your own project.
+ */
+
+/**
  *  Copyright (C) 2017 Andre Netzeband
  *
  *  This file is part of "DeepDriving for Speed-Dreams".
