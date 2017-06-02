@@ -1,3 +1,5 @@
+include(../cmake/library.cmake)
+
 set(SUBPROJECT "dd-situation-view")
 
 set(${SUBPROJECT}_SOURCE
@@ -18,37 +20,21 @@ set(${SUBPROJECT}_HEADER
         src/includes/dd/situation/CSituation.h
         )
 
-set(${SUBPROJECT}_FILES
-        ${${SUBPROJECT}_SOURCE}
-        ${${SUBPROJECT}_HEADER}
+find_package(OpenCV REQUIRED)
+find_package(Boost 1.55 REQUIRED COMPONENTS filesystem date_time)
+
+set(${SUBPROJECT}_INCLUDE_DIRS
+        ../common/includes
+        includes
+        src/includes
         )
 
-IF(WIN32)
-    ADD_DEFINITIONS(-DCOMPILE_DLL)
-ENDIF(WIN32)
+DD_ADD_LIBRARY(${SUBPROJECT} "${${SUBPROJECT}_SOURCE}" "${${SUBPROJECT}_HEADER}" "${${SUBPROJECT}_INCLUDE_DIRS}" bin)
 
-find_package(OpenCV REQUIRED)
-
-INCLUDE_DIRECTORIES("../common/includes")
-INCLUDE_DIRECTORIES("includes")
-INCLUDE_DIRECTORIES("src/includes")
-
-IF(${SUBPROJECT}_SOURCE)
-    MESSAGE(STATUS "Compile library ${SUBPROJECT}...")
-    ADD_LIBRARY(${SUBPROJECT} SHARED ${${SUBPROJECT}_FILES})
-    INSTALL(TARGETS ${SUBPROJECT}
-            DESTINATION bin)
-
-    add_custom_target(install_${SUBPROJECT}
-            $(MAKE) install
-            DEPENDS ${SUBPROJECT}
-            COMMENT "Installing ${SUBPROJECT}")
-ENDIF()
-
-target_link_libraries(${SUBPROJECT} ${OpenCV_LIBS})
 INSTALL(DIRECTORY "includes" DESTINATION ".")
 
-ADD_DEFINITIONS("-DBOOST_ALL_NO_LIB")
-find_package(Boost 1.55 REQUIRED COMPONENTS filesystem date_time)
-include_directories(${Boost_INCLUDE_DIRS})
+target_link_libraries(${SUBPROJECT} ${OpenCV_LIBS})
+
+target_include_directories(${SUBPROJECT} PRIVATE "${Boost_INCLUDE_DIRS}")
+target_compile_definitions(${SUBPROJECT} PRIVATE BOOST_ALL_NO_LIB)
 target_link_libraries(${SUBPROJECT} Boost::filesystem Boost::date_time)
