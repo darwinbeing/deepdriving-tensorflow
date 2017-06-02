@@ -65,6 +65,25 @@ typedef struct
   double DistR;
 } Indicators_t;
 
+/// @brief The labels.
+typedef struct
+{
+  double Fast;
+  double Angle;
+  double LL;
+  double ML;
+  double MR;
+  double RR;
+  double DistLL;
+  double DistMM;
+  double DistRR;
+  double L;
+  double M;
+  double R;
+  double DistL;
+  double DistR;
+} Labels_t;
+
 /// @brief Stores commands for the TORCS game.
 typedef struct
 {
