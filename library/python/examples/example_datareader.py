@@ -13,4 +13,8 @@ print("First Key in Database: {}".format(DataReader.FirstKey))
 print("Last Key in Database: {}".format(DataReader.LastKey))
 
 with DataReader.getCursor() as Cursor:
-    pass
+    print("")
+    print("Key: {}".format(Cursor.Key))
+    print("ImageWidth: {}".format(Cursor.ImageWidth))
+    print("ImageHeight: {}".format(Cursor.ImageHeight))
+

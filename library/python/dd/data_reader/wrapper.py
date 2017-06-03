@@ -26,17 +26,40 @@ class CDataCursor():
 
 
     def __enter__(self):
-        pass
+        return self
 
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
+        if self._Object != None:
+            _LIBRARY.CDataEntry_destroy(self._Object)
+            self._Object = None
 
 
     def __del__(self):
         if self._Object != None:
             _LIBRARY.CDataEntry_destroy(self._Object)
             self._Object = None
+
+    @property
+    def Key(self):
+        if self._Object != None:
+            Getter = _LIBRARY.CDataEntry_getKey
+            Getter.restype = ctypes.c_uint64
+            return Getter(self._Object)
+
+    @property
+    def ImageWidth(self):
+        if self._Object != None:
+            Getter = _LIBRARY.CDataEntry_getImageWidth
+            Getter.restype = ctypes.c_uint32
+            return Getter(self._Object)
+
+    @property
+    def ImageHeight(self):
+        if self._Object != None:
+            Getter = _LIBRARY.CDataEntry_getImageHeight
+            Getter.restype = ctypes.c_uint32
+            return Getter(self._Object)
 
 
 class CDataReader():

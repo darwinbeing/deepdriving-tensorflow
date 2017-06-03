@@ -38,6 +38,7 @@ namespace datareader
 CDataEntry::CDataEntry(leveldb::DB * pDB)
 {
   mpIterator = NULL;
+  mpMessage  = NULL;
 
   assert(pDB);
   leveldb::ReadOptions ReadOptions;
@@ -55,32 +56,66 @@ CDataEntry::CDataEntry(leveldb::DB * pDB)
   {
     printf("[Error] First entry in database is not valid... maybe Database is empty?\n");
     printf("[Error] DB-Error: %s\n", mpIterator->status().ToString().c_str());
+    return;
   }
 
-  printf("create cursor...\n");
+  mpMessage = new CProtoMessage(mpIterator->value().ToString());
 }
 
 CDataEntry::~CDataEntry()
 {
-  printf("destroy cursor...\n");
+  deleteMessage();
 
   delete(mpIterator);
   mpIterator = NULL;
 }
 
+void CDataEntry::deleteMessage()
+{
+  if (mpMessage)
+  {
+    delete(mpMessage);
+    mpMessage = NULL;
+  }
+}
+
 uint64_t CDataEntry::getKey() const
 {
-  return 0;
+  return std::stoull(mpIterator->key().ToString());
 }
 
 uint32_t CDataEntry::getImageWidth() const
 {
-  return 0;
+  /*
+  std::string const & rString = mpIterator->value().ToString();
+  char const * pMsg = rString.c_str();
+
+  for(int i = 0; pMsg[i] != '\0' && i < 256; i++)
+  {
+    if ((i % 16) == 0)
+    {
+      printf("\n");
+    }
+    printf("%x ", (uint8_t)pMsg[i]);
+  }
+
+  printf("\n");
+  printf("\n");
+
+  uint32_t Number;
+  uint32_t Type;
+  uint8_t const * pNext = parseFieldInfo((uint8_t const *)pMsg, Number, Type);
+
+  printf("Number: %d\n", Number);
+  printf("Type:   %d\n", Type);
+   */
+
+  return mpMessage->mWidth;
 }
 
 uint32_t CDataEntry::getImageHeight() const
 {
-  return 0;
+  return mpMessage->mHeight;
 }
 
 void CDataEntry::getLabels(Labels_t * pLabels) const

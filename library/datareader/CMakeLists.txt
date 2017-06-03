@@ -6,6 +6,7 @@ set(${SUBPROJECT}_SOURCE
         src/datareader_wrapper.cpp
         src/CDataReader.cpp
         src/CDataEntry.cpp
+        src/CProtoMessage.cpp
         )
 
 set(${SUBPROJECT}_HEADER

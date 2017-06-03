@@ -75,7 +75,7 @@ DLL_API uint32_t CDataEntry_getImageWidth(void const * pObject);
 
 /// @return Returns the height of the image
 /// @param pObject Is the cursor object.
-DLL_API uint32_t CDataEntry_getImageHieght(void const * pObject);
+DLL_API uint32_t CDataEntry_getImageHeight(void const * pObject);
 
 /// @brief Returns the labels of the entry.
 /// @param pObject Is the cursor object.

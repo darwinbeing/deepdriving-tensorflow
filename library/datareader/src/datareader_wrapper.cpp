@@ -81,17 +81,20 @@ DLL_API void CDataEntry_destroy(void * pObject)
 
 DLL_API uint64_t CDataEntry_getKey(void const * pObject)
 {
-  return 0;
+  assert(pObject);
+  return ((CDataEntry const *)pObject)->getKey();
 }
 
 DLL_API uint32_t CDataEntry_getImageWidth(void const * pObject)
 {
-  return 0;
+  assert(pObject);
+  return ((CDataEntry const *)pObject)->getImageWidth();
 }
 
-DLL_API uint32_t CDataEntry_getImageHieght(void const * pObject)
+DLL_API uint32_t CDataEntry_getImageHeight(void const * pObject)
 {
-  return 0;
+  assert(pObject);
+  return ((CDataEntry const *)pObject)->getImageHeight();
 }
 
 DLL_API void CDataEntry_getLabels(void const * pObject, Labels_t * pLabel)

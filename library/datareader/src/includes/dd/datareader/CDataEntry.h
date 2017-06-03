@@ -32,6 +32,7 @@
 
 // project includes
 #include <dd/common/datatypes.h>
+#include <dd/datareader/CProtoMessage.h>
 
 #ifndef DD_CDATAENTRY_H
 #define DD_CDATAENTRY_H
@@ -67,7 +68,10 @@ class CDataEntry
     void getImage(uint8_t * pImage) const;
 
   private:
+    void deleteMessage();
+
     leveldb::Iterator * mpIterator;
+    CProtoMessage     * mpMessage;
 };
 
 }
