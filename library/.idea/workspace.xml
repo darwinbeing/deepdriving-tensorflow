@@ -89,8 +89,8 @@
       <file leaf-file-name="example_datareader.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python/examples/example_datareader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+            <state relative-caret-position="306">
+              <caret line="18" column="4" lean-forward="false" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="4" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -101,8 +101,8 @@
       <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python/dd/data_reader/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="35" column="22" lean-forward="true" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
+            <state relative-caret-position="385">
+              <caret line="34" column="31" lean-forward="false" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -110,34 +110,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CDataReader.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datareader/src/CDataReader.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
-              <caret line="98" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CDataReader.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataReader.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="34" column="32" lean-forward="false" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
-              <folding>
-                <element signature="e#1056#1093#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CDataEntry.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CDataEntry.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/src/CDataEntry.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="29" column="19" lean-forward="false" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+            <state relative-caret-position="793">
+              <caret line="117" column="27" lean-forward="false" selection-start-line="117" selection-start-column="27" selection-end-line="117" selection-end-column="27" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CProtoMessage.cpp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/datareader/src/CProtoMessage.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="606">
+              <caret line="138" column="0" lean-forward="true" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CProtoMessage.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CProtoMessage.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="759">
+              <caret line="57" column="48" lean-forward="false" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
+              <folding>
+                <element signature="e#1072#1089#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -145,9 +145,11 @@
       <file leaf-file-name="CDataEntry.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="33" column="32" lean-forward="false" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="725">
+              <caret line="70" column="25" lean-forward="false" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
+              <folding>
+                <element signature="e#1047#1079#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -156,31 +158,9 @@
         <entry file="file://$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="572">
-              <caret line="67" column="41" lean-forward="true" selection-start-line="67" selection-start-column="41" selection-end-line="67" selection-end-column="41" />
+              <caret line="77" column="39" lean-forward="false" selection-start-line="77" selection-start-column="39" selection-end-line="77" selection-end-column="39" />
               <folding>
                 <element signature="e#1138#1169#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="datatypes.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/includes/dd/common/datatypes.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="742">
-              <caret line="84" column="10" lean-forward="false" selection-start-line="84" selection-start-column="2" selection-end-line="84" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="datareader_wrapper.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="606">
-              <caret line="96" column="64" lean-forward="false" selection-start-line="96" selection-start-column="56" selection-end-line="96" selection-end-column="64" />
-              <folding>
-                <element signature="e#1018#1036#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -189,9 +169,21 @@
       <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="26" lean-forward="false" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+            <state relative-caret-position="136">
+              <caret line="8" column="29" lean-forward="false" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datareader_wrapper.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="657">
+              <caret line="96" column="28" lean-forward="false" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
+              <folding>
+                <element signature="e#1018#1036#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -217,9 +209,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/situation/src/situation_wrapper.c" />
-        <option value="$PROJECT_DIR$/situation/includes/dd/situation/datatypes.h.h" />
-        <option value="$PROJECT_DIR$/python/dd_situation_view/wrapper.py" />
         <option value="$PROJECT_DIR$/situation/includes/dd/situation/datatypes.h" />
         <option value="$PROJECT_DIR$/situation/src/includes/dd/situation/IndicatorValues.h" />
         <option value="$PROJECT_DIR$/situation/src/situation_wrapper.cpp" />
@@ -259,15 +248,18 @@
         <option value="$PROJECT_DIR$/leveldb/port/port_win.h" />
         <option value="$PROJECT_DIR$/datareader/src/CDataEntry.h" />
         <option value="$PROJECT_DIR$/datareader/src/CDataReader.cpp" />
-        <option value="$PROJECT_DIR$/datareader/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/python/examples/example_datareader.py" />
-        <option value="$PROJECT_DIR$/python/dd/data_reader/wrapper.py" />
         <option value="$PROJECT_DIR$/common/includes/dd/common/datatypes.h" />
         <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataReader.h" />
         <option value="$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h" />
         <option value="$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp" />
+        <option value="$PROJECT_DIR$/python/examples/example_datareader.py" />
+        <option value="$PROJECT_DIR$/python/dd/data_reader/wrapper.py" />
+        <option value="$PROJECT_DIR$/datareader/src/CProtoMessage.h" />
+        <option value="$PROJECT_DIR$/datareader/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h" />
         <option value="$PROJECT_DIR$/datareader/src/CDataEntry.cpp" />
+        <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CProtoMessage.h" />
+        <option value="$PROJECT_DIR$/datareader/src/CProtoMessage.cpp" />
       </list>
     </option>
   </component>
@@ -430,18 +422,18 @@
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\Uni\DeepDriving\main\library\datareader" />
+      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller\src\includes\dd\drivecontroller" />
+      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller" />
+      <recent name="D:\Projects\Uni\DeepDriving\main\library\python" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\Uni\DeepDriving\main\library\datareader\src\includes\dd\datareader" />
       <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\common\includes\dd\common" />
       <recent name="D:\Projects\Uni\DeepDriving\main\library\python\dd" />
       <recent name="D:\Projects\Uni\DeepDriving\main\library\situation\src" />
       <recent name="D:\Projects\Uni\DeepDriving\main\library\situation\includes\dd\situation" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Projects\Uni\DeepDriving\main\library\datareader" />
-      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller\src\includes\dd\drivecontroller" />
-      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller" />
-      <recent name="D:\Projects\Uni\DeepDriving\main\library\python" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -739,12 +731,13 @@
       <workItem from="1495993827109" duration="1349000" />
       <workItem from="1496134857128" duration="9000" />
       <workItem from="1496389702315" duration="11124000" />
-      <workItem from="1496421319933" duration="5059000" />
+      <workItem from="1496421319933" duration="5202000" />
+      <workItem from="1496472468895" duration="5338000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81434000" />
+    <option name="totallyTimeSpent" value="86915000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="0" />
@@ -752,7 +745,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18476562" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23944743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23944743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32761577" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -784,22 +777,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/situation/src/CSituationView.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="19" lean-forward="false" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/dd/situation_view/wrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp" />
-    <entry file="file://$PROJECT_DIR$/situation/src/situation_wrapper.c.cpp" />
     <entry file="file://$PROJECT_DIR$/situation/src/includes/dd/situation/IndicatorValues.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -1028,9 +1005,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="687">
           <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding>
-            <element signature="e#1917#1943#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1038,9 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="436">
           <caret line="131" column="2" lean-forward="false" selection-start-line="131" selection-start-column="2" selection-end-line="131" selection-end-column="2" />
-          <folding>
-            <element signature="e#3632#3692#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1048,7 +1019,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
           <caret line="25" column="16" lean-forward="false" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1060,73 +1030,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="26" lean-forward="false" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/src/CDataReader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="98" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/dd/data_reader/wrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="35" column="22" lean-forward="true" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/common/includes/dd/common/datatypes.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="742">
+        <state relative-caret-position="1428">
           <caret line="84" column="10" lean-forward="false" selection-start-line="84" selection-start-column="2" selection-end-line="84" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/python/examples/example_datareader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="67" column="41" lean-forward="true" selection-start-line="67" selection-start-column="41" selection-end-line="67" selection-end-column="41" />
-          <folding>
-            <element signature="e#1138#1169#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="96" column="64" lean-forward="false" selection-start-line="96" selection-start-column="56" selection-end-line="96" selection-end-column="64" />
-          <folding>
-            <element signature="e#1018#1036#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataReader.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
+        <state relative-caret-position="578">
           <caret line="34" column="32" lean-forward="false" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
           <folding>
             <element signature="e#1056#1093#0" expanded="true" />
@@ -1134,18 +1048,110 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="572">
+          <caret line="77" column="39" lean-forward="false" selection-start-line="77" selection-start-column="39" selection-end-line="77" selection-end-column="39" />
+          <folding>
+            <element signature="e#1138#1169#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/examples/example_datareader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="4" lean-forward="false" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="96" column="28" lean-forward="false" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
+          <folding>
+            <element signature="e#1018#1036#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Compiler/Microsoft Visual Studio 14.0/VC/include/xstring">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="1740" column="15" lean-forward="false" selection-start-line="1740" selection-start-column="15" selection-end-line="1740" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leveldb/includes/leveldb/slice.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="65" column="14" lean-forward="false" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="29" lean-forward="false" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/src/CDataReader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="91" column="56" lean-forward="false" selection-start-line="91" selection-start-column="16" selection-end-line="91" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/dd/data_reader/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="34" column="31" lean-forward="false" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="33" column="32" lean-forward="false" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
-          <folding />
+        <state relative-caret-position="725">
+          <caret line="70" column="25" lean-forward="false" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
+          <folding>
+            <element signature="e#1047#1079#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/datareader/src/CDataEntry.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="29" column="19" lean-forward="false" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+        <state relative-caret-position="793">
+          <caret line="117" column="27" lean-forward="false" selection-start-line="117" selection-start-column="27" selection-end-line="117" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CProtoMessage.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="57" column="48" lean-forward="false" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
+          <folding>
+            <element signature="e#1072#1089#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/src/CProtoMessage.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="606">
+          <caret line="138" column="0" lean-forward="true" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
           <folding />
         </state>
       </provider>
