@@ -66,7 +66,7 @@ Indicators_t const gMaxIndicators =
          60.0,
          60.0,
         -3.0,
-         2.0,
+         1.2,
          5.0,
          60.0,
          60.0
@@ -85,7 +85,7 @@ Indicators_t const gMinIndicators =
         0.0,
         0.0,
        -5.0,
-       -2.0,
+       -1.2,
         3.0,
         0.0,
         0.0
