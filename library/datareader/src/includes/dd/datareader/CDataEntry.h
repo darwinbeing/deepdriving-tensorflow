@@ -67,6 +67,13 @@ class CDataEntry
     /// @brief Copies the image from the cursor to the given struct.
     void getImage(uint8_t * pImage) const;
 
+    /// @return Return true, if the current entry is valid.
+    bool isValid() const;
+
+    /// @brief Selects the next entry.
+    /// @return Returns true, if the next entry is valid.
+    bool next();
+
   private:
     void deleteMessage();
 

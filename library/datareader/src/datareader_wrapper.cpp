@@ -34,6 +34,7 @@
 // project includes
 #include <dd/datareader/datareader_wrapper.h>
 #include <dd/datareader/CDataReader.h>
+#include <dd/common/datatypes.h>
 
 using namespace dd::datareader;
 
@@ -99,14 +100,27 @@ DLL_API uint32_t CDataEntry_getImageHeight(void const * pObject)
 
 DLL_API void CDataEntry_getLabels(void const * pObject, Labels_t * pLabel)
 {
-  return;
+  assert(pObject);
+  ((CDataEntry const *)pObject)->getLabels(pLabel);
 }
 
 DLL_API void CDataEntry_getImage(void const * pObject, uint8_t * pImage)
 {
-  return;
+  assert(pObject);
+  ((CDataEntry const *)pObject)->getImage(pImage);
 }
 
+DLL_API int CDataEntry_isValid(void const * pObject)
+{
+  assert(pObject);
+  return ((CDataEntry const *)pObject)->isValid();
+}
+
+DLL_API int CDataEntry_next(void * pObject)
+{
+  assert(pObject);
+  return ((CDataEntry *)pObject)->next();
+}
 
 #ifdef __cplusplus
 };

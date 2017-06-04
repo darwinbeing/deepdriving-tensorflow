@@ -87,6 +87,15 @@ DLL_API void CDataEntry_getLabels(void const * pObject, Labels_t * pLabel);
 /// @param pImage  Is the memory of the image.
 DLL_API void CDataEntry_getImage(void const * pObject, uint8_t * pImage);
 
+/// @return Returns a value unequal to 0, if the entry is a valid entry.
+/// @param pObject Is the cursor object.
+DLL_API int CDataEntry_isValid(void const * pObject);
+
+/// @brief Selects the next entry and retuns a value unequal to 0, if this entry is still valid.
+/// @param pObject Is the cursor object.
+/// @return Returns a value unequal to 0, if the next entry is a valid entry.
+DLL_API int CDataEntry_next(void * pObject);
+
 #ifdef __cplusplus
 };
 #endif

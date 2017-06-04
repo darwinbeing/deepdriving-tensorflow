@@ -45,17 +45,20 @@ class CProtoMessage
     CProtoMessage(std::string const &rString);
     ~CProtoMessage();
 
-    int32_t mChannels;
-    int32_t mWidth;
-    int32_t mHeight;
-    uint8_t *mpImage;
-    int32_t mLabel;
+    uint32_t mChannels;
+    uint32_t mWidth;
+    uint32_t mHeight;
+    uint8_t * mpImage;
+    uint32_t mLabel;
     std::vector<float> mFloats;
     bool mIsImageEncoded;
 
   private:
     void parse(uint8_t const * pMsg);
-    uint8_t const * parseChannels(uint8_t const * pMsg, uint32_t Type);
+    uint8_t const * parseVarIntUInt32Value(uint8_t const * pMsg, uint32_t Type, uint32_t &rValue);
+    uint8_t const * parseVariableBytes(uint8_t const * pMsg, uint32_t Type, uint8_t ** ppBytes);
+    uint8_t const * parseFloatValue(uint8_t const * pMsg, uint32_t Type, float &rValue);
+    void deleteImage();
 };
 
 }

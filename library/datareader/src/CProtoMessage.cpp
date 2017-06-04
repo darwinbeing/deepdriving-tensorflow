@@ -24,6 +24,7 @@
  * @date 03.06.2017
  *
  * @brief A class for decoding a caffe protobuffer message.
+ * @note All encodings are implemented according to the protobuf-spec: https://developers.google.com/protocol-buffers/docs/encoding
  *
  */
 
@@ -53,7 +54,16 @@ CProtoMessage::CProtoMessage(std::string const &rString) :
 
 CProtoMessage::~CProtoMessage()
 {
+  deleteImage();
+}
 
+void CProtoMessage::deleteImage()
+{
+  if (mpImage != NULL)
+  {
+    delete(mpImage);
+    mpImage = NULL;
+  }
 }
 
 static uint8_t const * decodeVarInt(uint8_t const * pMsg, uint64_t &rValue)
@@ -121,13 +131,46 @@ void CProtoMessage::parse(uint8_t const * pMsg)
     uint32_t Type;
     pCurrent = parseFieldInfo(pCurrent, Number, Type);
 
-    printf("Parse field number %d with type %d\n", Number, Type);
+    //printf("Parse field number %d with type %d\n", Number, Type);
 
     switch(Number)
     {
       case 1:
-        pCurrent = parseChannels(pCurrent, Type);
+        pCurrent = parseVarIntUInt32Value(pCurrent, Type, mChannels);
         break;
+
+      case 2:
+        pCurrent = parseVarIntUInt32Value(pCurrent, Type, mHeight);
+        break;
+
+      case 3:
+        pCurrent = parseVarIntUInt32Value(pCurrent, Type, mWidth);
+        break;
+
+      case 4:
+        deleteImage();
+        pCurrent = parseVariableBytes(pCurrent, Type, &mpImage);
+        break;
+
+      case 5:
+        pCurrent = parseVarIntUInt32Value(pCurrent, Type, mLabel);
+        break;
+
+      case 6:
+      {
+        float Value;
+        pCurrent = parseFloatValue(pCurrent, Type, Value);
+        mFloats.push_back(Value);
+        break;
+      }
+
+      case 7:
+      {
+        uint32_t Value;
+        pCurrent = parseVarIntUInt32Value(pCurrent, Type, Value);
+        mIsImageEncoded = Value > 0;
+        break;
+      }
 
       default:
         printf("Unknown filed number: %d with type %d\n", Number, Type);
@@ -137,17 +180,62 @@ void CProtoMessage::parse(uint8_t const * pMsg)
   }
 }
 
-uint8_t const * CProtoMessage::parseChannels(uint8_t const * pMsg, uint32_t Type)
+uint8_t const * CProtoMessage::parseVarIntUInt32Value(uint8_t const * pMsg, uint32_t Type, uint32_t &rValue)
 {
   if (Type == 0)
   {
     uint64_t Value;
     pMsg = decodeVarInt(pMsg, Value);
-    mChannels = (int32_t)Value;
+    rValue = (uint32_t)Value;
   }
   else
   {
-    printf("[Error] Channel field must be of type Varint (0) but it is type %d. Cannot parse channel field!\n", Type);
+    printf("[Error] Value field must be of type Varint (0) but it is type %d. Cannot parse value field!\n", Type);
+  }
+
+  return pMsg;
+}
+
+uint8_t const * CProtoMessage::parseVariableBytes(uint8_t const * pMsg, uint32_t Type, uint8_t ** ppBytes)
+{
+  assert(*ppBytes == NULL);
+
+  if (Type == 2)
+  {
+    uint64_t Length;
+    pMsg = decodeVarInt(pMsg, Length);
+
+    *ppBytes = new uint8_t[Length];
+
+    memcpy(*ppBytes, pMsg, (size_t)Length);
+
+    pMsg += Length;
+  }
+  else
+  {
+    printf("[Error] Variable list of bytes must be of type 2. But type %d was readed. Cannot parse byte-list!\n", Type);
+  }
+
+  return pMsg;
+}
+
+uint8_t const * CProtoMessage::parseFloatValue(uint8_t const * pMsg, uint32_t Type, float &rValue)
+{
+  if (Type == 5)
+  {
+    uint32_t RawValue = 0;
+
+    for(int i = 0; i < 4; i++, pMsg++)
+    {
+      uint8_t const Byte = *pMsg;
+      RawValue |= (Byte << (i*8));
+    }
+
+    memcpy(&rValue, &RawValue, 4);
+  }
+  else
+  {
+    printf("[Error] A float value must be of type 5. But type %d was readed. Cannot parse float-value!\n", Type);
   }
 
   return pMsg;
