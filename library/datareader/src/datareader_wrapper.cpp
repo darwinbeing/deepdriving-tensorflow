@@ -122,6 +122,18 @@ DLL_API int CDataEntry_next(void * pObject)
   return ((CDataEntry *)pObject)->next();
 }
 
+DLL_API int CDataEntry_prev(void * pObject)
+{
+  assert(pObject);
+  return ((CDataEntry *)pObject)->prev();
+}
+
+DLL_API int CDataEntry_setKey(void * pObject, uint64_t Key)
+{
+  assert(pObject);
+  return ((CDataEntry *)pObject)->setKey(Key);
+}
+
 #ifdef __cplusplus
 };
 #endif

@@ -74,6 +74,14 @@ class CDataEntry
     /// @return Returns true, if the next entry is valid.
     bool next();
 
+    /// @brief Selects the previous entry.
+    /// @return Returns true, if the previous entry is valid.
+    bool prev();
+
+    /// @brief Selects a specific key.
+    /// @return Returns true, if the entry is valid there.
+    bool setKey(uint64_t Key);
+
   private:
     void deleteMessage();
 

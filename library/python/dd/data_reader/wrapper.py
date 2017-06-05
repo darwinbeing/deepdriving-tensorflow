@@ -104,6 +104,18 @@ class CDataCursor():
             Next.argtypes = [ctypes.c_void_p]
             return Next(self._Object)
 
+    def prev(self):
+        if self._Object != None:
+            Prev = _LIBRARY.CDataEntry_prev
+            Prev.argtypes = [ctypes.c_void_p]
+            return Prev(self._Object)
+
+    def setKey(self, Key):
+        if self._Object != None:
+            Setter = _LIBRARY.CDataEntry_setKey
+            Setter.argtypes = [ctypes.c_void_p, ctypes.c_uint64]
+            return Setter(self._Object, Key)
+
 
 class CDataReader():
     def __init__(self, DataPath):

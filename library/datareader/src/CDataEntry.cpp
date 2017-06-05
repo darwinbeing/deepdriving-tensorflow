@@ -177,6 +177,68 @@ bool CDataEntry::next()
   return mpIterator->Valid();
 }
 
+bool CDataEntry::prev()
+{
+  mpIterator->Prev();
+
+  if (mpIterator->Valid())
+  {
+    if (!mpIterator->status().ok())
+    {
+      printf("[Error] Entry in database is not valid... maybe Database is corrupted?\n");
+      printf("[Error] DB-Error: %s\n", mpIterator->status().ToString().c_str());
+      return false;
+    }
+    else
+    {
+      deleteMessage();
+
+      mpMessage = new CProtoMessage(mpIterator->value().ToString());
+
+      if (mpMessage->mChannels != 3)
+      {
+        printf("[Error] Reading wrong number of channels from message. Expected 3 Channels. Read %d Channels.\n", mpMessage->mChannels);
+        return false;
+      }
+    }
+  }
+
+  return mpIterator->Valid();
+}
+
+bool CDataEntry::setKey(uint64_t Key)
+{
+  static size_t const MaxKeyLength = 256;
+  char KeyString[MaxKeyLength];
+  snprintf(KeyString, MaxKeyLength, "%08llu", Key);
+  leveldb::Slice KeySlice = KeyString;
+
+  mpIterator->Seek(KeySlice);
+
+  if (mpIterator->Valid())
+  {
+    if (!mpIterator->status().ok())
+    {
+      printf("[Error] Entry in database is not valid... maybe Database is corrupted?\n");
+      printf("[Error] DB-Error: %s\n", mpIterator->status().ToString().c_str());
+      return false;
+    }
+    else
+    {
+      deleteMessage();
+
+      mpMessage = new CProtoMessage(mpIterator->value().ToString());
+
+      if (mpMessage->mChannels != 3)
+      {
+        printf("[Error] Reading wrong number of channels from message. Expected 3 Channels. Read %d Channels.\n", mpMessage->mChannels);
+        return false;
+      }
+    }
+  }
+
+  return mpIterator->Valid();
+}
 
 }
 }

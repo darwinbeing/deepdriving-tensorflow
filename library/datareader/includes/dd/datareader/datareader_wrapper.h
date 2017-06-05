@@ -96,6 +96,17 @@ DLL_API int CDataEntry_isValid(void const * pObject);
 /// @return Returns a value unequal to 0, if the next entry is a valid entry.
 DLL_API int CDataEntry_next(void * pObject);
 
+/// @brief Selects the previous entry and retuns a value unequal to 0, if this entry is still valid.
+/// @param pObject Is the cursor object.
+/// @return Returns a value unequal to 0, if the previous entry is a valid entry.
+DLL_API int CDataEntry_prev(void * pObject);
+
+/// @brief Sets the cursor to a specific key a value unequal to 0, if this entry is still valid.
+/// @param pObject Is the cursor object.
+/// @param Key     Is the key to set the cursor at.
+/// @return Returns a value unequal to 0, if the entry is a valid entry.
+DLL_API int CDataEntry_setKey(void * pObject, uint64_t Key);
+
 #ifdef __cplusplus
 };
 #endif
