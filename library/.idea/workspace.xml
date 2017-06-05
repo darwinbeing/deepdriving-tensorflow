@@ -2,17 +2,17 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
-      <config projectName="dd" targetName="leveldb_autocompact_test" />
       <config projectName="dd" targetName="ContinuousConfigure" />
       <config projectName="dd" targetName="leveldbutil" />
       <config projectName="dd" targetName="leveldb_dbformat_test" />
-      <config projectName="dd" targetName="leveldb_coding_test" />
+      <config projectName="dd" targetName="ExperimentalBuild" />
       <config projectName="dd" targetName="NightlyConfigure" />
-      <config projectName="dd" targetName="ExperimentalUpdate" />
+      <config projectName="dd" targetName="ContinuousUpdate" />
+      <config projectName="dd" targetName="ContinuousBuild" />
       <config projectName="dd" targetName="NightlyMemoryCheck" />
-      <config projectName="dd" targetName="leveldb_hash_test" />
-      <config projectName="dd" targetName="leveldb_bloom_test" />
+      <config projectName="dd" targetName="ContinuousStart" />
       <config projectName="dd" targetName="install_dd-datareader" />
+      <config projectName="dd" targetName="Experimental" />
       <config projectName="dd" targetName="leveldb_cache_test" />
       <config projectName="dd" targetName="leveldb_test_rt" />
       <config projectName="dd" targetName="leveldb_table_test" />
@@ -21,46 +21,46 @@
       <config projectName="dd" targetName="ContinuousSubmit" />
       <config projectName="dd" targetName="leveldb_db_bench_test" />
       <config projectName="dd" targetName="leveldb_db_test" />
-      <config projectName="dd" targetName="Experimental" />
+      <config projectName="dd" targetName="leveldb_bloom_test" />
       <config projectName="dd" targetName="Nightly" />
       <config projectName="dd" targetName="leveldb_corruption_test" />
       <config projectName="dd" targetName="ContinuousTest" />
       <config projectName="dd" targetName="NightlySubmit" />
       <config projectName="dd" targetName="leveldb_dbrecovery_test" />
       <config projectName="dd" targetName="leveldb_crc32_test" />
-      <config projectName="dd" targetName="ContinuousStart" />
-      <config projectName="dd" targetName="ExperimentalBuild" />
+      <config projectName="dd" targetName="leveldb_log_test" />
+      <config projectName="dd" targetName="install_dd-drivecontroller" />
       <config projectName="dd" targetName="leveldb_arena_test" />
-      <config projectName="dd" targetName="dd-datareader" />
+      <config projectName="dd" targetName="leveldb_hash_test" />
       <config projectName="dd" targetName="ExperimentalCoverage" />
       <config projectName="dd" targetName="leveldb" />
       <config projectName="dd" targetName="NightlyBuild" />
-      <config projectName="dd" targetName="leveldb_filter_block_test" />
       <config projectName="dd" targetName="NightlyCoverage" />
       <config projectName="dd" targetName="Continuous" />
       <config projectName="dd" targetName="install_dd-situation-view" />
       <config projectName="dd" targetName="ExperimentalSubmit" />
       <config projectName="dd" targetName="ExperimentalStart" />
       <config projectName="dd" targetName="leveldb_env_test" />
+      <config projectName="dd" targetName="ExperimentalMemCheck" />
       <config projectName="dd" targetName="ContinuousCoverage" />
-      <config projectName="dd" targetName="install_dd" />
       <config projectName="dd" targetName="ExperimentalTest" />
       <config projectName="dd" targetName="leveldb_write_batch_test" />
-      <config projectName="dd" targetName="dd-situation-view" />
+      <config projectName="dd" targetName="NightlyUpdate" />
       <config projectName="dd" targetName="leveldb_filename_test" />
-      <config projectName="dd" targetName="ContinuousUpdate" />
+      <config projectName="dd" targetName="install_dd" />
       <config projectName="dd" targetName="leveldb_version_set_test" />
-      <config projectName="dd" targetName="ExperimentalMemCheck" />
+      <config projectName="dd" targetName="dd-situation-view" />
       <config projectName="dd" targetName="leveldb_c_test" />
       <config projectName="dd" targetName="leveldb_ddfaultinjection_test" />
+      <config projectName="dd" targetName="dd-datareader" />
       <config projectName="dd" targetName="NightlyTest" />
-      <config projectName="dd" targetName="NightlyUpdate" />
+      <config projectName="dd" targetName="ExperimentalUpdate" />
       <config projectName="dd" targetName="RUN_LEVELDB_UNIT_TESTS" />
-      <config projectName="dd" targetName="install_dd-drivecontroller" />
-      <config projectName="dd" targetName="ExperimentalConfigure" />
       <config projectName="dd" targetName="ContinuousMemCheck" />
-      <config projectName="dd" targetName="ContinuousBuild" />
-      <config projectName="dd" targetName="leveldb_log_test" />
+      <config projectName="dd" targetName="ExperimentalConfigure" />
+      <config projectName="dd" targetName="leveldb_coding_test" />
+      <config projectName="dd" targetName="leveldb_autocompact_test" />
+      <config projectName="dd" targetName="leveldb_filter_block_test" />
       <config projectName="dd" targetName="leveldb_version_edit_test" />
       <config projectName="dd" targetName="NightlyMemCheck" />
       <config projectName="dd" targetName="NightlyStart" />
@@ -89,8 +89,8 @@
       <file leaf-file-name="example_datareader.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python/examples/example_datareader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+            <state relative-caret-position="425">
+              <caret line="25" column="8" lean-forward="false" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -98,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/python/dd/data_reader/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1819">
-              <caret line="111" column="46" lean-forward="false" selection-start-line="111" selection-start-column="46" selection-end-line="111" selection-end-column="46" />
+            <state relative-caret-position="204">
+              <caret line="12" column="4" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="70" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -123,8 +123,8 @@
       <file leaf-file-name="CDataEntry.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/src/CDataEntry.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2941">
-              <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+            <state relative-caret-position="542">
+              <caret line="173" column="5" lean-forward="true" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
               <folding>
                 <element signature="e#1002#1034#0" expanded="true" />
               </folding>
@@ -132,14 +132,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CDataEntry.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h">
+      <file leaf-file-name="CDataReader.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datareader/src/CDataReader.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1275">
-              <caret line="75" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-              <folding>
-                <element signature="e#1047#1079#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-346">
+              <caret line="55" column="3" lean-forward="true" selection-start-line="55" selection-start-column="3" selection-end-line="55" selection-end-column="3" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -147,9 +145,21 @@
       <file leaf-file-name="CProtoMessage.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/src/CProtoMessage.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3536">
-              <caret line="208" column="0" lean-forward="false" selection-start-line="208" selection-start-column="0" selection-end-line="208" selection-end-column="0" />
+            <state relative-caret-position="436">
+              <caret line="56" column="13" lean-forward="false" selection-start-line="56" selection-start-column="2" selection-end-line="56" selection-end-column="13" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CDataEntry.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1326">
+              <caret line="78" column="16" lean-forward="false" selection-start-line="78" selection-start-column="16" selection-end-line="78" selection-end-column="16" />
+              <folding>
+                <element signature="e#1047#1079#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -157,22 +167,10 @@
       <file leaf-file-name="datareader_wrapper.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1615">
-              <caret line="95" column="54" lean-forward="false" selection-start-line="95" selection-start-column="54" selection-end-line="95" selection-end-column="54" />
+            <state relative-caret-position="929">
+              <caret line="105" column="50" lean-forward="false" selection-start-line="105" selection-start-column="50" selection-end-line="105" selection-end-column="50" />
               <folding>
                 <element signature="e#1138#1169#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CProtoMessage.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CProtoMessage.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="986">
-              <caret line="58" column="84" lean-forward="false" selection-start-line="58" selection-start-column="84" selection-end-line="58" selection-end-column="84" />
-              <folding>
-                <element signature="e#1072#1089#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -181,22 +179,12 @@
       <file leaf-file-name="datareader_wrapper.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1037">
-              <caret line="121" column="41" lean-forward="false" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
+            <state relative-caret-position="816">
+              <caret line="133" column="0" lean-forward="false" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
               <folding>
                 <element signature="e#1018#1036#0" expanded="true" />
                 <element signature="e#1078#1123#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IndicatorValues.cpp" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/situation/src/IndicatorValues.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="87" column="11" lean-forward="false" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -258,7 +246,6 @@
         <option value="$PROJECT_DIR$/datareader/src/CDataReader.h" />
         <option value="$PROJECT_DIR$/leveldb/port/port_win.h" />
         <option value="$PROJECT_DIR$/datareader/src/CDataEntry.h" />
-        <option value="$PROJECT_DIR$/datareader/src/CDataReader.cpp" />
         <option value="$PROJECT_DIR$/common/includes/dd/common/datatypes.h" />
         <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataReader.h" />
         <option value="$PROJECT_DIR$/datareader/src/CProtoMessage.h" />
@@ -266,13 +253,14 @@
         <option value="$PROJECT_DIR$/python/dd/labels.py" />
         <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CProtoMessage.h" />
         <option value="$PROJECT_DIR$/datareader/src/CProtoMessage.cpp" />
-        <option value="$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h" />
-        <option value="$PROJECT_DIR$/python/examples/example_datareader.py" />
-        <option value="$PROJECT_DIR$/python/dd/data_reader/wrapper.py" />
-        <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h" />
-        <option value="$PROJECT_DIR$/datareader/src/CDataEntry.cpp" />
-        <option value="$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp" />
         <option value="$PROJECT_DIR$/situation/src/IndicatorValues.cpp" />
+        <option value="$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h" />
+        <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h" />
+        <option value="$PROJECT_DIR$/python/dd/data_reader/wrapper.py" />
+        <option value="$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp" />
+        <option value="$PROJECT_DIR$/datareader/src/CDataReader.cpp" />
+        <option value="$PROJECT_DIR$/datareader/src/CDataEntry.cpp" />
+        <option value="$PROJECT_DIR$/python/examples/example_datareader.py" />
       </list>
     </option>
   </component>
@@ -335,6 +323,38 @@
               <item name="includes" type="462c0819:PsiDirectoryNode" />
               <item name="dd" type="462c0819:PsiDirectoryNode" />
               <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="datareader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="datareader" type="462c0819:PsiDirectoryNode" />
+              <item name="includes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="datareader" type="462c0819:PsiDirectoryNode" />
+              <item name="includes" type="462c0819:PsiDirectoryNode" />
+              <item name="dd" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="datareader" type="462c0819:PsiDirectoryNode" />
+              <item name="includes" type="462c0819:PsiDirectoryNode" />
+              <item name="dd" type="462c0819:PsiDirectoryNode" />
+              <item name="datareader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="datareader" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -676,11 +696,13 @@
       <workItem from="1496472468895" duration="5338000" />
       <workItem from="1496566049633" duration="8291000" />
       <workItem from="1496587801100" duration="53000" />
+      <workItem from="1496661840465" duration="1845000" />
+      <workItem from="1496672197691" duration="2777000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95259000" />
+    <option name="totallyTimeSpent" value="99881000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
@@ -688,15 +710,15 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18476562" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23944743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23944743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32761577" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -925,13 +947,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/leveldb/includes/leveldb/options.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="25" column="16" lean-forward="false" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/leveldb/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -967,20 +982,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/src/CDataReader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="91" column="56" lean-forward="false" selection-start-line="91" selection-start-column="16" selection-end-line="91" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/python/dd/indicators.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1309">
           <caret line="78" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1006,6 +1011,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/situation/src/IndicatorValues.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="87" column="11" lean-forward="false" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CProtoMessage.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="986">
@@ -1016,58 +1028,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/src/CProtoMessage.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3536">
-          <caret line="208" column="0" lean-forward="false" selection-start-line="208" selection-start-column="0" selection-end-line="208" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/examples/example_datareader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/dd/data_reader/wrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1819">
-          <caret line="111" column="46" lean-forward="false" selection-start-line="111" selection-start-column="46" selection-end-line="111" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataEntry.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="75" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+        <state relative-caret-position="1326">
+          <caret line="78" column="16" lean-forward="false" selection-start-line="78" selection-start-column="16" selection-end-line="78" selection-end-column="16" />
           <folding>
             <element signature="e#1047#1079#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datareader/src/CDataEntry.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2941">
-          <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
-          <folding>
-            <element signature="e#1002#1034#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datareader/includes/dd/datareader/datareader_wrapper.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1615">
-          <caret line="95" column="54" lean-forward="false" selection-start-line="95" selection-start-column="54" selection-end-line="95" selection-end-column="54" />
+        <state relative-caret-position="929">
+          <caret line="105" column="50" lean-forward="false" selection-start-line="105" selection-start-column="50" selection-end-line="105" selection-end-column="50" />
           <folding>
             <element signature="e#1138#1169#0" expanded="true" />
           </folding>
@@ -1076,8 +1050,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datareader/src/datareader_wrapper.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="121" column="41" lean-forward="false" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
+        <state relative-caret-position="816">
+          <caret line="133" column="0" lean-forward="false" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
           <folding>
             <element signature="e#1018#1036#0" expanded="true" />
             <element signature="e#1078#1123#0" expanded="true" />
@@ -1085,11 +1059,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/situation/src/IndicatorValues.cpp">
+    <entry file="file://$PROJECT_DIR$/datareader/src/CProtoMessage.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
-          <caret line="87" column="11" lean-forward="false" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
+        <state relative-caret-position="436">
+          <caret line="56" column="13" lean-forward="false" selection-start-line="56" selection-start-column="2" selection-end-line="56" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leveldb/includes/leveldb/options.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="97" column="9" lean-forward="false" selection-start-line="97" selection-start-column="9" selection-end-line="97" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/src/CDataReader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-346">
+          <caret line="55" column="3" lean-forward="true" selection-start-line="55" selection-start-column="3" selection-end-line="55" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datareader/src/CDataEntry.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="542">
+          <caret line="173" column="5" lean-forward="true" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+          <folding>
+            <element signature="e#1002#1034#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/examples/example_datareader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="8" lean-forward="false" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/dd/data_reader/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="4" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

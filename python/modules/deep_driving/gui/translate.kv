@@ -1,0 +1,328 @@
+#:kivy 1.10.0
+#:import DriveImage kivydd.widgets
+#:import UpdateLabel kivydd.widgets
+#:import AspectRatioLayout kivydd.layouts
+#:import BackgroundLabel kivydd.widgets
+#:import LightButton kivydd.widgets
+
+#<Widget>:
+#    canvas.after:
+#        Color:
+#            rgba: 1, 1, 1, 1
+#        Line:
+#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+#        Color:
+#            rgba: 1, 1, 1, 1
+
+<CTranslateWindow>:
+    BoxLayout:
+        size: root.size
+        orientation: "vertical"
+        spacing: 4
+        padding: [2, 2, 2, 2]
+
+        BoxLayout:
+            size: 1, 30
+            size_hint: 1, None
+            orientation: "horizontal"
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BackgroundLabel:
+                    size: 70, 1
+                    size_hint: None, 1
+                    text: "Track:"
+
+                TextInput:
+                    id: TrackNameTextInput
+                    text: "Unknown"
+                    multiline: False
+                    on_focus: root.enterTrackName(self, self.text)
+                    disabled: root._DisableAll
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BackgroundLabel:
+                    size: 70, 1
+                    size_hint: None, 1
+                    text: "Race ID:"
+
+                TextInput:
+                    id: RaceIDTextInput
+                    text: "-1"
+                    multiline: False
+                    input_filter: 'int'
+                    on_focus: root.enterRaceID(self, self.text)
+                    disabled: root._DisableAll
+
+        BoxLayout:
+            size: root.size
+            orientation: "horizontal"
+
+            AspectRatioLayout:
+                ratio: 660/320
+
+                SituationView:
+                    id: SituationView
+                    _DrawReal: True
+                    _Memory: None
+                    _DrawEstimated: False
+                    _Labels: None
+
+            BoxLayout:
+                size: 320, 1
+                size_hint: None, 1
+                orientation: "vertical"
+
+                BoxLayout:
+                    size: 1, 30
+                    size_hint: 1, None
+                    orientation: "horizontal"
+
+                    BackgroundLabel:
+                        size: 70, 1
+                        size_hint: None, 1
+                        text: "Frame:"
+
+                    TextInput:
+                        id: FrameTextInput
+                        multiline: False
+                        text: "0"
+                        input_filter: 'int'
+                        on_focus: root.enterFrameNumber(self, self.text)
+                        disabled: root._DisableAll
+
+                DriveImage:
+                    id: DriveImage
+                    _Memory: None
+                    size: 320, 240
+                    size_hint: None, None
+
+                BoxLayout:
+                    padding: (3, 3)
+                    size: root.size
+                    orientation: "vertical"
+
+                    BoxLayout:
+                        orientation: "horizontal"
+                        size: 1, 30
+                        size_hint: 1, None
+
+                        Button:
+                            id: ButtonPrev3
+                            text: "<<<"
+                            on_release: root.move(-100)
+                            disabled: root._DisableAll
+
+                        Button:
+                            id: ButtonPrev2
+                            text: "<<"
+                            on_release: root.move(-10)
+                            disabled: root._DisableAll
+
+                        Button:
+                            id: ButtonPrev1
+                            text: "<"
+                            on_release: root.move(-1)
+                            disabled: root._DisableAll
+
+                        Button:
+                            id: ButtonNext1
+                            text: ">"
+                            on_release: root.move(1)
+                            disabled: root._DisableAll
+
+                        Button:
+                            id: ButtonNext2
+                            text: ">>"
+                            on_release: root.move(10)
+                            disabled: root._DisableAll
+
+                        Button:
+                            id: ButtonNext3
+                            text: ">>>"
+                            on_release: root.move(100)
+                            disabled: root._DisableAll
+
+                    AnchorLayout:
+                        size: 1, 10
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        Button:
+                            id: ButtonInputDB
+                            size: 250, 1
+                            size_hint: None, 1
+                            text: "Open LevelDB Database..."
+                            on_release: root.selectInputPath()
+                            disabled: root._DisableAll
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        BackgroundLabel:
+                            text: root._LevelDBPath
+                            text_size: self.width, self.height
+                            shorten: True
+                            shorten_from: 'left'
+                            split_str: ''
+
+                    AnchorLayout:
+                        size: 1, 10
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        Button:
+                            id: ButtonOutputDB
+                            size: 250, 1
+                            size_hint: None, 1
+                            text: "Store to Database..."
+                            on_release: root.selectOutputPath()
+                            disabled: root._DisableAll
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        BackgroundLabel:
+                            text: root._OutputPath
+                            text_size: self.width, self.height
+                            shorten: True
+                            shorten_from: 'left'
+                            split_str: ''
+
+                    AnchorLayout:
+                        size: 1, 10
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                    AnchorLayout:
+                        size: 1, 60
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        BoxLayout:
+                            orientation: "vertical"
+
+                            BoxLayout:
+                                orientation: "horizontal"
+                                size: 1, 30
+                                size_hint: 1, None
+
+                                BackgroundLabel:
+                                    text: "From"
+
+                                BackgroundLabel:
+                                    text: "To"
+
+                            BoxLayout:
+                                orientation: "horizontal"
+                                size: 1, 30
+                                size_hint: 1, None
+
+                                TextInput:
+                                    id: FromTextInput
+                                    text: "0"
+                                    multiline: False
+                                    input_filter: 'int'
+                                    on_focus: root.enterFromFrame(self, self.text)
+                                    disabled: root._DisableAll
+
+                                TextInput:
+                                    id: ToTextInput
+                                    text: "0"
+                                    multiline: False
+                                    input_filter: 'int'
+                                    on_focus: root.enterToFrame(self, self.text)
+                                    disabled: root._DisableAll
+
+                    AnchorLayout:
+                        size: 1, 20
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        Button:
+                            id: ButtonStartTranslation
+                            size: 250, 1
+                            size_hint: None, 1
+                            text: "Start Translation"
+                            on_release: root.startTranslation()
+                            disabled: root._DisableAll
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        BackgroundLabel:
+                            text: "Progress:"
+
+                    AnchorLayout:
+                        size: 1, 30
+                        size_hint: 1, None
+                        anchor_x: 'center'
+                        anchor_y: "top"
+
+                        ProgressBar:
+                            id: ProgressBar
+                            max: 100
+                            value: 50
+
+
+
+                    Label:
+                        text: ""
+                        halign: "center"
+
+
+<OpenDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            path: root.Path
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Open"
+                on_release: root.open(filechooser.path, filechooser.selection)
+
