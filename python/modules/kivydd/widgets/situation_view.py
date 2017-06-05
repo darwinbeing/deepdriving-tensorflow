@@ -34,6 +34,7 @@ _BACKGROUND_COLOR = (ddsv._BACKGROUND_COLOR[0], ddsv._BACKGROUND_COLOR[1], ddsv.
 class SituationView(Widget):
   _Texture             = None
   _Memory              = None
+  _GroundTruth         = None
   _DrawReal            = False
   _Labels              = None
   _DrawEstimated       = False
@@ -62,9 +63,10 @@ class SituationView(Widget):
     Height = self._SituationView.getImage().shape[0]
     self._Texture = kivy.graphics.texture.Texture.create(size=(Width, Height), colorfmt='rgb')
     self._Texture.add_reload_observer(self._populateTexture)
-    self._populateTexture()
+    self.updateTexture()
 
     with self.canvas:
+      Color((1, 1, 1, 1))
       self._Rectangle = Rectangle(texture=self._Texture, pos=self.pos, size=self.size)
       self.bind(size=self._updateRect, pos=self._updateRect)
 
@@ -76,23 +78,42 @@ class SituationView(Widget):
     IsRealUpdate = False
     IsEstimatedUpdate = False
 
-    if (self._Memory != None) and self._DrawReal:
-      self._SituationView.Real.Speed  = self._Memory.Data.Game.Speed
-      self._SituationView.Real.Fast   = self._Memory.Data.Labels.Fast
-      self._SituationView.Real.Angle  = self._Memory.Data.Labels.Angle
-      self._SituationView.Real.LL     = self._Memory.Data.Labels.LL
-      self._SituationView.Real.ML     = self._Memory.Data.Labels.ML
-      self._SituationView.Real.MR     = self._Memory.Data.Labels.MR
-      self._SituationView.Real.RR     = self._Memory.Data.Labels.RR
-      self._SituationView.Real.DistLL = self._Memory.Data.Labels.DistLL
-      self._SituationView.Real.DistMM = self._Memory.Data.Labels.DistMM
-      self._SituationView.Real.DistRR = self._Memory.Data.Labels.DistRR
-      self._SituationView.Real.L      = self._Memory.Data.Labels.L
-      self._SituationView.Real.M      = self._Memory.Data.Labels.M
-      self._SituationView.Real.R      = self._Memory.Data.Labels.R
-      self._SituationView.Real.DistL  = self._Memory.Data.Labels.DistL
-      self._SituationView.Real.DistR  = self._Memory.Data.Labels.DistR
-      IsRealUpdate = True
+    if self._DrawReal:
+      if self._Memory != None:
+        self._SituationView.Real.Speed  = self._Memory.Data.Game.Speed
+        self._SituationView.Real.Fast   = self._Memory.Data.Labels.Fast
+        self._SituationView.Real.Angle  = self._Memory.Data.Labels.Angle
+        self._SituationView.Real.LL     = self._Memory.Data.Labels.LL
+        self._SituationView.Real.ML     = self._Memory.Data.Labels.ML
+        self._SituationView.Real.MR     = self._Memory.Data.Labels.MR
+        self._SituationView.Real.RR     = self._Memory.Data.Labels.RR
+        self._SituationView.Real.DistLL = self._Memory.Data.Labels.DistLL
+        self._SituationView.Real.DistMM = self._Memory.Data.Labels.DistMM
+        self._SituationView.Real.DistRR = self._Memory.Data.Labels.DistRR
+        self._SituationView.Real.L      = self._Memory.Data.Labels.L
+        self._SituationView.Real.M      = self._Memory.Data.Labels.M
+        self._SituationView.Real.R      = self._Memory.Data.Labels.R
+        self._SituationView.Real.DistL  = self._Memory.Data.Labels.DistL
+        self._SituationView.Real.DistR  = self._Memory.Data.Labels.DistR
+        IsRealUpdate = True
+
+      elif self._GroundTruth != None:
+        self._SituationView.Real.Speed  = self._GroundTruth.Speed
+        self._SituationView.Real.Fast   = self._GroundTruth.Fast
+        self._SituationView.Real.Angle  = self._GroundTruth.Angle
+        self._SituationView.Real.LL     = self._GroundTruth.LL
+        self._SituationView.Real.ML     = self._GroundTruth.ML
+        self._SituationView.Real.MR     = self._GroundTruth.MR
+        self._SituationView.Real.RR     = self._GroundTruth.RR
+        self._SituationView.Real.DistLL = self._GroundTruth.DistLL
+        self._SituationView.Real.DistMM = self._GroundTruth.DistMM
+        self._SituationView.Real.DistRR = self._GroundTruth.DistRR
+        self._SituationView.Real.L      = self._GroundTruth.L
+        self._SituationView.Real.M      = self._GroundTruth.M
+        self._SituationView.Real.R      = self._GroundTruth.R
+        self._SituationView.Real.DistL  = self._GroundTruth.DistL
+        self._SituationView.Real.DistR  = self._GroundTruth.DistR
+        IsRealUpdate = True
 
     if (self._Labels != None) and self._DrawEstimated:
       self._SituationView.Estimated.Speed  = 0
@@ -116,7 +137,6 @@ class SituationView(Widget):
     self._populateTexture()
     self.canvas.ask_update()
 
-
   def _populateTexture(self):
     if (self._Texture != None) and (self._SituationView != None):
       Image = self._SituationView.getImage()
@@ -124,3 +144,6 @@ class SituationView(Widget):
       Image = np.flip(Image, 0)
       self._Texture.blit_buffer(Image.tostring(), bufferfmt="ubyte", colorfmt="rgb")
 
+  def setGroundTruth(self, Indicators):
+    self._GroundTruth = Indicators
+    self.updateTexture()
