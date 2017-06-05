@@ -31,6 +31,7 @@ import numpy as np
 class DriveImage(Widget):
   _Texture = None
   _Memory = None
+  _Image = None
 
   def __init__(self, **kwargs):
     super().__init__(**kwargs)
@@ -51,11 +52,18 @@ class DriveImage(Widget):
     if self._Memory != None:
       Width = self._Memory.ImageWidth
       Height = self._Memory.ImageHeight
+
+    if not self._Image is None:
+      Width  = self._Image.shape[1]
+      Height = self._Image.shape[0]
+
+    if (self._Memory != None) or (not self._Image is None):
       self._Texture = kivy.graphics.texture.Texture.create(size=(Width, Height), colorfmt='rgb')
       self._Texture.add_reload_observer(self._populateTexture)
       self._populateTexture()
 
       with self.canvas:
+        Color((1, 1, 1, 1))
         self._Rectangle = Rectangle(texture=self._Texture, pos=self.pos, size=self.size)
         self.bind(size=self._updateRect, pos=self._updateRect)
 
@@ -68,6 +76,17 @@ class DriveImage(Widget):
 
 
   def _populateTexture(self):
-    if (self._Memory != None) and (self._Texture != None):
-      self._Texture.blit_buffer(np.flip(self._Memory.RawImage, 2).tostring(), bufferfmt="ubyte", colorfmt="rgb")
+    if self._Texture != None:
+      if self._Memory != None:
+        self._Texture.blit_buffer(np.flip(self._Memory.RawImage, 2).tostring(), bufferfmt="ubyte", colorfmt="rgb")
 
+      elif not self._Image is None:
+        self._Texture.blit_buffer(np.flip(np.flip(self._Image, 0), 2).tostring(), bufferfmt="ubyte", colorfmt="rgb")
+
+
+  def setImage(self, Image):
+    self._Image = Image
+    if self._Texture == None:
+      self._initTexture()
+
+    self.updateTexture()
