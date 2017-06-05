@@ -25,10 +25,13 @@ import kivy
 from kivy.app import App
 from kivy.lang import Builder
 
+import threading
+
 class MainApp(App):
   _Memory = None
   _Labels = None
   _Main   = None
+  IsUpdating = False
 
   def __init__(self, MainWindow, Memory, MainObject, **kwargs):
     super().__init__(**kwargs)
@@ -40,17 +43,21 @@ class MainApp(App):
     self._Main = MainObject
 
   def update(self):
+    self.IsUpdating = True
     self._UpdateTrigger()
 
   def _update(self, *args):
     for Object in self._UpdateFunctions.keys():
       self._UpdateFunctions[Object]()
 
+    self.IsUpdating = False
+
   def deleteAll(self):
     self._UpdateFunctions = {}
     self._Window.clear_widgets()
     self._Memory = None
     self._Labels = None
+    self._Main = None
 
   def build(self):
     try:
