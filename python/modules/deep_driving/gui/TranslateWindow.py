@@ -52,11 +52,15 @@ class CTranslateMainApp(CAppThread):
   InputCursor   = None
   IsTranslating = False
 
-  def startTranslating(self, From, To):
+  def startTranslating(self, From, To, TrackName, TrackID, RaceID):
     raise Exception("This method must be overwritten...")
 
   def openLevelDBDatabase(self, DatabasePath):
     raise Exception("This method must be overwritten...")
+
+  def setTFRecordDatabase(self, DatabasePath):
+    raise Exception("This method must be overwritten...")
+
 
 
 class CTranslateWindow(Widget):
@@ -83,6 +87,7 @@ class CTranslateWindow(Widget):
       raise Exception("The main up must be inherited from CTranslateMainApp")
 
     MyApp._Main.openLevelDBDatabase(self._LevelDBPath)
+    MyApp._Main.setTFRecordDatabase(self._OutputPath)
 
     self.ids.FromTextInput.text      = str(self._Settings['FromKey'])
     self.ids.ToTextInput.text        = str(self._Settings['ToKey'])
@@ -146,6 +151,9 @@ class CTranslateWindow(Widget):
     self._closePopup()
     self._Settings.store()
     self._OutputPath = self._Settings['LastOutputPath']
+
+    MyApp = App.get_running_app()
+    MyApp._Main.setTFRecordDatabase(self._OutputPath)
 
 
   def _cancelOpenDir(self, Instance):
@@ -299,5 +307,13 @@ class CTranslateWindow(Widget):
   def startTranslation(self):
     MyApp   = App.get_running_app()
 
+    import hashlib
+    Hash = hashlib.md5()
+    Hash.update(self._Settings['TrackName'].encode('utf-8'))
+
     self._DisableAll = True
-    MyApp._Main.startTranslating(self._Settings['FromKey'], self._Settings['ToKey'])
+    MyApp._Main.startTranslating(self._Settings['FromKey'],
+                                 self._Settings['ToKey'],
+                                 self._Settings['TrackName'],
+                                 int(Hash.hexdigest()[0:15], 16),
+                                 self._Settings['RaceID'])
