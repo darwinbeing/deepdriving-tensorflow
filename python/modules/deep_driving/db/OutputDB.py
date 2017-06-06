@@ -129,5 +129,6 @@ class COutputDB():
       'DistL':         getFloatFeature(Data['DistL']),
       'DistR':         getFloatFeature(Data['DistR']),
     })
+
     Record = tf.train.Example(features=Features)
     self._Writer.write(Record.SerializeToString())
