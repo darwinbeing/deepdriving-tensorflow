@@ -34,6 +34,9 @@ class CSettings():
 
 
   def load(self):
+    if not os.path.exists(self._Filename):
+      self.store()
+
     if os.path.exists(self._Filename):
       with open(self._Filename, "r") as File:
         LoadedDict = json.load(File)
@@ -48,10 +51,13 @@ class CSettings():
 
 
   def __getitem__(self, Key):
-    return self._Dict[Key]
+    return self._Dict.__getitem__(Key)
 
   def __setitem__(self, Key, Value):
     self._Dict[Key] = Value
 
   def __delitem__(self, Key):
     del self._Dict[Key]
+
+  def __iter__(self):
+    return iter(self._Dict)
