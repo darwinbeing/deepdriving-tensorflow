@@ -91,7 +91,7 @@ class CReader():
           raise ValueError('Failed to find file: ' + File)
 
       print("* Create File Queue with {} files.".format(len(Filenames)))
-      return tf.train.string_input_producer(Filenames, capacity=1024, shuffle=Shuffle)
+      return tf.train.string_input_producer(Filenames, capacity=4096, shuffle=Shuffle)
 
   def getOutputs(self):
     return self._getOutputs(self._Inputs)

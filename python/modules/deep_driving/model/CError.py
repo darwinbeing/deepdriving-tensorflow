@@ -21,15 +21,13 @@ class CError(dl.error.CMeasurement):
   # Custom Methods
   def _buildLoss(self, Output, Label, Lambda):
     with tf.name_scope("Loss"):
-      print("Create Cross-Entropy Loss Function...")
-      print("* Label Shape: {}".format(Label.shape))
+      print("Create Loss Function...")
 
-      OneHotLabels    = Label
+      SquaredLoss = tf.constant(0, dtype=tf.float32)
+      for i, Out in enumerate(Output):
+        SquaredLoss = SquaredLoss + tf.nn.l2_loss(Label[i] - Output[i])
 
-      print("* OneHot Label Shape: {}".format(OneHotLabels.shape))
-      print("* Output Shape: {}".format(Output.shape))
-
-      SampleCrossEntropy = tf.nn.softmax_cross_entropy_with_logits(labels=OneHotLabels, logits=Output, name="SoftmaxLoss")
+      print("* Squared Loss shape: {}".format(SquaredLoss.shape))
 
       WeightDecayList = tf.get_collection('Losses')
       if len(WeightDecayList) > 0:
@@ -37,8 +35,7 @@ class CError(dl.error.CMeasurement):
       else:
         WeightDecay = 0
 
-      print("* Sample Loss Shape: {}".format(SampleCrossEntropy.shape))
-      Loss = tf.reduce_mean(SampleCrossEntropy) + WeightDecay * Lambda
+      Loss = tf.reduce_mean(SquaredLoss) + WeightDecay * Lambda
 
       tf.summary.scalar('Loss', Loss)
       tf.summary.scalar('WeightDecayTerm', WeightDecay)
@@ -47,16 +44,25 @@ class CError(dl.error.CMeasurement):
 
 
   def _buildError(self, Output, Label):
-    with tf.name_scope("ClassError"):
-      print("Create Error-Measurement Function...")
+    with tf.name_scope("Error"):
+      print("Create Mean Absolute Error Function...")
 
-      print(" * Output-Class Shape: {}".format(Output.shape))
+      AbsoluteError = tf.constant(0, dtype=tf.float32)
+      for i, Out in enumerate(Output):
+        AbsoluteError = AbsoluteError + tf.abs(Label[i] - Output[i])
 
-      IsWrong = 1.0 - tf.reduce_mean(tf.cast(tf.equal(Output, Label), tf.float32), axis=1)
+      AbsoluteError = tf.reshape(AbsoluteError, shape=[-1])
 
-      print(" * Sample Classification Error Shape: {}".format(IsWrong.shape))
+      print("* Absolute Error shape: {}".format(AbsoluteError.shape))
 
-      ClassificationError = tf.reduce_mean(IsWrong, axis=0)
+      MeanAbsolutError = tf.reduce_mean(AbsoluteError)
 
-      tf.summary.scalar('Error', ClassificationError)
-      return ClassificationError
+      Mean, Var = tf.nn.moments(AbsoluteError, axes=[0])
+
+      print(Mean.shape)
+
+      tf.summary.scalar('MAE', MeanAbsolutError)
+      tf.summary.scalar('MeanAbsolutError', Mean)
+      tf.summary.scalar('StandardDeviaton', tf.sqrt(Var))
+
+      return MeanAbsolutError

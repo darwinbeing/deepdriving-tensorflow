@@ -1,8 +1,10 @@
 import deep_learning as dl
 import numpy as np
 import os
+import re
 import tensorflow as tf
 
+from .. import db
 
 class CReader(dl.data.CReader):
   def __init__(self, Settings, IsTraining):
@@ -25,23 +27,21 @@ class CReader(dl.data.CReader):
   def _build(self, Settings):
     print("Build File-Reader Graph:")
     print("* Training is enabled: {}".format(self._IsTraining))
-    #Filenames = self._getFilenames(Settings, self._IsTraining)
-    #FileQueue = self._createFileQueue(Filenames, self._IsTraining)
-    #Inputs = self._buildRawReader(Settings, FileQueue)
-    #BatchedInputs = self._createBatch(Inputs, self.getBatchSize(), self._IsTraining)
 
-    BatchedInputs = [
-      tf.constant(value=0.5, dtype=tf.float32, shape=[self.getBatchSize()] + self._ImageShape, name="ConstImage"),
-      tf.constant(value=0,   dtype=tf.float32, shape=[self.getBatchSize()] + [10],             name="ConstLabel"),
-    ]
+    with tf.name_scope("TrainingReader"):
+      TrainingFilenames     = db.getDBFilenames(Settings['Data']['TrainingPath'])
+      TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
+      TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
+      TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
 
-    self._Outputs["Image"]  = BatchedInputs[0]
-    self._Outputs["Labels"] = BatchedInputs[1]
+    self._Outputs["Image"]  = TrainingBatchedInputs[0]
+    self._Outputs["Labels"] = TrainingBatchedInputs[1:15]
 
     print("* Input-Image  has shape {}".format(self._Outputs["Image"].shape))
-    print("* Input-Labels have shape {}".format(self._Outputs["Labels"].shape))
+    for i, Output in enumerate(self._Outputs['Labels']):
+      print("* Input-Label {} has shape {}".format(i, Output.shape))
 
-    return BatchedInputs
+    return TrainingBatchedInputs
 
 
   def _readBatch(self, Session, Inputs):
@@ -68,43 +68,16 @@ class CReader(dl.data.CReader):
 
   def _buildRawReader(self, Settings, FileQueue):
     with tf.name_scope("FileReader"):
-      LabelBytes  = 1
-      ImageBytes  = np.prod(self._ImageShape)
-      TotalBytes  = LabelBytes + ImageBytes
+      Reader = tf.TFRecordReader()
 
-      Reader = tf.FixedLengthRecordReader(record_bytes=TotalBytes)
-      _, Value = Reader.read(FileQueue)
+      _, SerializedExample = Reader.read(FileQueue)
+      Inputs = db.buildFeatureParser(SerializedExample)
+      Inputs[0] = tf.image.resize_images(Inputs[0], size=(Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth']))
 
-      Record = tf.decode_raw(Value, tf.uint8)
-      Labels = tf.squeeze(tf.cast(tf.slice(Record, [0], [LabelBytes]), tf.int32), name = "Label")
-      RawImage = tf.reshape(tf.slice(Record, [LabelBytes], [ImageBytes]), [self._ImageShape[2], self._ImageShape[0], self._ImageShape[1]], name="RawImage")
-      Images = tf.cast(tf.transpose(RawImage, [1, 2, 0]), tf.float32, name="Image")/255.0
+#      Blue, Green, Red = tf.split(Inputs[0], 3, axis=2)
+#      Inputs[0] = tf.concat([Red, Green, Blue], axis=2)
 
-    return [Images, Labels]
-
-  def _getFilenames(self, Settings, IsTraining):
-    if IsTraining:
-      return self._getTrainingFilepaths(Settings['Data']['TrainingPath'])
-
-    else:
-      return self._getTestFilepaths(Settings['Data']['TestingPath'])
-
-
-  def _getTrainingFilepaths(self, Directory):
-    Filenames = []
-    for i in range(1, 6):
-      Filename = os.path.join(Directory, "data_batch_{}.bin".format(i))
-      print("* Add file {}".format(Filename))
-      Filenames.append(Filename)
-
-    return Filenames
-
-
-  def _getTestFilepaths(self, Directory):
-    Filenames = []
-    Filenames.append(os.path.join(Directory, "test_batch.bin"))
-
-    return Filenames
+    return Inputs
 
 
   def _getWeightDecayFactor(self):

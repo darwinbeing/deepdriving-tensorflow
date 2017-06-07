@@ -21,6 +21,36 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .OutputDB import COutputDB
-from .Common import getDBFilenames
-from .GraphDB import buildFeatureParser
+import re
+import os
+
+RECORDS_PER_FILE = 2048
+FilenameTemplate = "_dataset.tfrecord"
+FilenameMatch    = re.compile('([0-9]+)'+FilenameTemplate)
+
+
+def createDBFilename(Number):
+  return "{}".format(str(Number).zfill(6)) + FilenameTemplate
+
+
+def getLastDBFileNumber(Path):
+  LastNumber = None
+  for File in os.listdir(Path):
+    if FilenameMatch.match(File):
+      NumberString = FilenameMatch.search(File).group(1)
+      Number = int(NumberString)
+      if LastNumber == None:
+        LastNumber = Number
+      elif LastNumber < Number:
+        LastNumber = Number
+
+  return LastNumber
+
+
+def getDBFilenames(Path):
+  Files = []
+  for File in os.listdir(Path):
+    if FilenameMatch.match(File):
+      Files.append(os.path.join(Path, File))
+
+  return Files

@@ -33,21 +33,28 @@ class CNetwork(dl.network.CNetwork):
     with tf.variable_scope(Scope):
       print("Creating network Graph...")
 
-      Input = self._preprocessImage(Inputs['Image'])
+      Input       = self._preprocessImage(Inputs['Image'])
+      OutputNodes = len(Inputs['Labels'])
 
       print(" * network Input-Shape: {}".format(Input.shape))
 
       Output = Input
-      Output = self._createDenseLayer(Inputs=Output, OutputSize=Inputs['Labels'].shape[1], Name="Dense1")
+      Output = self._createDenseLayer(Inputs=Output, OutputSize=OutputNodes, Name="Dense1")
 
       print(" * network Output-Shape: {}".format(Output.shape))
+
+      # We have 14 outputs, output 1 is the only probability output, the remaining are regression outputs
+      Outputs = tf.split(Output, 14, axis=1)
+
+      for i, O in enumerate(Outputs):
+        print(" * Output {} has shape {}".format(i, O.shape))
 
       Variables, Tensors = dl.helpers.getTrainableVariablesInScope(Scope)
       print("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
 
     Structure = {
       "Input":  Input,
-      "Output": Output
+      "Output": Outputs
     }
     return  Structure
 

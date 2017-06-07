@@ -25,6 +25,7 @@ import tensorflow as tf
 import os
 import re
 
+from .Common import RECORDS_PER_FILE, createDBFilename, getLastDBFileNumber
 
 def getInt64Feature(Value):
   return tf.train.Feature(int64_list=tf.train.Int64List(value=[Value]))
@@ -34,8 +35,6 @@ def getFloatFeature(Value):
 
 def getByteFeature(Value):
   return tf.train.Feature(bytes_list=tf.train.BytesList(value=[Value]))
-
-_RECORDS_PER_FILE = 2048
 
 class COutputDB():
   def __init__(self, Path):
@@ -52,7 +51,6 @@ class COutputDB():
     self._Writer.close()
     self._Writer = None
 
-  _Filename = "_dataset.tfrecord"
 
   def _openNextFile(self, Path):
     if self._Writer != None:
@@ -60,38 +58,23 @@ class COutputDB():
       self._Writer.close()
       self._Writer = None
 
-    FileNumber = self._getLastFileNumber(Path)
+    FileNumber = getLastDBFileNumber(Path)
     if FileNumber == None:
       FileNumber = 0
     else:
       FileNumber += 1
 
-    Filename = os.path.join(Path, "{}".format(str(FileNumber).zfill(6)) + self._Filename )
+    Filename = os.path.join(Path, createDBFilename(FileNumber))
     print("Open database file {}.".format(Filename))
     self._Writer = tf.python_io.TFRecordWriter(path=Filename)
     self._RecordsInFile = 0
-
-
-  _FilenameTemplate = re.compile('([0-9]+)'+_Filename)
-  def _getLastFileNumber(self, Path):
-    LastNumber = None
-    for File in os.listdir(Path):
-      if self._FilenameTemplate.match(File):
-        NumberString = self._FilenameTemplate.search(File).group(1)
-        Number = int(NumberString)
-        if LastNumber == None:
-          LastNumber = Number
-        elif LastNumber < Number:
-          LastNumber = Number
-
-    return LastNumber
 
 
   def store(self, Data):
     if self._Writer == None:
       self._openNextFile(self._Path)
 
-    if self._RecordsInFile >= _RECORDS_PER_FILE:
+    if self._RecordsInFile >= RECORDS_PER_FILE:
       self._openNextFile(self._Path)
 
     self._RecordsInFile += 1
