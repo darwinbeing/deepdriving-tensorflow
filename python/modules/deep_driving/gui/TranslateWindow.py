@@ -108,6 +108,8 @@ class CTranslateWindow(Widget):
     Content.bind(on_success=self._openDir, on_canceled=self._cancelOpenDir)
     Content.dirselect = True
     Content.path = self._Settings['LastLevelDBPath']
+    if not os.path.exists(Content.path):
+      Content.path = os.getcwd()
     self._showPopup(Title="Open LevelDB Directory...", Content=Content)
 
 
@@ -116,11 +118,17 @@ class CTranslateWindow(Widget):
     LastFile = ""
     while not os.path.exists(LastPath):
       LastFile = os.path.basename(LastPath)
-      LastPath = os.path.dirname(LastPath)
+      NewPath = os.path.dirname(LastPath)
+      if NewPath == LastPath:
+        LastPath = os.getcwd()
+        break
+      LastPath = NewPath
     Content = garden.file_browser.FileBrowser(select_string="Select Folder", favorites=[(LastPath, 'Last Path')])
     Content.bind(on_success=self._selectDir, on_canceled=self._cancelOpenDir)
     Content.dirselect = True
     Content.path = LastPath
+    if not os.path.exists(Content.path):
+      Content.path = os.getcwd()
     self._showPopup(Title="Select Output Directory...", Content=Content)
     Content.filename = LastFile
 
@@ -142,7 +150,10 @@ class CTranslateWindow(Widget):
 
   def _selectDir(self, Instance):
     if len(Instance.selection) > 0:
-      self._Settings['LastOutputPath'] = Instance.selection[0]
+      if Instance.filename != "":
+        self._Settings['LastOutputPath'] = Instance.filename
+      else:
+        self._Settings['LastOutputPath'] = Instance.selection[0]
     else:
       if Instance.filename != "":
         self._Settings['LastOutputPath'] = os.path.join(Instance.path, Instance.filename)
