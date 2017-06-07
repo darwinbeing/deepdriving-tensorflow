@@ -59,8 +59,6 @@ class CError(dl.error.CMeasurement):
 
       Mean, Var = tf.nn.moments(AbsoluteError, axes=[0])
 
-      print(Mean.shape)
-
       tf.summary.scalar('MAE', MeanAbsolutError)
       tf.summary.scalar('MeanAbsolutError', Mean)
       tf.summary.scalar('StandardDeviaton', tf.sqrt(Var))
