@@ -23,9 +23,13 @@ class CError(dl.error.CMeasurement):
     with tf.name_scope("Loss"):
       print("Create Loss Function...")
 
-      SquaredLoss = tf.constant(0, dtype=tf.float32)
+      SquaredLoss = None
       for i, Out in enumerate(Output):
-        SquaredLoss = SquaredLoss + tf.nn.l2_loss(Label[i] - Output[i])
+        SingleSquaredLoss = tf.square(Label[i] - Output[i])
+        if SquaredLoss is None:
+          SquaredLoss = SingleSquaredLoss
+        else:
+          SquaredLoss = SquaredLoss + SingleSquaredLoss
 
       print("* Squared Loss shape: {}".format(SquaredLoss.shape))
 
@@ -47,17 +51,22 @@ class CError(dl.error.CMeasurement):
     with tf.name_scope("Error"):
       print("Create Mean Absolute Error Function...")
 
-      AbsoluteError = tf.constant(0, dtype=tf.float32)
+      AbsoluteError = None
       for i, Out in enumerate(Output):
-        AbsoluteError = AbsoluteError + tf.abs(Label[i] - Output[i])
-
-      AbsoluteError = tf.reshape(AbsoluteError, shape=[-1])
+        SingleError = tf.abs(Label[i] - Output[i])
+        if AbsoluteError is None:
+          AbsoluteError = SingleError
+        else:
+          AbsoluteError = AbsoluteError + SingleError
 
       print("* Absolute Error shape: {}".format(AbsoluteError.shape))
 
       MeanAbsolutError = tf.reduce_mean(AbsoluteError)
 
       Mean, Var = tf.nn.moments(AbsoluteError, axes=[0])
+
+      Mean = tf.reshape(Mean, shape=[])
+      Var  = tf.reshape(Var , shape=[])
 
       tf.summary.scalar('MAE', MeanAbsolutError)
       tf.summary.scalar('MeanAbsolutError', Mean)

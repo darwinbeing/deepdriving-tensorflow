@@ -75,20 +75,20 @@ def buildFeatureParser(SerializedExample):
 
   Inputs = [
     Image,                          # 0
-    Angle,                          # 1
-    Features['Fast']*0.6 + 0.2,     # 2  - Range  0 .. 1    mapping to 0.2 .. 0.8
-    Features['LL']*0.14545+1.40909, # 3  - Range -9 .. -3.5 mapping to 0.1 .. 0.9
-    Features['ML']*0.16   +0.9,     # 4  - Range -5 .. 0    mapping to 0.1 .. 0.9
-    Features['MR']*0.16   +0.1,     # 5  - Range  0 .. 5    mapping to 0.1 .. 0.9
-    Features['RR']*0.14545-0.40909, # 6  - Range 3.5 .. 9   mapping to 0.1 .. 0.9
-    Features['DistLL']/112+0.1,     # 7  - Range  0 ..  90  mapping to 0.1 .. 0.9
-    Features['DistMM']/112+0.1,     # 8  - Range  0 ..  90  mapping to 0.1 .. 0.9
-    Features['DistRR']/112+0.1,     # 9  - Range  0 ..  90  mapping to 0.1 .. 0.9
-    Features['L']*0.17778+1.34445,  # 10 - Range -7 .. -2.5 mapping to 0.1 .. 0.9
-    Features['M']*0.1149 +0.6714,   # 11 - Range -5 ..  2   mapping to 0.1 .. 0.9
-    Features['R']*0.17778-0.34445,  # 12 - Range 2.5 .. 7   mapping to 0.1 .. 0.9
-    Features['DistL']/112+0.1,      # 13 - Range  0 ..  90  mapping to 0.1 .. 0.9
-    Features['DistR']/112+0.1,      # 14 - Range  0 ..  90  mapping to 0.1 .. 0.9
+    tf.reshape(Angle,                          shape=[1]), # 1
+    tf.reshape(Features['Fast']*0.6 + 0.2,     shape=[1]), # 2  - Range  0 .. 1    mapping to 0.2 .. 0.8
+    tf.reshape(Features['LL']*0.14545+1.40909, shape=[1]), # 3  - Range -9 .. -3.5 mapping to 0.1 .. 0.9
+    tf.reshape(Features['ML']*0.16   +0.9,     shape=[1]), # 4  - Range -5 .. 0    mapping to 0.1 .. 0.9
+    tf.reshape(Features['MR']*0.16   +0.1,     shape=[1]), # 5  - Range  0 .. 5    mapping to 0.1 .. 0.9
+    tf.reshape(Features['RR']*0.14545-0.40909, shape=[1]), # 6  - Range 3.5 .. 9   mapping to 0.1 .. 0.9
+    tf.reshape(Features['DistLL']/112+0.1,     shape=[1]), # 7  - Range  0 ..  90  mapping to 0.1 .. 0.9
+    tf.reshape(Features['DistMM']/112+0.1,     shape=[1]), # 8  - Range  0 ..  90  mapping to 0.1 .. 0.9
+    tf.reshape(Features['DistRR']/112+0.1,     shape=[1]), # 9  - Range  0 ..  90  mapping to 0.1 .. 0.9
+    tf.reshape(Features['L']*0.17778+1.34445,  shape=[1]), # 10 - Range -7 .. -2.5 mapping to 0.1 .. 0.9
+    tf.reshape(Features['M']*0.1149 +0.6714,   shape=[1]), # 11 - Range -5 ..  2   mapping to 0.1 .. 0.9
+    tf.reshape(Features['R']*0.17778-0.34445,  shape=[1]), # 12 - Range 2.5 .. 7   mapping to 0.1 .. 0.9
+    tf.reshape(Features['DistL']/112+0.1,      shape=[1]), # 13 - Range  0 ..  90  mapping to 0.1 .. 0.9
+    tf.reshape(Features['DistR']/112+0.1,      shape=[1]), # 14 - Range  0 ..  90  mapping to 0.1 .. 0.9
   ]
 
   return Inputs

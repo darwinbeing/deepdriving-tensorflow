@@ -74,9 +74,6 @@ class CReader(dl.data.CReader):
       Inputs = db.buildFeatureParser(SerializedExample)
       Inputs[0] = tf.image.resize_images(Inputs[0], size=(Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth']))
 
-#      Blue, Green, Red = tf.split(Inputs[0], 3, axis=2)
-#      Inputs[0] = tf.concat([Red, Green, Blue], axis=2)
-
     return Inputs
 
 
