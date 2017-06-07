@@ -34,8 +34,16 @@ class CReader(dl.data.CReader):
       TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
       TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
 
-    self._Outputs["Image"]  = TrainingBatchedInputs[0]
-    self._Outputs["Labels"] = TrainingBatchedInputs[1:15]
+    with tf.name_scope("TestingReader"):
+      TestingFilenames     = db.getDBFilenames(Settings['Data']['TestingPath'])
+      TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
+      TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
+      TestingBatchedInputs = self._createBatch(TestingInputs, self.getBatchSize(), self._IsTraining)
+
+    BatchedInput = tf.cond(self._Outputs['IsTraining'], lambda: TrainingBatchedInputs, lambda: TestingBatchedInputs)
+
+    self._Outputs["Image"]  = BatchedInput[0]
+    self._Outputs["Labels"] = BatchedInput[1:15]
 
     print("* Input-Image  has shape {}".format(self._Outputs["Image"].shape))
     for i, Output in enumerate(self._Outputs['Labels']):

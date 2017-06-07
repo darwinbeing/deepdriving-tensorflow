@@ -1,6 +1,8 @@
 import deep_learning as dl
 import tensorflow as tf
 
+from .. import db
+
 class CError(dl.error.CMeasurement):
   def _build(self, Network, Reader, Settings):
     Structure = {}
@@ -22,6 +24,8 @@ class CError(dl.error.CMeasurement):
   def _buildLoss(self, Output, Label, Lambda):
     with tf.name_scope("Loss"):
       print("Create Loss Function...")
+
+      Label = db.normalizeLabels(Label)
 
       SquaredLoss = None
       for i, Out in enumerate(Output):
@@ -47,13 +51,37 @@ class CError(dl.error.CMeasurement):
       return Loss
 
 
+  _Name = [
+    "Angle",
+    "Fast",
+    "LL",
+    "ML",
+    "MR",
+    "RR",
+    "DistLL",
+    "DistMM",
+    "DistRR",
+    "L",
+    "M",
+    "R",
+    "DistL",
+    "DistR",
+  ]
+
   def _buildError(self, Output, Label):
     with tf.name_scope("Error"):
       print("Create Mean Absolute Error Function...")
 
+      Output = db.denormalizeLabels(Output)
+
       AbsoluteError = None
       for i, Out in enumerate(Output):
         SingleError = tf.abs(Label[i] - Output[i])
+
+        Mean, Var = tf.nn.moments(SingleError, axes=[0])
+        tf.summary.scalar('{}_MAE'.format(self._Name[i]), tf.reshape(Mean, shape=[]))
+        tf.summary.scalar('{}_SD'.format(self._Name[i]),  tf.sqrt(tf.reshape(Var, shape=[])))
+
         if AbsoluteError is None:
           AbsoluteError = SingleError
         else:
@@ -61,15 +89,9 @@ class CError(dl.error.CMeasurement):
 
       print("* Absolute Error shape: {}".format(AbsoluteError.shape))
 
-      MeanAbsolutError = tf.reduce_mean(AbsoluteError)
-
       Mean, Var = tf.nn.moments(AbsoluteError, axes=[0])
 
-      Mean = tf.reshape(Mean, shape=[])
-      Var  = tf.reshape(Var , shape=[])
+      tf.summary.scalar('Z_MeanAbsolutError', tf.reshape(Mean, shape=[]))
+      tf.summary.scalar('Z_StandardDeviaton', tf.sqrt(tf.reshape(Var , shape=[])))
 
-      tf.summary.scalar('MAE', MeanAbsolutError)
-      tf.summary.scalar('MeanAbsolutError', Mean)
-      tf.summary.scalar('StandardDeviaton', tf.sqrt(Var))
-
-      return MeanAbsolutError
+      return Mean

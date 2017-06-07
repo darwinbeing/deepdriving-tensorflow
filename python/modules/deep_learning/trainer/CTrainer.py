@@ -71,7 +71,9 @@ class CTrainer(internal.CBaseRunner):
 
     # Initial Eval Step
     StartTime = time.time()
-    SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch)
+    SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch, False)
+    self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
+    SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch, True)
     self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
 
     # Training Loop
@@ -87,6 +89,9 @@ class CTrainer(internal.CBaseRunner):
       StartTime = self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, SampleCount)
       self._saveCheckpoint(Epoch, EpochNumber == MaxEpochs)
 
+      SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, Batch, Epoch, True)
+      self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
+
     self._EpochCount = Epoch
 
     # Stop queues
@@ -98,9 +103,16 @@ class CTrainer(internal.CBaseRunner):
       Writer.close()
 
 
-  def _internalEvalStep(self, Session, Iteration, Batch, Epoch):
+  def _internalEvalStep(self, Session, Iteration, Batch, Epoch, UseTestData):
     RunTargets = [self._Summary]
+
+    IsTraining = self._Reader.IsTraining
+    self._Reader.IsTraining = UseTestData
+
     RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
+
+    self._Reader.IsTraining = IsTraining
+
     SummaryResult = RawResults[0]
     if len(RawResults) > 1:
       OtherResults = RawResults[1:]

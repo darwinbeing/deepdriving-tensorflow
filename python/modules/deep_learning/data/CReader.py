@@ -25,6 +25,14 @@ class CReader():
       self._IsReady = True
 
 
+  @property
+  def IsTraining(self):
+    return self._IsTraining
+
+  @IsTraining.setter
+  def IsTraining(self, Value):
+    self._IsTraining = Value
+
   def _build(self, Settings):
     raise Exception("You must override this function to build a reader graph!")
     pass

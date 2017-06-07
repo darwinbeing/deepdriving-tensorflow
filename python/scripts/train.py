@@ -31,6 +31,7 @@ class CTrainSettings(misc.settings.CSettings):
   _Dict = {
   'Data': {
     'TrainingPath': "../../../testing",
+    'TestingPath': "../../../testing",
     'BatchSize': 1,
     'ImageWidth': 32,
     'ImageHeight': 24
