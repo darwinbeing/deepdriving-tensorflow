@@ -25,16 +25,53 @@ def translateLabels(Indicators, Labels):
   Indicators.Speed  = 0
   Indicators.Angle  = Labels.Angle
   Indicators.Fast   = Labels.Fast
+
   Indicators.LL     = Labels.LL
+  if Indicators.LL <= -7.5:
+    Indicators.LL = -9
+
   Indicators.ML     = Labels.ML
+  if Indicators.ML <= -3.5:
+    Indicators.ML = -5
+
   Indicators.MR     = Labels.MR
+  if Indicators.MR >= 3.5:
+    Indicators.MR = 5
+
   Indicators.RR     = Labels.RR
+  if Indicators.RR >= 7.5:
+    Indicators.RR = 9
+
   Indicators.DistLL = Labels.DistLL
+  if Indicators.DistLL >= 60:
+    Indicators.DistLL = 90
+
   Indicators.DistMM = Labels.DistMM
+  if Indicators.DistMM >= 60:
+    Indicators.DistMM = 90
+
   Indicators.DistRR = Labels.DistRR
+  if Indicators.DistRR >= 60:
+    Indicators.DistRR = 90
+
   Indicators.L      = Labels.L
+  if Indicators.L <= -5:
+    Indicators.L = -7
+
   Indicators.M      = Labels.M
+  if Indicators.M <= -1.2 or Indicators.M >= 1.2:
+    Indicators.M = -5
+
   Indicators.R      = Labels.R
+  if Indicators.R >= 5:
+    Indicators.R = 7
+
   Indicators.DistL  = Labels.DistL
+  if Indicators.DistL >= 60:
+    Indicators.DistL = 90
+
   Indicators.DistR  = Labels.DistR
+  if Indicators.DistR >= 60:
+    Indicators.DistR = 90
+
   return Indicators
