@@ -35,7 +35,7 @@ class CReader(dl.data.CReader):
       TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
 
     with tf.name_scope("TestingReader"):
-      TestingFilenames     = db.getDBFilenames(Settings['Data']['TestingPath'])
+      TestingFilenames     = db.getDBFilenames(Settings['Data']['ValidatingPath'])
       TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
       TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
       TestingBatchedInputs = self._createBatch(TestingInputs, self.getBatchSize(), self._IsTraining)
@@ -49,11 +49,13 @@ class CReader(dl.data.CReader):
     for i, Output in enumerate(self._Outputs['Labels']):
       print("* Input-Label {} has shape {}".format(i, Output.shape))
 
-    return TrainingBatchedInputs
+    return BatchedInput
 
 
   def _readBatch(self, Session, Inputs):
 #    BatchList = list(Session.run(Inputs))
+
+    #print("Training: {}".format(self._IsTraining))
 
     return {
 #      self._Outputs['Features']:   BatchList[0],

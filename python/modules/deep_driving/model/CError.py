@@ -69,7 +69,7 @@ class CError(dl.error.CMeasurement):
   ]
 
   def _buildError(self, Output, Label):
-    with tf.name_scope("Error"):
+    with tf.name_scope("DetailError"):
       print("Create Mean Absolute Error Function...")
 
       Output = db.denormalizeLabels(Output)
@@ -87,11 +87,12 @@ class CError(dl.error.CMeasurement):
         else:
           AbsoluteError = AbsoluteError + SingleError
 
+    with tf.name_scope("Error"):
       print("* Absolute Error shape: {}".format(AbsoluteError.shape))
 
       Mean, Var = tf.nn.moments(AbsoluteError, axes=[0])
 
-      tf.summary.scalar('Z_MeanAbsolutError', tf.reshape(Mean, shape=[]))
-      tf.summary.scalar('Z_StandardDeviaton', tf.sqrt(tf.reshape(Var , shape=[])))
+      tf.summary.scalar('MeanAbsoluteError', tf.reshape(Mean, shape=[]))
+      tf.summary.scalar('StandardDeviaton', tf.sqrt(tf.reshape(Var , shape=[])))
 
       return Mean

@@ -1,6 +1,7 @@
 import debug
 import tensorflow as tf
 import time
+import os
 
 from .. import data
 from .. import error
@@ -42,10 +43,12 @@ class CTrainer(internal.CBaseRunner):
     Session = self._Session
 
     # Init Writer is necessary
-    Writer = None
+    TrainWriter = None
+    ValWriter   = None
     if self._SummaryDir != None:
       print("Store tensorboard summary at directory {}".format(self._SummaryDir))
-      Writer = tf.summary.FileWriter(self._SummaryDir, Session.graph)
+      TrainWriter = tf.summary.FileWriter(os.path.join(self._SummaryDir, "train"), Session.graph)
+      ValWriter   = tf.summary.FileWriter(os.path.join(self._SummaryDir, "val"),   Session.graph)
     else:
       print("Do not store any summary")
 
@@ -71,10 +74,10 @@ class CTrainer(internal.CBaseRunner):
 
     # Initial Eval Step
     StartTime = time.time()
-    SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch, False)
-    self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
-    SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch, True)
-    self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
+    SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch)
+    self._postEpochAction(TrainWriter, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
+    SummaryResult, OtherResults = self._internalValidationStep(Session, Iteration, 0, Epoch)
+    self._postValidationAction(ValWriter, SummaryResult, OtherResults, Iteration, Epoch, BatchSize)
 
     # Training Loop
     StartTime = time.time()
@@ -86,11 +89,12 @@ class CTrainer(internal.CBaseRunner):
         SampleCount += BatchSize
         SummaryResult, OtherResults = self._internalTrainStep(Session, Iteration, Batch, Epoch)
 
-      StartTime = self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, SampleCount)
-      self._saveCheckpoint(Epoch, EpochNumber == MaxEpochs)
+      StartTime = self._postEpochAction(TrainWriter, SummaryResult, OtherResults, StartTime, Iteration, Epoch, SampleCount)
 
-      SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, Batch, Epoch, True)
-      self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
+      SummaryResult, OtherResults = self._internalValidationStep(Session, Iteration, Batch, Epoch)
+      self._postValidationAction(ValWriter, SummaryResult, OtherResults, Iteration, Epoch, BatchSize)
+
+      self._saveCheckpoint(Epoch, EpochNumber == MaxEpochs)
 
     self._EpochCount = Epoch
 
@@ -99,15 +103,33 @@ class CTrainer(internal.CBaseRunner):
     QueueCoordinage.join()
 
     # Close writer
-    if Writer != None:
-      Writer.close()
+    if TrainWriter != None:
+      TrainWriter.close()
+
+    # Close writer
+    if ValWriter != None:
+      ValWriter.close()
 
 
-  def _internalEvalStep(self, Session, Iteration, Batch, Epoch, UseTestData):
+  def _internalEvalStep(self, Session, Iteration, Batch, Epoch):
+    RunTargets = [self._Summary]
+
+    RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
+
+    SummaryResult = RawResults[0]
+    if len(RawResults) > 1:
+      OtherResults = RawResults[1:]
+    else:
+      OtherResults = []
+
+    return SummaryResult, OtherResults
+
+
+  def _internalValidationStep(self, Session, Iteration, Batch, Epoch):
     RunTargets = [self._Summary]
 
     IsTraining = self._Reader.IsTraining
-    self._Reader.IsTraining = UseTestData
+    self._Reader.IsTraining = False
 
     RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
 
@@ -132,6 +154,14 @@ class CTrainer(internal.CBaseRunner):
       OtherResults = []
 
     return SummaryResult, OtherResults
+
+
+  def _postValidationAction(self, Writer, Summary, OtherResults, Iteration, Epoch, SampleCount):
+    if (Summary != None) and (Writer != None):
+      Writer.add_summary(Summary, Epoch)
+
+    if self._Printer != None:
+      self._Printer.printValidationUpdate(Summary, Iteration, Epoch, SampleCount)
 
 
   def _postEpochAction(self, Writer, Summary, OtherResults, StartTime, Iteration, Epoch, SampleCount):

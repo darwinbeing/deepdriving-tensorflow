@@ -19,7 +19,24 @@ class CPrinter():
     self._printEpochUpdate(SummaryDict)
 
 
+  def printValidationUpdate(self, Summary, Iteration, Epoch, SampleCount):
+    SummaryDict = {}
+    if Summary != None:
+      self._SummaryParser.ParseFromString(Summary)
+      for Value in self._SummaryParser.value:
+        SummaryDict[Value.tag] = Value.simple_value
+
+    SummaryDict['Iteration'] = Iteration
+    SummaryDict['Epoch'] = Epoch
+    SummaryDict['SampleCount'] = SampleCount
+
+    self._printValidationUpdate(SummaryDict)
+
   def _printEpochUpdate(self, SummaryDict):
+    # You can overwrite this method to print a better Summary
+    print(SummaryDict)
+
+  def _printValidationUpdate(self, SummaryDict):
     # You can overwrite this method to print a better Summary
     print(SummaryDict)
 

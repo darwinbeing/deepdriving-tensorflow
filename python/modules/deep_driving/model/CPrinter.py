@@ -21,55 +21,17 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-import time
+import deep_learning
 
-import misc.settings
-import deep_learning as dl
-import deep_driving.model as model
+class CPrinter(deep_learning.printer.CProgressPrinter):
+  def __init__(self):
+    super().__init__(LossName="Loss/Loss")
 
-class CTrainSettings(misc.settings.CSettings):
-  _Dict = {
-  'Data': {
-    'TrainingPath':   "../../../testing",
-    'ValidatingPath': "../../../testing",
-    'BatchSize': 1,
-    'ImageWidth': 32,
-    'ImageHeight': 24
-  },
-  'Trainer': {
-    'EpochSize':        50000,
-    'NumberOfEpochs':   2,
-    'SummaryPath':      'Summary',
-    'CheckpointPath':   'Checkpoint',
-    'CheckpointEpochs': 1,
-  },
-  'Optimizer':{
-    'StartingLearningRate': 0.005,
-    'EpochsPerDecay':       1,
-    'LearnRateDecay':       0.95,
-    'WeightDecay':          0.004
-  }
-  }
+  def _getErrorString(self, SummaryDict):
+    ProgressString = ""
+    Error = self._getValueFromKey(SummaryDict, "Error/MeanAbsoluteError")
 
-SettingFile = "train.cfg"
-IsRetrain = True
+    if Error != None:
+      ProgressString += " Error: {:.2f}".format(Error)
 
-def main():
-  Settings = CTrainSettings(SettingFile)
-  dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 3)
-
-  Model = dl.CModel(model.CNetwork)
-
-  Trainer = Model.createTrainer(model.CTrainer, model.CReader, model.CError, Settings)
-  Trainer.addPrinter(model.CPrinter())
-
-  if not IsRetrain:
-    Trainer.restore(dl.checkpoint.getLatestCheckpointFile(Settings['Trainer']['CheckpointPath']))
-
-  StartTime = time.time()
-  Trainer.train()
-  DeltaTime = time.time() - StartTime
-  print("Training took {}s ({})".format(DeltaTime, misc.time.getStringFromTime(DeltaTime)))
-
-if __name__ == "__main__":
-  main()
+    return ProgressString
