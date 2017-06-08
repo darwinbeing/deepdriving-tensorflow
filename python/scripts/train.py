@@ -30,8 +30,8 @@ import deep_driving.model as model
 class CTrainSettings(misc.settings.CSettings):
   _Dict = {
   'Data': {
-    'TrainingPath':   "../../../testing",
-    'ValidatingPath': "../../../testing",
+    'TrainingPath':   "../../../training",
+    'ValidatingPath': "../../../validation",
     'BatchSize': 64,
     'ImageWidth': 32,
     'ImageHeight': 24
