@@ -75,6 +75,9 @@ class CBaseRunner():
     debug.Assert(isinstance(Printer, printer.CPrinter))
     self._Printer = Printer
 
+  def addSummaryMerger(self, Merger):
+    debug.Assert(isinstance(Merger, summary.CMerger))
+    self._SummaryMerger = Merger
 
   def saveModel(self, CheckpointPath, Epoch = None):
     if Epoch == None:

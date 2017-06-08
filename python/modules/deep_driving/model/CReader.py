@@ -34,7 +34,7 @@ class CReader(dl.data.CReader):
       TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
       TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
 
-    with tf.name_scope("TestingReader"):
+    with tf.name_scope("ValidationReader"):
       TestingFilenames     = db.getDBFilenames(Settings['Data']['ValidatingPath'])
       TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
       TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)

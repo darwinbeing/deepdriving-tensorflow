@@ -21,59 +21,24 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-import time
+import tensorflow as tf
 
-import misc.settings
-import deep_learning as dl
-import deep_driving.model as model
+class CMerger():
+  def __init__(self):
+    self._SummaryTool = tf.Summary()
+    self._Summaries = []
 
-class CTrainSettings(misc.settings.CSettings):
-  _Dict = {
-  'Data': {
-    'TrainingPath':   "../../../testing",
-    'ValidatingPath': "../../../testing",
-    'BatchSize': 64,
-    'ImageWidth': 32,
-    'ImageHeight': 24
-  },
-  'Trainer': {
-    'EpochSize':        50000,
-    'NumberOfEpochs':   2,
-    'SummaryPath':      'Summary',
-    'CheckpointPath':   'Checkpoint',
-    'CheckpointEpochs': 1,
-  },
-  'Optimizer':{
-    'StartingLearningRate': 0.005,
-    'EpochsPerDecay':       1,
-    'LearnRateDecay':       0.95,
-    'WeightDecay':          0.004
-  },
-  'Validation': {
-    'Samples': 10000
-  }
-  }
 
-SettingFile = "train.cfg"
-IsRetrain = True
+  def add(self, Summary):
+    self._Summaries.append(Summary)
 
-def main():
-  Settings = CTrainSettings(SettingFile)
-  dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 3)
 
-  Model = dl.CModel(model.CNetwork)
+  def merge(self):
+    Summary = self._mergeSummaries(self._Summaries, self._SummaryTool)
+    self._Summaries = []
+    return Summary
 
-  Trainer = Model.createTrainer(model.CTrainer, model.CReader, model.CError, Settings)
-  Trainer.addPrinter(model.CPrinter())
-  Trainer.addSummaryMerger(model.CMerger())
 
-  if not IsRetrain:
-    Trainer.restore(dl.checkpoint.getLatestCheckpointFile(Settings['Trainer']['CheckpointPath']))
-
-  StartTime = time.time()
-  Trainer.train()
-  DeltaTime = time.time() - StartTime
-  print("Training took {}s ({})".format(DeltaTime, misc.time.getStringFromTime(DeltaTime)))
-
-if __name__ == "__main__":
-  main()
+  def _mergeSummaries(self, Summaries, SummaryTool):
+    # You can overwrite this function
+    return Summaries[len(Summaries)-1]

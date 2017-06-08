@@ -21,6 +21,7 @@ class CTrainer(internal.CBaseRunner):
     self._Reader           = Reader
     self._ErrorMeasurement = ErrorMeasurement
     self._Printer          = None
+    self._SummaryMerger    = None
 
     self._IsReady = False
     self._OptimizerStep = None
@@ -76,8 +77,8 @@ class CTrainer(internal.CBaseRunner):
     StartTime = time.time()
     SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch)
     self._postEpochAction(TrainWriter, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
-    SummaryResult, OtherResults = self._internalValidationStep(Session, Iteration, 0, Epoch)
-    self._postValidationAction(ValWriter, SummaryResult, OtherResults, Iteration, Epoch, BatchSize)
+    SummaryResult = self._internalValidationStep(Session, Iteration, 0, Epoch)
+    self._postValidationAction(ValWriter, SummaryResult, Iteration, Epoch, BatchSize)
 
     # Training Loop
     StartTime = time.time()
@@ -91,8 +92,8 @@ class CTrainer(internal.CBaseRunner):
 
       StartTime = self._postEpochAction(TrainWriter, SummaryResult, OtherResults, StartTime, Iteration, Epoch, SampleCount)
 
-      SummaryResult, OtherResults = self._internalValidationStep(Session, Iteration, Batch, Epoch)
-      self._postValidationAction(ValWriter, SummaryResult, OtherResults, Iteration, Epoch, BatchSize)
+      SummaryResult = self._internalValidationStep(Session, Iteration, Batch, Epoch)
+      self._postValidationAction(ValWriter, SummaryResult, Iteration, Epoch, BatchSize)
 
       self._saveCheckpoint(Epoch, EpochNumber == MaxEpochs)
 
@@ -131,17 +132,20 @@ class CTrainer(internal.CBaseRunner):
     IsTraining = self._Reader.IsTraining
     self._Reader.IsTraining = False
 
-    RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
+    #print("Validate {} Iterations...".format(self.getValidationIterations(self._Settings)))
+    for i in range(self.getValidationIterations(self._Settings)):
+      RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
+      SummaryResult = RawResults[0]
+
+      if self._SummaryMerger != None:
+        self._SummaryMerger.add(SummaryResult)
 
     self._Reader.IsTraining = IsTraining
 
-    SummaryResult = RawResults[0]
-    if len(RawResults) > 1:
-      OtherResults = RawResults[1:]
-    else:
-      OtherResults = []
+    if self._SummaryMerger != None:
+      SummaryResult = self._SummaryMerger.merge()
 
-    return SummaryResult, OtherResults
+    return SummaryResult
 
 
   def _internalTrainStep(self, Session, Iteration, Batch, Epoch):
@@ -156,7 +160,7 @@ class CTrainer(internal.CBaseRunner):
     return SummaryResult, OtherResults
 
 
-  def _postValidationAction(self, Writer, Summary, OtherResults, Iteration, Epoch, SampleCount):
+  def _postValidationAction(self, Writer, Summary, Iteration, Epoch, SampleCount):
     if (Summary != None) and (Writer != None):
       Writer.add_summary(Summary, Epoch)
 
@@ -241,3 +245,11 @@ class CTrainer(internal.CBaseRunner):
         return Settings['Trainer']['CheckpointEpochs']
 
     return None
+
+  def getValidationIterations(self, Settings):
+    # You can overrite this function to specify the number of epochs until a checkpoint is stored
+    if 'Validation' in Settings:
+      if 'Samples' in Settings['Validation']:
+        return int(Settings['Validation']['Samples']/self._Reader.getBatchSize())
+
+    return 1

@@ -26,3 +26,4 @@ from .CTrainer import CTrainer
 from .CReader import CReader
 from .CError import CError
 from .CPrinter import CPrinter
+from .CMerger import CMerger
