@@ -67,7 +67,7 @@ class CEvaluator(internal.CBaseRunner):
     IterationsPerEpoch = helpers.getIterationsPerEpoch(self.getEpochSize(), BatchSize)
     Iteration = Epoch * IterationsPerEpoch
     ErrorSum = 0
-    print("Run training for {} epochs beginning with epoch {} and {} iterations per epoch.".format(MaxEpochs, 0, IterationsPerEpoch))
+    print("Run evaluation for {} epochs beginning with epoch {} and {} iterations per epoch.".format(MaxEpochs, 0, IterationsPerEpoch))
 
     # Evaluation Loop
     StartTime = time.time()
