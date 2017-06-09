@@ -54,6 +54,8 @@ class CTrainer(internal.CBaseRunner):
       print("Do not store any summary")
 
     # Store settings
+    if not os.path.exists(self._Settings['Trainer']['CheckpointPath']):
+      os.makedirs(self._Settings['Trainer']['CheckpointPath'])
     Filename = os.path.join(self._Settings['Trainer']['CheckpointPath'], "train.cfg")
     print("Store training settings in file {}".format(Filename))
     with open(Filename, "w") as File:
