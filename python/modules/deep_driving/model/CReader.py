@@ -8,7 +8,8 @@ from .. import db
 
 class CReader(dl.data.CReader):
   def __init__(self, Settings, IsTraining):
-    self._ImageShape = [32, 32, 3]
+    self._BatchesInQueue = 10
+    self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
 #      "Features": tf.placeholder(dtype=tf.float32, shape=[None, ] + self._ImageShape, name="Image"),
 #      "Label": tf.placeholder(dtype=tf.int32, shape=[None, ], name="Label"),
@@ -28,11 +29,12 @@ class CReader(dl.data.CReader):
     print("Build File-Reader Graph:")
     print("* Training is enabled: {}".format(self._IsTraining))
 
-    with tf.name_scope("TrainingReader"):
-      TrainingFilenames     = db.getDBFilenames(Settings['Data']['TrainingPath'])
-      TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
-      TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
-      TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
+    if self._IsTraining:
+      with tf.name_scope("TrainingReader"):
+        TrainingFilenames     = db.getDBFilenames(Settings['Data']['TrainingPath'])
+        TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
+        TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
+        TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
 
     with tf.name_scope("ValidationReader"):
       TestingFilenames     = db.getDBFilenames(Settings['Data']['ValidatingPath'])
@@ -40,7 +42,11 @@ class CReader(dl.data.CReader):
       TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
       TestingBatchedInputs = self._createBatch(TestingInputs, self.getBatchSize(), self._IsTraining)
 
-    BatchedInput = tf.cond(self._Outputs['IsTraining'], lambda: TrainingBatchedInputs, lambda: TestingBatchedInputs)
+    if self._IsTraining:
+      BatchedInput = tf.cond(self._Outputs['IsTraining'], lambda: TrainingBatchedInputs, lambda: TestingBatchedInputs)
+
+    else:
+      BatchedInput = TestingBatchedInputs
 
     self._Outputs["Image"]  = BatchedInput[0]
     self._Outputs["Labels"] = BatchedInput[1:15]
@@ -82,7 +88,7 @@ class CReader(dl.data.CReader):
 
       _, SerializedExample = Reader.read(FileQueue)
       Inputs = db.buildFeatureParser(SerializedExample)
-      Inputs[0] = tf.image.resize_images(Inputs[0], size=(Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth']))
+      Inputs[0] = tf.image.resize_images(Inputs[0], size=(self._ImageShape[0], self._ImageShape[1]))
 
     return Inputs
 

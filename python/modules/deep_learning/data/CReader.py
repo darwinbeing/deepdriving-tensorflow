@@ -15,6 +15,8 @@ class CReader():
 
     self._PreprocessThreads = 8
     self._MinimumSamplesInQueue = 500
+    if not hasattr(self, "_BatchesInQueue"):
+      self._BatchesInQueue = 3
 
     self._prepare()
 
@@ -62,9 +64,12 @@ class CReader():
     #  ReshapedBatchedInputs.append(tf.reshape(Input, shape=InputShape))
     #return ReshapedBatchedInputs
 
+    QueueSize = self._MinimumSamplesInQueue + self._BatchesInQueue * BatchSize
+
     with tf.name_scope("BatchGen"):
       print("* Generate Input Batches...")
       print("* With Batch-Size: {}".format(BatchSize))
+      print("* And Queue-Size: {}".format(QueueSize))
 
       if not IsShuffle:
         print("* Do not shuffle Data for Batching...")
@@ -72,7 +77,7 @@ class CReader():
           Inputs,
           batch_size=BatchSize,
           num_threads=self._PreprocessThreads,
-          capacity=self._MinimumSamplesInQueue + 3 * BatchSize))
+          capacity=QueueSize))
 
       else:
         print("* Shuffle Data for Batching...")
@@ -80,7 +85,7 @@ class CReader():
           Inputs,
           batch_size=BatchSize,
           num_threads=self._PreprocessThreads,
-          capacity=self._MinimumSamplesInQueue + 3 * BatchSize,
+          capacity=QueueSize,
           min_after_dequeue=self._MinimumSamplesInQueue))
 
       ReshapedBatchedInputs = []
