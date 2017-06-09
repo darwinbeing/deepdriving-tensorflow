@@ -59,6 +59,7 @@ def main():
 
   Summary = Evaluator.getSummary()
   Evaluator.getPrinter().printFullSummary(Summary)
+  Evaluator.storeResults('result.txt')
 
 if __name__ == "__main__":
   main()

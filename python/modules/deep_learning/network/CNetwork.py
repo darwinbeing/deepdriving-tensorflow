@@ -23,6 +23,7 @@ class CNetwork():
   def _buildGraph(self):
     if self._IsReady == False:
       Inputs = self._Reader.getOutputs()
+      self._Logs = []
       self._Structure = self._build(Inputs, self._Settings)
 
       self._IsReady = True
@@ -31,6 +32,12 @@ class CNetwork():
   def getOutputs(self):
     return self._getOutputs(self._Structure)
 
+  def getLogs(self):
+    return self._Logs
+
+  def log(self, Text):
+    print(Text)
+    self._Logs.append(Text)
 
   def _build(self, Inputs, Settings):
     import inspect

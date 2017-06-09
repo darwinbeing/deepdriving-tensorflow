@@ -14,6 +14,7 @@ class CBaseRunner():
     self._Saver = None
     self._EpochCount = 0
     self._SummaryDir = None
+    self._LastCheckpointFile = "unknown"
 
     if Settings is None:
       self._Settings = {}
@@ -30,6 +31,7 @@ class CBaseRunner():
     self._Saver = tf.train.Saver(max_to_keep=100)
     self._Session.run(tf.global_variables_initializer())
     self._EpochCount = 0
+    self._LastCheckpointFile = "unknown"
 
     self._setSummaryDirAfterReset()
 
@@ -45,6 +47,7 @@ class CBaseRunner():
     self._Saver.restore(self._Session, CheckpointFile)
 
     self._setSummaryDirAfterRestore()
+    self._LastCheckpointFile = CheckpointFile
 
     return self._EpochCount
 

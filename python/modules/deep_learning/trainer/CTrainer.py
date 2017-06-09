@@ -53,6 +53,12 @@ class CTrainer(internal.CBaseRunner):
     else:
       print("Do not store any summary")
 
+    # Store settings
+    Filename = os.path.join(self._Settings['Trainer']['CheckpointPath'], "train.cfg")
+    print("Store training settings in file {}".format(Filename))
+    with open(Filename, "w") as File:
+      File.write(str(self._Settings))
+
     # Start queues
     QueueCoordinage = tf.train.Coordinator()
     tf.train.start_queue_runners(sess=Session, coord=QueueCoordinage)

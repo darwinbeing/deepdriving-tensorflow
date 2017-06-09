@@ -33,15 +33,18 @@ class CPrinter():
     self._printValidationUpdate(SummaryDict)
 
 
-  def printFullSummary(self, Summary):
+  def getFullSummary(self, Summary):
     SummaryDict = {}
     if Summary != None:
       self._SummaryParser.ParseFromString(Summary)
       for Value in self._SummaryParser.value:
         SummaryDict[Value.tag] = Value.simple_value
 
-      self._printFullSummaryDict(SummaryDict)
+      return self._getFullSummaryDict(SummaryDict)
+    return ""
 
+  def printFullSummary(self, Summary):
+    print(self.getFullSummary(Summary))
 
   def _printEpochUpdate(self, SummaryDict):
     # You can overwrite this method to print a better Summary
@@ -51,9 +54,9 @@ class CPrinter():
     # You can overwrite this method to print a better Summary
     print(SummaryDict)
 
-  def _printFullSummaryDict(self, SummaryDict):
+  def _getFullSummaryDict(self, SummaryDict):
     # You can overwrite this method to print a better Summary
-    print(SummaryDict)
+    return str(SummaryDict)
 
   def setupTraining(self, MaxEpochs):
     # You can overwrite this method, it is called from a Trainer before training

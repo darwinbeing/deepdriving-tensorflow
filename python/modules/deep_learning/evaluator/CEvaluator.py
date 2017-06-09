@@ -1,6 +1,7 @@
 import debug
 import tensorflow as tf
 import time
+import os
 
 from .. import data
 from .. import error
@@ -159,6 +160,49 @@ class CEvaluator(internal.CBaseRunner):
         return Settings['Evaluator']['SummaryPath']
 
     return None
+
+
+  def storeResults(self, Filename):
+    String = ""
+
+    String += "# Evaluation of Network:\n"
+    for Log in self._Network.getLogs():
+      String += Log + "\n"
+
+    String += "\n"
+    String += "# Using Checkpoint:\n"
+    String += "* {}\n".format(self._LastCheckpointFile)
+
+    String += "\n"
+    String += "# Using Training-Settings:\n"
+    String += self._getSettingString(os.path.join(os.path.dirname(self._LastCheckpointFile), "train.cfg"))
+
+    String += "\n"
+    String += "# Using Evaluation-Settings:\n"
+    String += str(self._Settings)
+
+    if self._Printer != None:
+      String += "\n"
+      String += "# Evaluation Results:\n"
+      String += self._Printer.getFullSummary(self.getSummary())
+
+    with open(Filename, "w") as File:
+      File.write(String)
+
+    print("Store results at file {}".format(Filename))
+
+
+  def _getSettingString(self, Filename):
+    if os.path.exists(Filename):
+      String = ""
+      with open(Filename) as File:
+        for Line in File:
+          String += Line
+
+      return String
+
+    else:
+      return "* Unknown Settings\n"
 
 
   def _setSummaryDirAfterRestore(self):

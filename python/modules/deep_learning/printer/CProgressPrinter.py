@@ -55,10 +55,10 @@ class CProgressPrinter(CPrinter):
     print(ProgressString)
 
 
-  def _printFullSummaryDict(self, SummaryDict):
+  def _getFullSummaryDict(self, SummaryDict):
     ProgressString = "Full Summary:\n"
     ProgressString += " * " + self._getErrorString(SummaryDict)
-    print(ProgressString)
+    return ProgressString
 
 
 ## Custom Methods

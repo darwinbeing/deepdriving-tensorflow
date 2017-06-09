@@ -61,3 +61,6 @@ class CSettings():
 
   def __iter__(self):
     return iter(self._Dict)
+
+  def __str__(self):
+    return json.dumps(self._Dict, sort_keys=True, indent=2, separators=(',', ': '))+"\n"

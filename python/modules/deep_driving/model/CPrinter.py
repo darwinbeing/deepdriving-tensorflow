@@ -38,7 +38,7 @@ class CPrinter(deep_learning.printer.CProgressPrinter):
     return ProgressString
 
 
-  def _printFullSummaryDict(self, SummaryDict):
+  def _getFullSummaryDict(self, SummaryDict):
     ProgressString = "Full Summary:  ("
     ProgressString += self._getErrorString(SummaryDict)+", "
     ProgressString += " SD: {:.2f}".format(SummaryDict['Error/StandardDeviation'])
@@ -50,7 +50,7 @@ class CPrinter(deep_learning.printer.CProgressPrinter):
     ProgressString += self._getTableLine(8)+"\n"
     ProgressString += self._getTableMeanRef(SummaryDict, 8)+"\n"
     ProgressString += self._getTableSDRef(SummaryDict, 8)+"\n"
-    print(ProgressString)
+    return ProgressString
 
 
   def _getTableHeader(self, CellWidth):

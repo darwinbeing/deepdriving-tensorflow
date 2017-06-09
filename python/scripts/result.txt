@@ -1,0 +1,76 @@
+# Evaluation of Network:
+Creating network Graph...
+ * network Input-Shape: (256, 2304)
+ * Create Dense-Layer "Dense1" with 14 output-nodes.
+ * network Output-Shape: (256, 14)
+ * Output 0 has shape (256, 1)
+ * Output 1 has shape (256, 1)
+ * Output 2 has shape (256, 1)
+ * Output 3 has shape (256, 1)
+ * Output 4 has shape (256, 1)
+ * Output 5 has shape (256, 1)
+ * Output 6 has shape (256, 1)
+ * Output 7 has shape (256, 1)
+ * Output 8 has shape (256, 1)
+ * Output 9 has shape (256, 1)
+ * Output 10 has shape (256, 1)
+ * Output 11 has shape (256, 1)
+ * Output 12 has shape (256, 1)
+ * Output 13 has shape (256, 1)
+Finished to build network with 32270 trainable variables in 2 tensors.
+
+# Using Checkpoint:
+* Checkpoint\model_150.ckpt
+
+# Using Training-Settings:
+{
+  "Data": {
+    "BatchSize": 64,
+    "ImageHeight": 24,
+    "ImageWidth": 32,
+    "TrainingPath": "C:/Data/training",
+    "ValidatingPath": "C:/Data/validation"
+  },
+  "Optimizer": {
+    "EpochsPerDecay": 10,
+    "LearnRateDecay": 0.95,
+    "StartingLearningRate": 0.005,
+    "WeightDecay": 0.004
+  },
+  "Trainer": {
+    "CheckpointEpochs": 10,
+    "CheckpointPath": "Checkpoint",
+    "EpochSize": 10000,
+    "NumberOfEpochs": 150,
+    "SummaryPath": "Summary"
+  },
+  "Validation": {
+    "Samples": 1000
+  }
+}
+
+# Using Evaluation-Settings:
+{
+  "Data": {
+    "BatchSize": 256,
+    "ImageHeight": 24,
+    "ImageWidth": 32,
+    "ValidatingPath": "C:/Data/validation"
+  },
+  "Evaluator": {
+    "CheckpointPath": "Checkpoint",
+    "EpochSize": 10000,
+    "NumberOfEpochs": 24
+  }
+}
+
+# Evaluation Results:
+Full Summary:  ( Error: 362.02,  SD: 44.97 )
+
+|  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+|  MAE   |   0.50 |   8.35 |   3.62 |   2.32 |   7.42 |  69.42 |  22.60 |  93.77 |   5.97 |   4.64 |   6.06 |  60.14 |  76.81 |   0.38 |
+|   SD   |   0.11 |   0.93 |   0.85 |   0.72 |   1.00 |  23.31 |  18.26 |  16.41 |   0.94 |   1.51 |   0.98 |  19.42 |  14.77 |   0.27 |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+|MAE/Ref |1511.7% |4443.0% |2336.3% |1460.1% |4055.3% |1365.3% | 477.0% |1174.7% |1890.5% |1506.3% |2062.7% | 675.0% | 707.2% |  N/A % |
+| SD/Ref | 127.7% | 170.8% | 205.8% | 162.3% | 190.0% | 256.0% | 233.6% | 130.5% | 133.0% | 210.6% | 179.1% | 150.3% | 100.9% |  N/A % |
