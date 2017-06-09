@@ -21,6 +21,31 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CModel import CModel
-from . import summary
-from . import layer
+import tensorflow as tf
+
+from .. import helpers
+
+from .Setup import _LOG, _INITIALIZER
+
+def createActivation(Input, Func="ReLU", Name=None):
+
+  UseFunc = tf.identity
+  if Func == "ID" or Func == "id":
+    UseFunc = tf.identity
+
+  elif Func == "ReLU" or Func == "relu":
+    UseFunc = tf.nn.relu
+
+  elif Func == "Tanh" or Func == "tanh":
+    UseFunc = tf.tanh
+
+  elif Func == "Sigmoid" or Func == "sigmoid":
+    UseFunc = tf.sigmoid
+
+  else:
+    debug.LogError("Unknown activation function: {}".formati(Func))
+
+  if Name != None:
+    _LOG(" * Create Activation-Layer {} with Function {}".format(Name, Func))
+
+  return UseFunc(Input, name=Name)

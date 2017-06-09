@@ -21,6 +21,19 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CModel import CModel
-from . import summary
-from . import layer
+from .. import helpers
+
+def log(Text):
+  print(Text)
+
+
+_LOG = log
+def setupLogger(Logger):
+  _LOG = Logger
+
+
+_INITIALIZER = {
+  'Weights':  helpers.XavierInitializer(),
+  'Bias':     helpers.ConstantInitializer(0),
+  'Kernel2D': helpers.XavierInitializerConv()
+}

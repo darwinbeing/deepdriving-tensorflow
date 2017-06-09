@@ -21,6 +21,6 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CModel import CModel
-from . import summary
-from . import layer
+from .Setup import setupLogger
+from .Dense import createDense, createFullyConnected
+from .Activation import createActivation
