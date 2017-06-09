@@ -21,10 +21,10 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CNetwork import CNetwork
-from .CTrainer import CTrainer
-from .CReader import CReader
-from .CError import CError
-from .CPrinter import CPrinter
-from .CMerger import CMerger
-from .CEvaluator import CEvaluator
+import deep_learning as dl
+
+class CEvaluator(dl.evaluator.CEvaluator):
+  def _evalIteration(self, Session, RunTargets, Reader, Iteration, Batch, Epoch):
+    Data = Reader.readBatch(Session)
+    AllTargets = RunTargets
+    return Session.run(AllTargets, feed_dict = Data)

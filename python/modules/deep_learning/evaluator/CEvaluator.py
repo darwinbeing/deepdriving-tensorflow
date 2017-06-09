@@ -20,6 +20,7 @@ class CEvaluator(internal.CBaseRunner):
     self._Reader           = Reader
     self._ErrorMeasurement = ErrorMeasurement
     self._Printer          = None
+    self._MergedSummary    = None
 
     self._IsReady = False
 
@@ -38,6 +39,7 @@ class CEvaluator(internal.CBaseRunner):
 
   def eval(self):
     Session = self._Session
+    self._MergedSummary = None
 
     # Init Writer is necessary
     Writer = None
@@ -64,7 +66,7 @@ class CEvaluator(internal.CBaseRunner):
     IterationsPerEpoch = helpers.getIterationsPerEpoch(self.getEpochSize(), BatchSize)
     Iteration = Epoch * IterationsPerEpoch
     ErrorSum = 0
-    print("Run training for {} epochs beginning with epoch {} and {} iterations per epoch.".format(MaxEpochs, self._EpochCount, IterationsPerEpoch))
+    print("Run training for {} epochs beginning with epoch {} and {} iterations per epoch.".format(MaxEpochs, 0, IterationsPerEpoch))
 
     # Evaluation Loop
     StartTime = time.time()
@@ -77,6 +79,10 @@ class CEvaluator(internal.CBaseRunner):
         SummaryResult, Error, OtherResults = self._internalEvalStep(Session, Iteration, Batch, Epoch)
         ErrorSum += Error
 
+        if self._SummaryMerger != None:
+          self._SummaryMerger.add(SummaryResult)
+
+
       StartTime = self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, SampleCount)
 
     # Stop queues
@@ -87,7 +93,15 @@ class CEvaluator(internal.CBaseRunner):
     if Writer != None:
       Writer.close()
 
+    if self._SummaryMerger != None:
+      self._MergedSummary = self._SummaryMerger.merge()
+
     return ErrorSum/Iteration
+
+
+  def getSummary(self):
+    debug.Assert(self._MergedSummary != None, "No merged summary available. Was a summary merger assigned to the evaluation class?")
+    return self._MergedSummary
 
 
   def _internalEvalStep(self, Session, Iteration, Batch, Epoch):

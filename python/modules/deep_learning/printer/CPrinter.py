@@ -32,11 +32,26 @@ class CPrinter():
 
     self._printValidationUpdate(SummaryDict)
 
+
+  def printFullSummary(self, Summary):
+    SummaryDict = {}
+    if Summary != None:
+      self._SummaryParser.ParseFromString(Summary)
+      for Value in self._SummaryParser.value:
+        SummaryDict[Value.tag] = Value.simple_value
+
+      self._printFullSummaryDict(SummaryDict)
+
+
   def _printEpochUpdate(self, SummaryDict):
     # You can overwrite this method to print a better Summary
     print(SummaryDict)
 
   def _printValidationUpdate(self, SummaryDict):
+    # You can overwrite this method to print a better Summary
+    print(SummaryDict)
+
+  def _printFullSummaryDict(self, SummaryDict):
     # You can overwrite this method to print a better Summary
     print(SummaryDict)
 
@@ -47,3 +62,6 @@ class CPrinter():
   def setupEvaluation(self, MaxEpochs):
     # You can overwrite this method, it is called from a Evaluator before evluation
     pass
+
+
+

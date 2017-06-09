@@ -23,9 +23,6 @@ class CProgressPrinter(CPrinter):
 
 
   def _printEpochUpdate(self, SummaryDict):
-    Loss  = self._getValueFromKey(SummaryDict, self._LossName)
-    Error = self._getValueFromKey(SummaryDict, self._ErrorName)
-
     ProgressString = "{}: ".format(str(SummaryDict['Iteration']).rjust(8))
     if self._PreString != None:
       ProgressString += self._PreString + " "
@@ -35,9 +32,7 @@ class CProgressPrinter(CPrinter):
     if self._MaxEpochs != None:
       ProgressString += "/{}".format(str(self._MaxEpochs).rjust(3))
 
-    if Loss != None:
-      ProgressString += " - Loss: {:.5f}".format(Loss)
-
+    ProgressString += self._getLossString(SummaryDict)
     ProgressString += self._getErrorString(SummaryDict)
 
     ProgressString += self._getTimingInformation(SummaryDict)
@@ -45,8 +40,6 @@ class CProgressPrinter(CPrinter):
 
 
   def _printValidationUpdate(self, SummaryDict):
-    Loss  = self._getValueFromKey(SummaryDict, self._LossName)
-
     ProgressString = "{}: ".format(str(SummaryDict['Iteration']).rjust(8))
     if self._PreString != None:
       ProgressString += "[Validation] "
@@ -56,11 +49,15 @@ class CProgressPrinter(CPrinter):
     if self._MaxEpochs != None:
       ProgressString += "/{}".format(str(self._MaxEpochs).rjust(3))
 
-    if Loss != None:
-      ProgressString += " - Loss: {:.5f}".format(Loss)
-
+    ProgressString += self._getLossString(SummaryDict)
     ProgressString += self._getErrorString(SummaryDict)
 
+    print(ProgressString)
+
+
+  def _printFullSummaryDict(self, SummaryDict):
+    ProgressString = "Full Summary:\n"
+    ProgressString += " * " + self._getErrorString(SummaryDict)
     print(ProgressString)
 
 
@@ -71,6 +68,16 @@ class CProgressPrinter(CPrinter):
 
     if Error != None:
       ProgressString += " Error: {:.2f}%".format(Error * 100)
+
+    return ProgressString
+
+
+  def _getLossString(self, SummaryDict):
+    ProgressString = ""
+    Loss  = self._getValueFromKey(SummaryDict, self._LossName)
+
+    if Loss != None:
+      ProgressString += " - Loss: {:.5f}".format(Loss)
 
     return ProgressString
 
