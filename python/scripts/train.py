@@ -32,25 +32,25 @@ class CTrainSettings(misc.settings.CSettings):
   'Data': {
     'TrainingPath':   "../../../training",
     'ValidatingPath': "../../../validation",
-    'BatchSize': 64,
+    'BatchSize': 128,
     'ImageWidth': 32,
     'ImageHeight': 24
   },
   'Trainer': {
-    'EpochSize':        50000,
-    'NumberOfEpochs':   2,
+    'EpochSize':        10000,
+    'NumberOfEpochs':   50,
     'SummaryPath':      'Summary',
     'CheckpointPath':   'Checkpoint',
-    'CheckpointEpochs': 1,
+    'CheckpointEpochs': 10,
   },
   'Optimizer':{
     'StartingLearningRate': 0.005,
-    'EpochsPerDecay':       1,
+    'EpochsPerDecay':       10,
     'LearnRateDecay':       0.95,
     'WeightDecay':          0.004
   },
   'Validation': {
-    'Samples': 10000
+    'Samples': 1000
   }
   }
 
