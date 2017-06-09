@@ -39,7 +39,7 @@ class CNetwork(dl.network.CNetwork):
       self.log(" * network Input-Shape: {}".format(Input.shape))
 
       Output = Input
-      Output = self._createDenseLayer(Inputs=Output, OutputSize=OutputNodes, Name="Dense1")
+      Output = self._createDenseLayer(Inputs=Output, OutputSize=OutputNodes, Name="Dense_1")
 
       self.log(" * network Output-Shape: {}".format(Output.shape))
 
@@ -47,7 +47,7 @@ class CNetwork(dl.network.CNetwork):
       Outputs = tf.split(Output, 14, axis=1)
 
       for i, O in enumerate(Outputs):
-        self.log(" * Output {} has shape {}".format(i, O.shape))
+        self.log("   * Output {} has shape {}".format(i, O.shape))
 
       Variables, Tensors = dl.helpers.getTrainableVariablesInScope(Scope)
       self.log("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
@@ -67,6 +67,11 @@ class CNetwork(dl.network.CNetwork):
   def _createDenseLayer(self, Inputs, OutputSize, Name="Dense"):
     OutputSize = int(OutputSize)
     self.log(" * Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, OutputSize))
+    InputShape = Inputs.shape
+    if len(InputShape) > 2:
+      InputLength = int(np.prod(InputShape[1:]))
+      self.log("   * Reshape layer input {} to vector with {} elements.".format(InputShape, InputLength))
+      Inputs = tf.reshape(Inputs, shape=[-1, InputLength])
     with tf.name_scope(Name):
       X       = tf.identity(Inputs, name="X")
       Weights = tf.Variable(initial_value=tf.random_normal(shape=[int(X.shape[1]), OutputSize], mean=0, stddev=0.1), name = "W")
@@ -89,9 +94,9 @@ class CNetwork(dl.network.CNetwork):
 
   def _preprocessImage(self, Image, Name = "Preprocessing"):
     with tf.name_scope(Name):
-      NormalizedImage = Image - 0.5
-      X = self._reshapeImageToVector(NormalizedImage, Name="Features")
-      return X
+      self.log("* Preprocess Image by adding -0.5")
+      Image = Image - 0.5
+      return Image
 
 
   def _reshapeImageToVector(self, Image, Name="Image"):
