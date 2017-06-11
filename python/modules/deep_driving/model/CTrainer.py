@@ -27,9 +27,19 @@ class CTrainer(dl.trainer.CTrainer):
       Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
       Gradients = Optimizer.compute_gradients(ErrorMeasurement.getOutputs()['Loss'])
 
+      print("Apply individual learning rate scales...")
+      ScaledGradients = []
+      for Gradient, Variable in Gradients:
+        Scale = dl.layer.LearningRates.get(Variable.name)
+        if Scale != None:
+          Gradient *= Scale
+          print(" * \"{}\" has scale {}".format(Variable.name, Scale))
+
+        ScaledGradients.append((Gradient, Variable))
+
       UpdateOperations = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
       with tf.control_dependencies(UpdateOperations):
-        ApplyGradients = Optimizer.apply_gradients(Gradients, global_step=CurrentOptimizationStep)
+        ApplyGradients = Optimizer.apply_gradients(ScaledGradients, global_step=CurrentOptimizationStep)
 
     return ApplyGradients
 
