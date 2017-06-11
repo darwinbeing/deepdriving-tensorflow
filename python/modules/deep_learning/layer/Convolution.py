@@ -41,6 +41,11 @@ def createConvolution2d(Input, Size, Filters, Stride = 1, Name="Conv2D", WeightD
     Output = Input
     Output = tf.nn.conv2d(input=Output, filter=Kernel, strides=StrideShape, padding=Padding)
     Output = tf.nn.bias_add(Output, Bias)
+
+    tf.summary.histogram("Kernel", Kernel)
+    tf.summary.histogram("Bias",   Bias)
+    tf.summary.histogram("Signal", Output)
+
     return Output
 
   if Name != None:

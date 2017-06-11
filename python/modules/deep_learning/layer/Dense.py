@@ -47,7 +47,14 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
     X = Input
     W = helpers.createVariable(Shape=[InputLength, Size], Name="Weights", WeightDecayFactor=WeightDecay, Initializer=Setup.Initializer['Weights'])
     B = helpers.createBias(Shape=[Size], Name="Bias", Initializer=Setup.Initializer['Bias'])
-    return tf.add(tf.matmul(X, W), B, name="Signal")
+
+    S = tf.add(tf.matmul(X, W), B, name="Signal")
+
+    tf.summary.histogram("Weights", W)
+    tf.summary.histogram("Bias",    B)
+    tf.summary.histogram("Signal",  S)
+
+    return S
 
   if Name != None:
     Setup.Log(" * Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, Size))
