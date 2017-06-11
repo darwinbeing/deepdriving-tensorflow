@@ -30,6 +30,9 @@ class CNetwork(dl.network.CNetwork):
   def _build(self, Inputs, Settings):
     dl.layer.Setup.setupLogger(self.log)
     dl.layer.Setup.setupIsTraining(Inputs['IsTraining'])
+    dl.layer.Setup.setupHistogram(False)
+    dl.layer.Setup.setupOutputText(True)
+    dl.layer.Setup.setupFeatureMap(True)
 
     Scope = "Network"
 

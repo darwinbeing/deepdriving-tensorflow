@@ -74,9 +74,10 @@ class CError(dl.error.CMeasurement):
 
       Output = db.denormalizeLabels(NormOutput)
 
-      ValueTable = dl.helpers.CTable(Header=["Type"]+self._Name)
-      ValueTable.addLine(Line=["Output"]+Output)
-      ValueTable.addLine(Line=["Label"]+Label)
+      if dl.layer.Setup.StoreOutputAsText:
+        ValueTable = dl.helpers.CTable(Header=["Type"]+self._Name)
+        ValueTable.addLine(Line=["Output"]+Output)
+        ValueTable.addLine(Line=["Label"]+Label)
 
       Errors = []
       Means  = []
@@ -97,10 +98,11 @@ class CError(dl.error.CMeasurement):
         else:
           AbsoluteError = AbsoluteError + SingleError
 
-      ValueTable.addLine(Line=["AE"]+Errors)
-      ValueTable.addLine(Line=["MAE"]+Means)
-      ValueTable.addLine(Line=["SD"]+SDs)
-      tf.summary.text("Values", ValueTable.build())
+      if dl.layer.Setup.StoreOutputAsText:
+        ValueTable.addLine(Line=["AE"]+Errors)
+        ValueTable.addLine(Line=["MAE"]+Means)
+        ValueTable.addLine(Line=["SD"]+SDs)
+        tf.summary.text("Values", ValueTable.build())
 
 
     with tf.name_scope("Error"):

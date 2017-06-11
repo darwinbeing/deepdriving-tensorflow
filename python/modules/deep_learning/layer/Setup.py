@@ -27,6 +27,8 @@ class CSetup():
   def __init__(self):
     self._Log = self.logDefault
     self._IsTraining = None
+    self._StoreHistogram = True
+    self._StoreOutputAsText = True
     self._Initializer = {
       'Weights': helpers.XavierInitializer(),
       'Bias': helpers.ConstantInitializer(0),
@@ -44,6 +46,42 @@ class CSetup():
   def setupIsTraining(self, IsTraining):
     self._IsTraining = IsTraining
 
+
+  def setupHistogram(self, IsEnabled):
+    self._StoreHistogram = IsEnabled
+    if self._StoreHistogram:
+      print("* Store Histogram of Weights, Bias, Signal and Activation")
+    else:
+      print("* Do not store Histograms")
+
+
+  def setupOutputText(self, IsEnabled):
+    self._StoreOutputAsText = IsEnabled
+    if self._StoreOutputAsText:
+      print("* Store Output as Text")
+    else:
+      print("* Do not store Output as Text")
+
+
+  def setupFeatureMap(self, IsEnabled):
+    self._StoreFeatureMap = IsEnabled
+    if self._StoreFeatureMap:
+      print("* Store Feature Maps")
+    else:
+      print("* Do not store Feature Maps")
+
+
+  @property
+  def StoreFeatureMap(self):
+    return self._StoreFeatureMap
+
+  @property
+  def StoreHistogram(self):
+    return self._StoreHistogram
+
+  @property
+  def StoreOutputAsText(self):
+    return self._StoreOutputAsText
 
   @property
   def Log(self):

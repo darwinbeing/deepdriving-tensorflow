@@ -50,9 +50,10 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
 
     S = tf.add(tf.matmul(X, W), B, name="Signal")
 
-    tf.summary.histogram("Weights", W)
-    tf.summary.histogram("Bias",    B)
-    tf.summary.histogram("Signal",  S)
+    if Setup.StoreHistogram:
+      tf.summary.histogram("Weights", W)
+      tf.summary.histogram("Bias",    B)
+      tf.summary.histogram("Signal",  S)
 
     return S
 

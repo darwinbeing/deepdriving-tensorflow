@@ -49,6 +49,7 @@ def createActivation(Input, Func="ReLU", Name=None):
     Setup.Log(" * Create Activation-Layer {} with Function {}".format(Name, Func))
 
   A = UseFunc(Input, name=Name)
-  tf.summary.histogram("Activation", A)
+  if Setup.StoreHistogram:
+    tf.summary.histogram("Activation", A)
 
   return A
