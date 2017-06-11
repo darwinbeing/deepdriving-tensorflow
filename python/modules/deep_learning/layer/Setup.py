@@ -23,17 +23,38 @@
 
 from .. import helpers
 
-def log(Text):
-  print(Text)
+class CSetup():
+  def __init__(self):
+    self._Log = self.logDefault
+    self._IsTraining = None
+    self._Initializer = {
+      'Weights': helpers.XavierInitializer(),
+      'Bias': helpers.ConstantInitializer(0),
+      'Kernel2D': helpers.XavierInitializerConv()
+    }
+
+  def logDefault(self, Text):
+    print(Text)
 
 
-_LOG = log
-def setupLogger(Logger):
-  _LOG = Logger
+  def setupLogger(self, Logger):
+    self._Log = Logger
 
 
-_INITIALIZER = {
-  'Weights':  helpers.XavierInitializer(),
-  'Bias':     helpers.ConstantInitializer(0),
-  'Kernel2D': helpers.XavierInitializerConv()
-}
+  def setupIsTraining(self, IsTraining):
+    self._IsTraining = IsTraining
+
+
+  @property
+  def Log(self):
+    return self._Log
+
+  @property
+  def IsTraining(self):
+    return self._IsTraining
+
+  @property
+  def Initializer(self):
+    return self._Initializer
+
+Setup = CSetup()

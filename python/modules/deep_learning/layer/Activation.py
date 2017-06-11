@@ -25,7 +25,7 @@ import tensorflow as tf
 
 from .. import helpers
 
-from .Setup import _LOG, _INITIALIZER
+from .Setup import Setup
 
 def createActivation(Input, Func="ReLU", Name=None):
 
@@ -46,6 +46,6 @@ def createActivation(Input, Func="ReLU", Name=None):
     debug.LogError("Unknown activation function: {}".formati(Func))
 
   if Name != None:
-    _LOG(" * Create Activation-Layer {} with Function {}".format(Name, Func))
+    Setup.Log(" * Create Activation-Layer {} with Function {}".format(Name, Func))
 
   return UseFunc(Input, name=Name)

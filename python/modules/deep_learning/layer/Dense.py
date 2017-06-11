@@ -24,9 +24,11 @@
 import tensorflow as tf
 import numpy as np
 
+import debug
+
 from .. import helpers
 
-from .Setup import _LOG, _INITIALIZER
+from .Setup import Setup
 from .Activation import createActivation
 
 def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
@@ -36,19 +38,19 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
     InputShape = Input.shape
     if len(InputShape) > 2:
       InputLength = int(np.prod(InputShape[1:]))
-      _LOG("   * Reshape layer input {} to vector with {} elements.".format(InputShape, InputLength))
+      Setup.Log("   * Reshape layer input {} to vector with {} elements.".format(InputShape, InputLength))
       Input = tf.reshape(Input, shape=[-1, InputLength])
 
     else:
       InputLength = int(InputShape[1])
 
     X = Input
-    W = helpers.createVariable(Shape=[InputLength, Size], Name="Weights", WeightDecayFactor=WeightDecay, Initializer=_INITIALIZER['Weights'])
-    B = helpers.createBias(Shape=[Size], Name="Bias", Initializer=_INITIALIZER['Bias'])
+    W = helpers.createVariable(Shape=[InputLength, Size], Name="Weights", WeightDecayFactor=WeightDecay, Initializer=Setup.Initializer['Weights'])
+    B = helpers.createBias(Shape=[Size], Name="Bias", Initializer=Setup.Initializer['Bias'])
     return tf.add(tf.matmul(X, W), B, name="Signal")
 
   if Name != None:
-    _LOG(" * Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, Size))
+    Setup.Log(" * Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, Size))
     with tf.name_scope(Name):
       Signal = create(Input, Size, WeightDecay)
 
@@ -62,9 +64,27 @@ def createFullyConnected(Input, Size, Func="ReLU", Name="FC", WeightDecay=1.0):
   Output = Input
 
   with tf.name_scope(Name):
-    _LOG(" * Create Fully-Connected-Layer \"{}\" with {} output-nodes.".format(Name, Size))
-    _LOG("   * With Activation {}".format(Func))
+    Setup.Log(" * Create Fully-Connected-Layer \"{}\" with {} output-nodes.".format(Name, Size))
     Output = createDense(Input=Output, Size=Size, Name=None, WeightDecay=WeightDecay)
+    Output = createBatchNormalization(Input=Output)
+    Setup.Log("   * With Activation {}".format(Func))
     Output = createActivation(Input=Output, Func=Func)
 
   return Output
+
+
+def createDropout(Input, Ratio, Name="Drop"):
+  Output = Input
+
+  with tf.name_scope(Name):
+    Setup.Log(" * Create Dropout-Layer \"{}\" with dropout-ratio {}.".format(Name, Ratio))
+    Output = tf.nn.dropout(Output, keep_prob=1-Ratio)
+
+  return Output
+
+
+def createBatchNormalization(Input, Name="BN"):
+  with tf.name_scope(Name):
+    Setup.Log("   * With Batch-Normalization")
+    debug.Assert(Setup.IsTraining != None, "You must define the IsTraining boolean before using Batch-Normalization!")
+    return tf.contrib.layers.batch_norm(Input, center=True, scale=True, is_training=Setup.IsTraining)

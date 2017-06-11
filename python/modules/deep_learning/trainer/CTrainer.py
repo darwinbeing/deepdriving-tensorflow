@@ -48,8 +48,10 @@ class CTrainer(internal.CBaseRunner):
     ValWriter   = None
     if self._SummaryDir != None:
       print("Store tensorboard summary at directory {}".format(self._SummaryDir))
-      TrainWriter = tf.summary.FileWriter(os.path.join(self._SummaryDir, "train"), Session.graph)
-      ValWriter   = tf.summary.FileWriter(os.path.join(self._SummaryDir, "val"),   Session.graph)
+      TrainWriter = tf.summary.FileWriter(os.path.join(self._SummaryDir, "train"))
+      TrainWriter.add_graph(Session.graph)
+      ValWriter   = tf.summary.FileWriter(os.path.join(self._SummaryDir, "val"))
+      ValWriter.add_graph(Session.graph)
     else:
       print("Do not store any summary")
 

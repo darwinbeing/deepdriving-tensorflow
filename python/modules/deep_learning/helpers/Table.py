@@ -21,7 +21,43 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .Setup import Setup
-from .Dense import createDense, createFullyConnected, createDropout, createBatchNormalization
-from .Activation import createActivation
-from .Convolution import createConvolution2d, createPooling, createLRN
+import tensorflow as tf
+
+import debug
+
+class CTable():
+  def __init__(self, Header):
+    self._Columns = len(Header)
+    self._Header  = tf.constant(shape=[1, int(self._Columns)], dtype=tf.string, value=Header)
+    self._Lines   = [self._Header]
+    self._Table   = None
+    debug.Assert(self._Columns > 0, "There are at least 1 header field required for a table.")
+
+
+  def addLine(self, Line=[]):
+    debug.Assert(self._Columns == len(Line), "You need exact the same number of Line-Elements than Header-Elements!")
+    Columns = []
+    for Field in Line:
+      if isinstance(Field, str):
+        Columns.append(tf.constant(shape=[1], dtype=tf.string, value=[Field]))
+
+      else:
+        if len(Field.shape) == 2:
+          Columns.append(tf.reshape(tf.as_string(Field[0, 0]), shape=[1]))
+        elif len(Field.shape) == 1:
+          Columns.append(tf.reshape(tf.as_string(Field[0]), shape=[1]))
+        elif len(Field.shape) == 0:
+          Columns.append(tf.reshape(tf.as_string(Field), shape=[1]))
+        else:
+          debug.LogError("Don't know how to handle this tensor shape {}".format(Field.shape))
+
+    Line = tf.stack(Columns, axis=1)
+    self._Lines.append(Line)
+
+
+  def build(self):
+    if self._Table == None:
+      NumberOfLines = len(self._Lines)
+      self._Table = tf.reshape(tf.stack(self._Lines, axis=0), shape=[NumberOfLines, self._Columns])
+
+    return self._Table
