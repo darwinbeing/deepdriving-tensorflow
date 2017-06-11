@@ -8,6 +8,7 @@ from .. import error
 from .. import helpers
 from .. import internal
 from .. import network
+from .. import checkpoint
 
 
 class CTrainer(internal.CBaseRunner):
@@ -98,7 +99,7 @@ class CTrainer(internal.CBaseRunner):
       for Batch in range(IterationsPerEpoch):
         Iteration += 1
         SampleCount += BatchSize
-        self._printTrainingBar(20, Iteration, Epoch, Batch, IterationsPerEpoch)
+        self._printTrainingBar(20, Iteration, Epoch, Batch, IterationsPerEpoch, True)
         self._internalTrainStep(Session, Iteration, Batch, Epoch)
 
       SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch)
@@ -144,7 +145,9 @@ class CTrainer(internal.CBaseRunner):
     self._Reader.IsTraining = False
 
     #print("Validate {} Iterations...".format(self.getValidationIterations(self._Settings)))
-    for i in range(self.getValidationIterations(self._Settings)):
+    IterationsPerStep = self.getValidationIterations(self._Settings)
+    for i in range(IterationsPerStep):
+      self._printTrainingBar(20, Iteration, Epoch, i, IterationsPerStep, False)
       RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
       SummaryResult = RawResults[0]
 
@@ -196,6 +199,17 @@ class CTrainer(internal.CBaseRunner):
 
     if IsSave or IsForceSave:
       self.saveModel(self.getCheckpointDir(), Epoch)
+
+
+  def restore(self, Epoch=None):
+    if Epoch is None:
+      CheckpointFile = checkpoint.getLatestCheckpointFile(self.getCheckpointDir())
+
+    else:
+      CheckpointFile = checkpoint.getCheckpointFilename(self.getCheckpointDir(), Epoch)
+
+    debug.Assert(CheckpointFile != None, "Cannot find checkpoint file {}.".format(CheckpointFile))
+    super().restore(CheckpointFile)
 
 
   def getMaxEpochs(self):
@@ -260,10 +274,17 @@ class CTrainer(internal.CBaseRunner):
 
     return 1
 
-  def _printTrainingBar(self, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch):
+  def _printTrainingBar(self, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch, IsTraining=True):
     Percent = Batch/IterationsPerEpoch
     Bar = '.' * int((BarSize*Percent))
     BarString = str("{:<"+str(BarSize)+"}").format(Bar)
-    print("\r{:>8}: (Training Epoch {}) [{}] - {} / {}".format(Iteration, Epoch, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+
+    if IsTraining:
+      Prefix = str("Training Epoch {}").format(Epoch)
+    else:
+      Prefix = str("Validation Epoch {}").format(Epoch)
+
+    print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+    print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
     if Batch >= (IterationsPerEpoch-1):
       print("\r", end='', flush=True)

@@ -8,6 +8,7 @@ from .. import error
 from .. import helpers
 from .. import internal
 from .. import network
+from .. import checkpoint
 
 
 class CEvaluator(internal.CBaseRunner):
@@ -77,6 +78,7 @@ class CEvaluator(internal.CBaseRunner):
       for Batch in range(IterationsPerEpoch):
         Iteration += 1
         SampleCount += BatchSize
+        self._printEvalBar(20, Iteration, Epoch, Batch, IterationsPerEpoch)
         SummaryResult, Error, OtherResults = self._internalEvalStep(Session, Iteration, Batch, Epoch)
         ErrorSum += Error
 
@@ -207,3 +209,37 @@ class CEvaluator(internal.CBaseRunner):
 
   def _setSummaryDirAfterRestore(self):
     self._setNewSummaryDir()
+
+  def getCheckpointDir(self):
+    return self._getCheckpointDir(self._Settings)
+
+  def _getCheckpointDir(self, Settings):
+    # You can overrite this function to specify a checkpoint directory
+    if 'Evaluator' in Settings:
+      if 'CheckpointPath' in Settings['Evaluator']:
+        return Settings['Evaluator']['CheckpointPath']
+
+    return None
+
+  def restore(self, Epoch=None):
+    if Epoch is None:
+      CheckpointFile = checkpoint.getLatestCheckpointFile(self.getCheckpointDir())
+
+    else:
+      CheckpointFile = checkpoint.getCheckpointFilename(self.getCheckpointDir(), Epoch)
+
+    debug.Assert(CheckpointFile != None, "Cannot find checkpoint file {}.".format(CheckpointFile))
+    super().restore(CheckpointFile)
+
+
+  def _printEvalBar(self, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch):
+    Percent = Batch/IterationsPerEpoch
+    Bar = '.' * int((BarSize*Percent))
+    BarString = str("{:<"+str(BarSize)+"}").format(Bar)
+
+    Prefix = str("Evaluation Epoch {}").format(Epoch)
+
+    print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+    print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+    if Batch >= (IterationsPerEpoch-1):
+      print("\r", end='', flush=True)

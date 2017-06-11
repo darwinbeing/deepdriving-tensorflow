@@ -51,8 +51,8 @@ def main():
   Evaluator.addPrinter(model.CPrinter())
   Evaluator.addSummaryMerger(model.CMerger())
 
-  Evaluator.restore(dl.checkpoint.getLatestCheckpointFile(Settings['Evaluator']['CheckpointPath']))
-  #Evaluator.restore(dl.checkpoint.getCheckpointFilename(Settings['Evaluator']['CheckpointPath'], 36))
+  Evaluator.restore()
+  #Evaluator.restore(3)
 
   Error = Evaluator.eval()
   print("Mean Absolute Error: {:.2f}".format(Error))

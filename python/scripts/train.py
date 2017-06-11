@@ -68,7 +68,8 @@ def main():
   Trainer.addSummaryMerger(model.CMerger())
 
   if not IsRetrain:
-    Trainer.restore(dl.checkpoint.getLatestCheckpointFile(Settings['Trainer']['CheckpointPath']))
+    Trainer.restore()
+    #Trainer.restore(3)
 
   StartTime = time.time()
   Trainer.train()
