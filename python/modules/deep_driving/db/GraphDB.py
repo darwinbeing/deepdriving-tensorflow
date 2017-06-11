@@ -24,51 +24,48 @@
 import tensorflow as tf
 
 def normalizeLabels(Labels):
+  OutLabels = []
+
   Angle      = Labels[0]/1.1 + 0.5           # Angle  - Range -0.5 .. 0.5 and clamping between 0 and 1
   Angle      = tf.minimum(Angle, 1)
-  Labels[0]  = tf.maximum(Angle, 0)
+  OutLabels.append(tf.maximum(Angle, 0))
 
-  Labels[1]  = Labels[1]  * 0.6     + 0.2     # Fast   - Range  0 .. 1    mapping to 0.2 .. 0.8
-  Labels[2]  = Labels[2]  * 0.14545 + 1.40909 # LL     - Range -9 .. -3.5 mapping to 0.1 .. 0.9
-  Labels[3]  = Labels[3]  * 0.16    + 0.9     # ML     - Range -5 .. 0    mapping to 0.1 .. 0.9
-  Labels[4]  = Labels[4]  * 0.16    + 0.1     # MR     - Range  0 .. 5    mapping to 0.1 .. 0.9
-  Labels[5]  = Labels[5]  * 0.14545 - 0.40909 # RR     - Range 3.5 .. 9   mapping to 0.1 .. 0.9
-  Labels[6]  = Labels[6]  / 112     + 0.1     # DistLL - Range  0 ..  90  mapping to 0.1 .. 0.9
-  Labels[7]  = Labels[7]  / 112     + 0.1     # DistMM - Range  0 ..  90  mapping to 0.1 .. 0.9
-  Labels[8]  = Labels[8]  / 112     + 0.1     # DistRR - Range  0 ..  90  mapping to 0.1 .. 0.9
-  Labels[9]  = Labels[9]  * 0.17778 + 1.34445 # L      - Range -7 .. -2.5 mapping to 0.1 .. 0.9
-  Labels[10] = Labels[10] * 0.1149  + 0.6714  # M      - Range -5 ..  2   mapping to 0.1 .. 0.9
-  Labels[11] = Labels[11] * 0.17778 - 0.34445 # R      - Range 2.5 .. 7   mapping to 0.1 .. 0.9
-  Labels[12] = Labels[12] / 112     + 0.1     # DistL  - Range  0 ..  90  mapping to 0.1 .. 0.9
-  Labels[13] = Labels[13] / 112     + 0.1     # DistR  - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[1]  * 0.6     + 0.2)     # Fast   - Range  0 .. 1    mapping to 0.2 .. 0.8
+  OutLabels.append(Labels[2]  * 0.14545 + 1.40909) # LL     - Range -9 .. -3.5 mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[3]  * 0.16    + 0.9)     # ML     - Range -5 .. 0    mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[4]  * 0.16    + 0.1)     # MR     - Range  0 .. 5    mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[5]  * 0.14545 - 0.40909) # RR     - Range 3.5 .. 9   mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[6]  / 112     + 0.1)     # DistLL - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[7]  / 112     + 0.1)     # DistMM - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[8]  / 112     + 0.1)     # DistRR - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[9]  * 0.17778 + 1.34445) # L      - Range -7 .. -2.5 mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[10] * 0.1149  + 0.6714)  # M      - Range -5 ..  2   mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[11] * 0.17778 - 0.34445) # R      - Range 2.5 .. 7   mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[12] / 112     + 0.1)     # DistL  - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[13] / 112     + 0.1)     # DistR  - Range  0 ..  90  mapping to 0.1 .. 0.9
 
-  return Labels
+  return OutLabels
 
 
 def denormalizeLabels(Labels):
+  OutLabels = []
 
-  def setTrue():
-    return tf.constant(1, dtype=float32, shape=[-1, 1])
+  OutLabels.append((Labels[0]  - 0.5)     * 1.1)      # Angle  - Range 0.05 .. 0.95 mapping to -0.5 .. 0.5
+  OutLabels.append(tf.sign(Labels[1] - 0.5)/2 + 0.5)  # Fast   - Conditional switch between 0 and 1
+  OutLabels.append((Labels[2]  - 1.40909) / 0.14545)  # LL     - Range  0.1 .. 0.9  mapping to   -9 .. -3.5
+  OutLabels.append((Labels[3]  - 0.9)     / 0.16)     # ML     - Range  0.1 .. 0.9  mapping to   -5 .. 0
+  OutLabels.append((Labels[4]  - 0.1)     / 0.16)     # MR     - Range  0.1 .. 0.9  mapping to    0 .. 5
+  OutLabels.append((Labels[5]  + 0.40909) / 0.14545)  # RR     - Range  0.1 .. 0.9  mapping to  3.5 .. 9
+  OutLabels.append((Labels[6]  - 0.1)     * 112)      # DistLL - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[7]  - 0.1)     * 112)      # DistMM - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[8]  - 0.1)     * 112)      # DistRR - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[9]  - 1.34445) / 0.17778)  # L      - Range  0.1 .. 0.9  mapping to   -7 .. -2.5
+  OutLabels.append((Labels[10] - 0.6714)  / 0.1149)   # M      - Range  0.1 .. 0.9  mapping to   -5 .. 2
+  OutLabels.append((Labels[11] + 0.34445) / 0.17778)  # R      - Range  0.1 .. 0.9  mapping to  2.5 .. 7
+  OutLabels.append((Labels[12] - 0.1)     * 112)      # DistL  - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[13] - 0.1)     * 112)      # DistR  - Range  0.1 .. 0.9  mapping to    0 .. 90
 
-  def setFalse():
-    return tf.constant(0, dtype=float32, shape=[-1, 1])
-
-  Labels[0]  = (Labels[0]  - 0.5)     * 1.1      # Angle  - Range 0.05 .. 0.95 mapping to -0.5 .. 0.5
-  Labels[1]  = tf.sign(Labels[1] - 0.5)/2 + 0.5  # Fast   - Conditional switch between 0 and 1
-  Labels[2]  = (Labels[2]  - 1.40909) / 0.14545  # LL     - Range  0.1 .. 0.9  mapping to   -9 .. -3.5
-  Labels[3]  = (Labels[3]  - 0.9)     / 0.16     # ML     - Range  0.1 .. 0.9  mapping to   -5 .. 0
-  Labels[4]  = (Labels[4]  - 0.1)     / 0.16     # MR     - Range  0.1 .. 0.9  mapping to    0 .. 5
-  Labels[5]  = (Labels[5]  + 0.40909) / 0.14545  # RR     - Range  0.1 .. 0.9  mapping to  3.5 .. 9
-  Labels[6]  = (Labels[6]  - 0.1)     * 112      # DistLL - Range  0.1 .. 0.9  mapping to    0 .. 90
-  Labels[7]  = (Labels[7]  - 0.1)     * 112      # DistMM - Range  0.1 .. 0.9  mapping to    0 .. 90
-  Labels[8]  = (Labels[8]  - 0.1)     * 112      # DistRR - Range  0.1 .. 0.9  mapping to    0 .. 90
-  Labels[9]  = (Labels[9]  - 1.34445) / 0.17778  # L      - Range  0.1 .. 0.9  mapping to   -7 .. -2.5
-  Labels[10] = (Labels[10] - 0.6714)  / 0.1149   # M      - Range  0.1 .. 0.9  mapping to   -5 .. 2
-  Labels[11] = (Labels[11] + 0.34445) / 0.17778  # R      - Range  0.1 .. 0.9  mapping to  2.5 .. 7
-  Labels[12] = (Labels[12] - 0.1)     * 112      # DistL  - Range  0.1 .. 0.9  mapping to    0 .. 90
-  Labels[13] = (Labels[13] - 0.1)     * 112      # DistR  - Range  0.1 .. 0.9  mapping to    0 .. 90
-
-  return Labels
+  return OutLabels
 
 
 def buildFeatureParser(SerializedExample):
@@ -116,10 +113,6 @@ def buildFeatureParser(SerializedExample):
 
   Blue, Green, Red = tf.split(Image, 3, axis=2)
   Image = tf.concat([Red, Green, Blue], axis=2)
-
-  Angle = Features['Angle']/1.1 + 0.5 # Range -0.5 .. 0.5 and clamping between 0 and 1
-  Angle = tf.minimum(Angle, 1)
-  Angle = tf.maximum(Angle, 0)
 
   Inputs = [
     Image,                                     # 0
