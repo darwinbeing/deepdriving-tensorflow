@@ -30,7 +30,7 @@ def normalizeLabels(Labels):
   Angle      = tf.minimum(Angle, 1)
   OutLabels.append(tf.maximum(Angle, 0))
 
-  OutLabels.append(Labels[1]  * 0.6     + 0.2)     # Fast   - Range  0 .. 1    mapping to 0.2 .. 0.8
+  OutLabels.append(Labels[1])                      # Fast   - Range  0 .. 1    mapping to   0 .. 1
   OutLabels.append(Labels[2]  * 0.14545 + 1.40909) # LL     - Range -9 .. -3.5 mapping to 0.1 .. 0.9
   OutLabels.append(Labels[3]  * 0.16    + 0.9)     # ML     - Range -5 .. 0    mapping to 0.1 .. 0.9
   OutLabels.append(Labels[4]  * 0.16    + 0.1)     # MR     - Range  0 .. 5    mapping to 0.1 .. 0.9
@@ -51,7 +51,7 @@ def denormalizeLabels(Labels):
   OutLabels = []
 
   OutLabels.append((Labels[0]  - 0.5)     * 1.1)      # Angle  - Range 0.05 .. 0.95 mapping to -0.5 .. 0.5
-  OutLabels.append(tf.sign(Labels[1] - 0.5)/2 + 0.5)  # Fast   - Conditional switch between 0 and 1
+  OutLabels.append(Labels[1])                         # Fast   - Range    0 .. 1    mapping to    0 .. 1
   OutLabels.append((Labels[2]  - 1.40909) / 0.14545)  # LL     - Range  0.1 .. 0.9  mapping to   -9 .. -3.5
   OutLabels.append((Labels[3]  - 0.9)     / 0.16)     # ML     - Range  0.1 .. 0.9  mapping to   -5 .. 0
   OutLabels.append((Labels[4]  - 0.1)     / 0.16)     # MR     - Range  0.1 .. 0.9  mapping to    0 .. 5
