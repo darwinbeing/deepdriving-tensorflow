@@ -98,11 +98,12 @@ class CTrainer(internal.CBaseRunner):
       for Batch in range(IterationsPerEpoch):
         Iteration += 1
         SampleCount += BatchSize
-        SummaryResult, OtherResults = self._internalTrainStep(Session, Iteration, Batch, Epoch)
+        self._printTrainingBar(20, Iteration, Epoch, Batch, IterationsPerEpoch)
+        self._internalTrainStep(Session, Iteration, Batch, Epoch)
 
+      SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch)
       StartTime = self._postEpochAction(TrainWriter, SummaryResult, OtherResults, StartTime, Iteration, Epoch, SampleCount)
-
-      SummaryResult = self._internalValidationStep(Session, Iteration, Batch, Epoch)
+      SummaryResult = self._internalValidationStep(Session, Iteration, 0, Epoch)
       self._postValidationAction(ValWriter, SummaryResult, Iteration, Epoch, BatchSize)
 
       self._saveCheckpoint(Epoch, EpochNumber == MaxEpochs)
@@ -159,15 +160,10 @@ class CTrainer(internal.CBaseRunner):
 
 
   def _internalTrainStep(self, Session, Iteration, Batch, Epoch):
-    RunTargets = [self._OptimizerStep, self._Summary]
+    RunTargets = [self._OptimizerStep]
     RawResults = list(self._trainIteration(Session, RunTargets, self._Reader, Iteration, Batch, Epoch))
-    SummaryResult = RawResults[1]
-    if len(RawResults) > 1:
-      OtherResults = RawResults[2:]
-    else:
-      OtherResults = []
 
-    return SummaryResult, OtherResults
+    return RawResults
 
 
   def _postValidationAction(self, Writer, Summary, Iteration, Epoch, SampleCount):
@@ -263,3 +259,11 @@ class CTrainer(internal.CBaseRunner):
         return int(Settings['Validation']['Samples']/self._Reader.getBatchSize())
 
     return 1
+
+  def _printTrainingBar(self, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch):
+    Percent = Batch/IterationsPerEpoch
+    Bar = '.' * int((BarSize*Percent))
+    BarString = str("{:<"+str(BarSize)+"}").format(Bar)
+    print("\r{:>8}: (Training Epoch {}) [{}] - {} / {}".format(Iteration, Epoch, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+    if Batch >= (IterationsPerEpoch-1):
+      print("\r", end='', flush=True)
