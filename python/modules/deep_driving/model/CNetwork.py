@@ -49,10 +49,11 @@ class CNetwork(dl.network.CNetwork):
       # Convolution layer
       with tf.name_scope("Layer_1"):
         Output = dl.layer.createConvolution2d(Input=Output, Size=11, Filters=96, Stride=4, Name="Conv", BiasLR=2.0, Padding="VALID")
+        Output = dl.layer.createBatchNormalization(Input=Output)
         Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
         Output = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool", Padding="VALID")
         dl.helpers.saveFeatureMap(Output, "Features")
-        Output = dl.layer.createLRN(Input=Output, LocalSize=5, Alpha=0.0001, Beta=0.75, Name="LRN")
+        #Output = dl.layer.createLRN(Input=Output, LocalSize=5, Alpha=0.0001, Beta=0.75, Name="LRN")
 
       Groups = 2
       Outputs = dl.layer.createFeatureGroups(Input=Output, NumberOfGroups=Groups)
@@ -60,21 +61,23 @@ class CNetwork(dl.network.CNetwork):
       # Convolution layer
       for i in range(Groups):
         with tf.name_scope("Layer_2_G_{}".format(i)):
-          Output = Outputs[i]
+          Signal = Outputs[i]
 
-          Output = dl.layer.createConvolution2d(Input=Output, Size=5, Filters=256/Groups, Stride=1, Name="Conv", BiasLR=2.0, Padding=2)
-          Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
-          Output = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool", Padding="VALID")
-          dl.helpers.saveFeatureMap(Output, "Features")
-          Output = dl.layer.createLRN(Input=Output, LocalSize=5, Alpha=0.0001, Beta=0.75, Name="LRN")
+          Signal = dl.layer.createConvolution2d(Input=Signal, Size=5, Filters=256/Groups, Stride=1, Name="Conv", BiasLR=2.0, Padding=2)
+          Signal = dl.layer.createBatchNormalization(Input=Signal)
+          Signal = dl.layer.createActivation(Input=Signal, Func="ReLU", Name="ReLU")
+          Signal = dl.layer.createPooling(Input=Signal, Size=3, Stride=2, Pool="MAX", Name="Pool", Padding="VALID")
+          dl.helpers.saveFeatureMap(Signal, "Features")
+          #Signal = dl.layer.createLRN(Input=Signal, LocalSize=5, Alpha=0.0001, Beta=0.75, Name="LRN")
 
-          Outputs[i] = Output
+          Outputs[i] = Signal
 
       Output = dl.layer.mergeFeatureGroups(Outputs)
 
       # Convolution layer
       with tf.name_scope("Layer_3"):
         Output = dl.layer.createConvolution2d(Input=Output, Size=3, Filters=384, Stride=1, Name="Conv", BiasLR=2.0, Padding="SAME")
+        Output = dl.layer.createBatchNormalization(Input=Output)
         Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
         dl.helpers.saveFeatureMap(Output, "Features")
 
@@ -84,25 +87,27 @@ class CNetwork(dl.network.CNetwork):
       # Convolution layer
       for i in range(Groups):
         with tf.name_scope("Layer_4_G_{}".format(i)):
-          Output = Outputs[i]
+          Signal = Outputs[i]
 
-          Output = dl.layer.createConvolution2d(Input=Output, Size=3, Filters=384/Groups, Stride=1, Name="Conv", BiasLR=2.0, Padding="SAME")
-          Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
-          dl.helpers.saveFeatureMap(Output, "Features")
+          Signal = dl.layer.createConvolution2d(Input=Signal, Size=3, Filters=384/Groups, Stride=1, Name="Conv", BiasLR=2.0, Padding="SAME")
+          Signal = dl.layer.createBatchNormalization(Input=Signal)
+          Signal = dl.layer.createActivation(Input=Signal, Func="ReLU", Name="ReLU")
+          dl.helpers.saveFeatureMap(Signal, "Features")
 
-          Outputs[i] = Output
+          Outputs[i] = Signal
 
       # Convolution layer
       for i in range(Groups):
         with tf.name_scope("Layer_5_G_{}".format(i)):
-          Output = Outputs[i]
+          Signal = Outputs[i]
 
-          Output = dl.layer.createConvolution2d(Input=Output, Size=3, Filters=256/Groups, Stride=1, Name="Conv", BiasLR=2.0, Padding="SAME")
-          Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
-          Output = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool", Padding="VALID")
-          dl.helpers.saveFeatureMap(Output, "Features")
+          Signal = dl.layer.createConvolution2d(Input=Signal, Size=3, Filters=256/Groups, Stride=1, Name="Conv", BiasLR=2.0, Padding="SAME")
+          Signal = dl.layer.createBatchNormalization(Input=Signal)
+          Signal = dl.layer.createActivation(Input=Signal, Func="ReLU", Name="ReLU")
+          Signal = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool", Padding="VALID")
+          dl.helpers.saveFeatureMap(Signal, "Features")
 
-          Outputs[i] = Output
+          Outputs[i] = Signal
 
       Output = dl.layer.mergeFeatureGroups(Outputs)
 
@@ -164,5 +169,6 @@ class CNetwork(dl.network.CNetwork):
   def _preprocessImage(self, Image, Name = "Preprocessing"):
     with tf.name_scope(Name):
       self.log("* Preprocess Image")
+      Image -= 0.5
       Image = dl.layer.createBatchNormalization(Input=Image)
       return Image
