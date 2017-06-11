@@ -37,7 +37,7 @@ class CTrainer(internal.CBaseRunner):
       Variables, Tensors = helpers.getTrainableVariables()
       print("Current Model has {} parameters in {} trainable tensors.".format(Variables, Tensors))
 
-      self.reset()
+      self.reset(self.getCheckpointDir())
       self._Summary = tf.summary.merge_all()
       self._IsReady = True
 
@@ -57,9 +57,9 @@ class CTrainer(internal.CBaseRunner):
       print("Do not store any summary")
 
     # Store settings
-    if not os.path.exists(self._Settings['Trainer']['CheckpointPath']):
-      os.makedirs(self._Settings['Trainer']['CheckpointPath'])
-    Filename = os.path.join(self._Settings['Trainer']['CheckpointPath'], "train.cfg")
+    if not os.path.exists(self.getCheckpointDir()):
+      os.makedirs(self.getCheckpointDir())
+    Filename = os.path.join(self.getCheckpointDir(), "train.cfg")
     print("Store training settings in file {}".format(Filename))
     with open(Filename, "w") as File:
       File.write(str(self._Settings))
@@ -254,7 +254,7 @@ class CTrainer(internal.CBaseRunner):
     # You can overrite this function to specify a checkpoint directory
     if 'Trainer' in Settings:
       if 'CheckpointPath' in Settings['Trainer']:
-        return Settings['Trainer']['CheckpointPath']
+        return os.path.join(Settings['Trainer']['CheckpointPath'], "State_{}".format(self._Network.State))
 
     return None
 

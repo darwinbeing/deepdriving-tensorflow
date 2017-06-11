@@ -15,6 +15,7 @@ class CBaseRunner():
     self._EpochCount = 0
     self._SummaryDir = None
     self._LastCheckpointFile = "unknown"
+    self._Network = None
 
     if Settings is None:
       self._Settings = {}
@@ -27,9 +28,10 @@ class CBaseRunner():
     self._Session = tf.Session()
     self._Saver = None
 
-  def reset(self):
+  def reset(self, CheckpointDir):
+    debug.Assert(self._Network != None, "There is no network defined for this Runner.")
     self._Saver = tf.train.Saver(max_to_keep=100)
-    self._Session.run(tf.global_variables_initializer())
+    self._Network.initVariables(self._Session, CheckpointDir)
     self._EpochCount = 0
     self._LastCheckpointFile = "unknown"
 

@@ -16,7 +16,7 @@ class CModel():
     ErrorMeasFactory = internal.getFactory(ErrorMeasFactoryArg, error.CFactory, error.CMeasurement)
 
     Reader  = ReaderFactory.create(Settings, IsTraining = True)
-    Network = self._NetworkFactory.create(Reader, Settings)
+    Network = self._NetworkFactory.create(Reader, 0, Settings)
     ErrorMeas = ErrorMeasFactory.create(Network, Reader, Settings)
 
     Trainer = TrainerFactory.create(Network, Reader, ErrorMeas, Settings)
@@ -30,7 +30,7 @@ class CModel():
     ErrorMeasFactory   = internal.getFactory(ErrorMeasFactoryArg, error.CFactory, error.CMeasurement)
 
     Reader  = ReaderFactory.create(Settings, IsTraining = False)
-    Network = self._NetworkFactory.create(Reader, Settings)
+    Network = self._NetworkFactory.create(Reader, 0, Settings)
     ErrorMeas = ErrorMeasFactory.create(Network, Reader, Settings)
 
     Evaluator = EvaluatorFactory.create(Network, Reader, ErrorMeas, Settings)

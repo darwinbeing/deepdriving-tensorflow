@@ -5,5 +5,5 @@ class CFactory(CBaseFactory):
   def __init__(self, ReaderClass):
     super().__init__(ReaderClass, CNetwork)
 
-  def create(self, Reader, Settings = None):
-    return self._Class(Reader, Settings)
+  def create(self, Reader, State = 0, Settings = None):
+    return self._Class(Reader, State, Settings)

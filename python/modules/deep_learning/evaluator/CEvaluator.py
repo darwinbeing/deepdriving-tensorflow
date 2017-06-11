@@ -34,7 +34,7 @@ class CEvaluator(internal.CBaseRunner):
       Variables, Tensors = helpers.getTrainableVariables()
       print("Current Model has {} parameters in {} trainable tensors.".format(Variables, Tensors))
 
-      self.reset()
+      self.reset(self.getCheckpointDir())
       self._Summary = tf.summary.merge_all()
       self._IsReady = True
 
@@ -217,7 +217,7 @@ class CEvaluator(internal.CBaseRunner):
     # You can overrite this function to specify a checkpoint directory
     if 'Evaluator' in Settings:
       if 'CheckpointPath' in Settings['Evaluator']:
-        return Settings['Evaluator']['CheckpointPath']
+        return os.path.join(Settings['Evaluator']['CheckpointPath'], "State_{}".format(self._Network.State))
 
     return None
 

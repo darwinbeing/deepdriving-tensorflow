@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 import debug
 
 from .. import data
@@ -5,7 +7,9 @@ from .. import helpers
 
 
 class CNetwork():
-  def __init__(self, Reader, Settings = None):
+  def __init__(self, Reader, State = 0, Settings = None):
+    self._NetworkState = State
+    print("Create Network for State {}".format(self.State))
     if Settings is None:
       self._Settings = {}
     else:
@@ -28,6 +32,13 @@ class CNetwork():
 
       self._IsReady = True
 
+  def initVariables(self, Session, CheckpointDir):
+    print("Init network variables by random-values...")
+    Session.run(tf.global_variables_initializer())
+
+  @property
+  def State(self):
+    return self._NetworkState
 
   def getOutputs(self):
     return self._getOutputs(self._Structure)
