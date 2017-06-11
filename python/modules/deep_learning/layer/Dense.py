@@ -31,10 +31,10 @@ from .. import helpers
 from .Setup import Setup
 from .Activation import createActivation
 
-def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
+def createDense(Input, Size, Name="Dense", WeightDecay = 1.0, WeightLR = 1.0, BiasLR = 1.0):
   Size = int(Size)
 
-  def create(Input, Size, WeightDecay):
+  def create(Input, Size, WeightDecay, WeightLR, BiasLR):
     InputShape = Input.shape
     if len(InputShape) > 2:
       InputLength = int(np.prod(InputShape[1:]))
@@ -45,8 +45,8 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
       InputLength = int(InputShape[1])
 
     X = Input
-    W = helpers.createVariable(Shape=[InputLength, Size], Name="Weights", WeightDecayFactor=WeightDecay, Initializer=Setup.Initializer['Weights'])
-    B = helpers.createBias(Shape=[Size], Name="Bias", Initializer=Setup.Initializer['Bias'])
+    W = helpers.createVariable(Shape=[InputLength, Size], Name="Weights", WeightDecayFactor=WeightDecay, Initializer=Setup.Initializer['Weights'], LearningRate=WeightLR)
+    B = helpers.createBias(Shape=[Size], Name="Bias", Initializer=Setup.Initializer['Bias'], LearningRate=BiasLR)
 
     S = tf.add(tf.matmul(X, W), B, name="Signal")
 
@@ -60,21 +60,21 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0):
   if Name != None:
     Setup.Log(" * Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, Size))
     with tf.name_scope(Name):
-      Signal = create(Input, Size, WeightDecay)
+      Signal = create(Input, Size, WeightDecay, WeightLR, BiasLR)
 
   else:
-    Signal = create(Input, Size, WeightDecay)
+    Signal = create(Input, Size, WeightDecay, WeightLR, BiasLR)
 
   return Signal
 
 
-def createFullyConnected(Input, Size, Func="ReLU", Name="FC", WeightDecay=1.0):
+def createFullyConnected(Input, Size, Func="ReLU", Name="FC", WeightDecay=1.0, WeightLR = 1.0, BiasLR = 1.0):
   Output = Input
 
   with tf.name_scope(Name):
     Setup.Log(" * Create Fully-Connected-Layer \"{}\" with {} output-nodes.".format(Name, Size))
-    Output = createDense(Input=Output, Size=Size, Name=None, WeightDecay=WeightDecay)
-    Output = createBatchNormalization(Input=Output)
+    Output = createDense(Input=Output, Size=Size, Name=None, WeightDecay=WeightDecay, WeightLR = WeightLR, BiasLR = BiasLR)
+    #Output = createBatchNormalization(Input=Output)
     Setup.Log("   * With Activation {}".format(Func))
     Output = createActivation(Input=Output, Func=Func)
 

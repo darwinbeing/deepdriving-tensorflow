@@ -21,8 +21,18 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .Setup import Setup
-from .Dense import createDense, createFullyConnected, createDropout, createBatchNormalization
-from .Activation import createActivation
-from .Convolution import createConvolution2d, createPooling, createLRN, createFeatureGroups, mergeFeatureGroups
-from .LearningRate import LearningRates
+class CLearningRate():
+  def __init__(self):
+    self._ScaleList = {}
+
+  def set(self, Name, Scale):
+    self._ScaleList[Name] = Scale
+
+
+  def get(self, Name):
+    if Name in self._ScaleList.keys():
+      return self._ScaleList[Name]
+
+    return None
+
+LearningRates = CLearningRate()

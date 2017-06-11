@@ -29,14 +29,19 @@ from .Setup import Setup
 from .Activation import createActivation
 
 
-def createConvolution2d(Input, Size, Filters, Stride = 1, Name="Conv2D", WeightDecay=1.0, Padding="SAME"):
+def createConvolution2d(Input, Size, Filters, Stride = 1, Name="Conv2D", WeightDecay=1.0, Padding="SAME", KernelLR = 1.0, BiasLR = 1.0):
   InputChannels = int(Input.shape[3])
   KernelShape   = [int(Size), int(Size), InputChannels, int(Filters)]
   StrideShape   = [1, int(Stride), int(Stride), 1]
 
   def create(Input, KernelShape, Filters, StrideShape, Padding, WeightDecay):
-    Kernel = helpers.createKernel2D(Shape=KernelShape, Initializer=Setup.Initializer['Kernel2D'], WeightDecayFactor=WeightDecay)
-    Bias   = helpers.createBias(Shape=[Filters], Name="Bias", Initializer=Setup.Initializer['Bias'])
+    if isinstance(Padding, int):
+      print("   * Use {} Padding pixel".format(Padding))
+      Input = tf.pad(Input, [[0, 0], [Padding, Padding], [Padding, Padding], [0, 0]], "SYMMETRIC")
+      Padding = "VALID"
+
+    Kernel = helpers.createKernel2D(Shape=KernelShape, Initializer=Setup.Initializer['Kernel2D'], WeightDecayFactor=WeightDecay, LearningRate=KernelLR)
+    Bias   = helpers.createBias(Shape=[Filters], Name="Bias", Initializer=Setup.Initializer['Bias'], LearningRate=BiasLR)
 
     Output = Input
     Output = tf.nn.conv2d(input=Output, filter=Kernel, strides=StrideShape, padding=Padding)
@@ -104,5 +109,50 @@ def createLRN(Input, LocalSize, Alpha, Beta, Name="LRN"):
   else:
     Setup.Log("   * LRN: LocalSize {}; Alpha {}; Beta {}".format(LocalSize, Alpha, Beta))
     Output = create(Input, LocalSize, Alpha, Beta)
+
+  return Output
+
+
+def createFeatureGroups(Input, NumberOfGroups):
+  Outputs = []
+
+  Maps = int(Input.shape[3])
+  Groups = []
+  MapsPerGroup = int(Maps/NumberOfGroups)
+  for i in range(NumberOfGroups):
+    if (i+1) == NumberOfGroups:
+      Groups.append(Maps - i*MapsPerGroup)
+    else:
+      Groups.append(MapsPerGroup)
+
+  LastMap = 0
+  for i in range(NumberOfGroups):
+    NewLastMap = LastMap + Groups[i]
+    Outputs.append(Input[:,:,:,LastMap:NewLastMap])
+
+  print(" * Create {} individual feature groups:".format(NumberOfGroups))
+  for Output in Outputs:
+    print("   * Group {} with shape {}".format(i+1, Output.shape))
+
+  return Outputs
+
+
+def mergeFeatureGroups(Inputs):
+
+  BatchSize = 0
+  Height = 0
+  Width = 0
+  GroupSize = 0
+  GroupSum = 0
+  for Input in Inputs:
+    GroupSize = int(Input.shape[3])
+    BatchSize = int(Input.shape[0])
+    Height    = int(Input.shape[1])
+    Width     = int(Input.shape[2])
+    GroupSum += GroupSize
+
+  print(" * Merge {} groups with shape {}:".format(len(Inputs), (BatchSize, Height, Width, GroupSize)))
+  Output = tf.reshape(tf.stack(Inputs, axis=3), shape=[BatchSize, Height, Width, GroupSum])
+  print("   * To Output-Shape: {}".format(Output.shape))
 
   return Output
