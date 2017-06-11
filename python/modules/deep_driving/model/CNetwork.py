@@ -28,7 +28,8 @@ import tensorflow as tf
 
 class CNetwork(dl.network.CNetwork):
   def _build(self, Inputs, Settings):
-    dl.layer.setupLogger(self.log)
+    dl.layer.Setup.setupLogger(self.log)
+    dl.layer.Setup.setupIsTraining(Inputs['IsTraining'])
 
     Scope = "Network"
 
@@ -42,14 +43,64 @@ class CNetwork(dl.network.CNetwork):
       self.log(" * network Input-Shape: {}".format(Input.shape))
 
 
-      # Fully Connected Layer - 1024
-      Output = dl.layer.createFullyConnected(Input=Output, Size=1024, Func="ReLU", Name="FC_1")
+      # Convolution layer
+      with tf.name_scope("Layer_1"):
+        Output = dl.layer.createConvolution2d(Input=Output, Size=11, Filters=96, Stride=4, Name="Conv")
+        Output = dl.layer.createBatchNormalization(Input=Output, Name="BN")
+        Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
+        Output = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool")
+        dl.helpers.saveFeatureMap(Output, "Features")
+        #Output = dl.layer.createLRN(Input=Output, LocalSize=5, Alpha=0.0001, Beta=0.75, Name="LRN")
 
-      # Fully Connected Layer - 256
-      Output = dl.layer.createFullyConnected(Input=Output, Size=256, Func="ReLU", Name="FC_2")
+      # Convolution layer
+      with tf.name_scope("Layer_2"):
+        Output = dl.layer.createConvolution2d(Input=Output, Size=5, Filters=256, Stride=1, Name="Conv")
+        Output = dl.layer.createBatchNormalization(Input=Output, Name="BN")
+        Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
+        Output = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool")
+        dl.helpers.saveFeatureMap(Output, "Features")
+        #Output = dl.layer.createLRN(Input=Output, LocalSize=5, Alpha=0.0001, Beta=0.75, Name="LRN")
 
-      # Output Layer - 14
-      Output = dl.layer.createDense(Input=Output, Size=OutputNodes, Name="Dense_3")
+      # Convolution layer
+      with tf.name_scope("Layer_3"):
+        Output = dl.layer.createConvolution2d(Input=Output, Size=3, Filters=384, Stride=1, Name="Conv")
+        Output = dl.layer.createBatchNormalization(Input=Output, Name="BN")
+        Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
+        dl.helpers.saveFeatureMap(Output, "Features")
+
+      # Convolution layer
+      with tf.name_scope("Layer_4"):
+        Output = dl.layer.createConvolution2d(Input=Output, Size=3, Filters=384, Stride=1, Name="Conv")
+        Output = dl.layer.createBatchNormalization(Input=Output, Name="BN")
+        Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
+        dl.helpers.saveFeatureMap(Output, "Features")
+
+      # Convolution layer
+      with tf.name_scope("Layer_5"):
+        Output = dl.layer.createConvolution2d(Input=Output, Size=3, Filters=256, Stride=1, Name="Conv")
+        Output = dl.layer.createBatchNormalization(Input=Output, Name="BN")
+        Output = dl.layer.createActivation(Input=Output, Func="ReLU", Name="ReLU")
+        Output = dl.layer.createPooling(Input=Output, Size=3, Stride=2, Pool="MAX", Name="Pool")
+        dl.helpers.saveFeatureMap(Output, "Features")
+
+      # Fully Connected Layer
+      with tf.name_scope("Layer_6"):
+        Output = dl.layer.createFullyConnected(Input=Output, Size=4096, Func="ReLU", Name="FC")
+        Output = dl.layer.createDropout(Input=Output, Ratio=0.5, Name="Drop")
+
+      # Fully Connected Layer
+      with tf.name_scope("Layer_7"):
+        Output = dl.layer.createFullyConnected(Input=Output, Size=4096, Func="ReLU", Name="FC")
+        Output = dl.layer.createDropout(Input=Output, Ratio=0.5, Name="Drop")
+
+      # Fully Connected Layer
+      with tf.name_scope("Layer_8"):
+        Output = dl.layer.createFullyConnected(Input=Output, Size=256, Func="ReLU", Name="FC")
+        Output = dl.layer.createDropout(Input=Output, Ratio=0.5, Name="Drop")
+
+      # Output Layer
+      with tf.name_scope("Output"):
+        Output = dl.layer.createFullyConnected(Input=Output, Size=OutputNodes, Func="Sigmoid", Name="FC")
 
 
       self.log(" * network Output-Shape: {}".format(Output.shape))
@@ -91,4 +142,5 @@ class CNetwork(dl.network.CNetwork):
     with tf.name_scope(Name):
       self.log("* Preprocess Image by adding -0.5")
       Image = Image - 0.5
+      Image = dl.layer.createBatchNormalization(Input=Image)
       return Image
