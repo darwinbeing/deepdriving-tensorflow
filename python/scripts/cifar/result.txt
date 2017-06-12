@@ -1,10 +1,8 @@
 # Evaluation of Network:
 Creating network Graph...
- * network Input-Shape: (256, 32, 32, 3)
- * Create Dense-Layer "Dense" with 10 output-nodes.
-   * Reshape layer input (256, 32, 32, 3) to vector with 3072 elements.
- * network Output-Shape: (256, 10)
-Finished to build network with 30730 trainable variables in 2 tensors.
+ * network Input-Shape: (64, 32, 32, 3)
+ * network Output-Shape: (64, 10)
+Finished to build network with 1756426 trainable variables in 10 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_30.ckpt
@@ -39,7 +37,7 @@ Finished to build network with 30730 trainable variables in 2 tensors.
 # Using Evaluation-Settings:
 {
   "Data": {
-    "BatchSize": 256,
+    "BatchSize": 64,
     "ImageHeight": 32,
     "ImageWidth": 32,
     "ValidatingPath": "C:/Data/Cifar-10/validation"
@@ -53,4 +51,4 @@ Finished to build network with 30730 trainable variables in 2 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 64.05%
+ *  Error: 38.39%
