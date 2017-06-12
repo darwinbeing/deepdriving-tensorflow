@@ -94,7 +94,7 @@ class CSetup():
 
   @property
   def StoreOutputAsText(self):
-    return self._StoreOutputAsText
+    return self._StoreOutputAsText and helpers.checkVersion(1, 2)
 
   @property
   def Log(self):
