@@ -21,11 +21,46 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CNetwork import CNetwork
-from .CTrainer import CTrainer
-from .CReader import CReader
-from .CError import CError
-from .CPrinter import CPrinter
-from .CMerger import CMerger
-from .CEvaluator import CEvaluator
-from . import cifar
+import misc.settings
+import deep_learning as dl
+import deep_driving.model as model
+import deep_driving.model.cifar as cifar
+
+class CEvalSettings(misc.settings.CSettings):
+  _Dict = {
+  'Data': {
+    'ValidatingPath': "C:/Data/Cifar-10/validation",
+    'BatchSize': 64,
+    'ImageWidth': 32,
+    'ImageHeight': 32
+  },
+  'Evaluator': {
+    'EpochSize': 1000,
+    'NumberOfEpochs': 10,
+    'CheckpointPath': 'Checkpoint',
+  },
+  }
+
+SettingFile = "eval.cfg"
+
+def main():
+  Settings = CEvalSettings(SettingFile)
+
+  Model = dl.CModel(cifar.CNetwork)
+
+  Evaluator = Model.createEvaluator(model.CEvaluator, cifar.CReader, cifar.CError, Settings)
+  Evaluator.addPrinter(dl.printer.CProgressPrinter(LossName="Loss/Loss", ErrorName="ClassError/Error"))
+  Evaluator.addSummaryMerger(cifar.CMerger())
+
+  Evaluator.restore()
+  #Evaluator.restore(3)
+
+  Error = Evaluator.eval()
+  print("Mean Absolute Error: {:.2f}".format(Error))
+
+  Summary = Evaluator.getSummary()
+  Evaluator.getPrinter().printFullSummary(Summary)
+  Evaluator.storeResults('result.txt')
+
+if __name__ == "__main__":
+  main()

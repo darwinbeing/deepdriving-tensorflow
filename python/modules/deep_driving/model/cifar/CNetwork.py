@@ -21,11 +21,55 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CNetwork import CNetwork
-from .CTrainer import CTrainer
-from .CReader import CReader
-from .CError import CError
-from .CPrinter import CPrinter
-from .CMerger import CMerger
-from .CEvaluator import CEvaluator
-from . import cifar
+import deep_learning as dl
+import numpy as np
+import tensorflow as tf
+
+
+class CNetwork(dl.network.CNetwork):
+  def _build(self, Inputs, Settings):
+    dl.layer.Setup.setupLogger(self.log)
+    dl.layer.Setup.setupIsTraining(Inputs['IsTraining'])
+    dl.layer.Setup.setupHistogram(False)
+    dl.layer.Setup.setupOutputText(True)
+    dl.layer.Setup.setupFeatureMap(True)
+
+    Scope = "Network"
+
+    with tf.variable_scope(Scope):
+      self.log("Creating network Graph...")
+
+      Input       = self._preprocessImage(Inputs['Image'])
+      Output = Input
+
+      self.log(" * network Input-Shape: {}".format(Input.shape))
+
+      # Output Layer
+      with tf.name_scope("Output"):
+        OutputNodes = 10
+        Output = dl.layer.createDense(Input=Output, Size=OutputNodes)
+
+
+      self.log(" * network Output-Shape: {}".format(Output.shape))
+
+      Variables, Tensors = dl.helpers.getTrainableVariablesInScope(Scope)
+      self.log("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
+
+    Structure = {
+      "Input":  Input,
+      "Output": Output
+    }
+    return  Structure
+
+
+  def _getOutputs(self, Structure):
+    return {'Output': Structure['Output']}
+
+## Custom methods
+
+  def _preprocessImage(self, Image, Name = "Preprocessing"):
+    with tf.name_scope(Name):
+      #self.log("* Preprocess Image")
+      #Image -= 0.5
+      #Image = dl.layer.createBatchNormalization(Input=Image)
+      return Image

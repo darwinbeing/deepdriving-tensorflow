@@ -1,0 +1,56 @@
+# Evaluation of Network:
+Creating network Graph...
+ * network Input-Shape: (256, 32, 32, 3)
+ * Create Dense-Layer "Dense" with 10 output-nodes.
+   * Reshape layer input (256, 32, 32, 3) to vector with 3072 elements.
+ * network Output-Shape: (256, 10)
+Finished to build network with 30730 trainable variables in 2 tensors.
+
+# Using Checkpoint:
+* Checkpoint\State_0\model_30.ckpt
+
+# Using Training-Settings:
+{
+  "Data": {
+    "BatchSize": 64,
+    "ImageHeight": 32,
+    "ImageWidth": 32,
+    "TrainingPath": "C:/Data/Cifar-10/training",
+    "ValidatingPath": "C:/Data/Cifar-10/validation"
+  },
+  "Optimizer": {
+    "EpochsPerDecay": 10,
+    "LearnRateDecay": 0.95,
+    "StartingLearningRate": 0.005,
+    "WeightDecay": 0.004
+  },
+  "Trainer": {
+    "CheckpointEpochs": 2,
+    "CheckpointPath": "Checkpoint",
+    "EpochSize": 50000,
+    "NumberOfEpochs": 30,
+    "SummaryPath": "Summary"
+  },
+  "Validation": {
+    "Samples": 10000
+  }
+}
+
+# Using Evaluation-Settings:
+{
+  "Data": {
+    "BatchSize": 256,
+    "ImageHeight": 32,
+    "ImageWidth": 32,
+    "ValidatingPath": "C:/Data/Cifar-10/validation"
+  },
+  "Evaluator": {
+    "CheckpointPath": "Checkpoint",
+    "EpochSize": 1000,
+    "NumberOfEpochs": 10
+  }
+}
+
+# Evaluation Results:
+Full Summary:
+ *  Error: 64.05%
