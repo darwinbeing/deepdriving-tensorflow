@@ -29,6 +29,7 @@ class CSetup():
     self._IsTraining = None
     self._StoreHistogram = True
     self._StoreOutputAsText = True
+    self._StoreSparsity = True
     self._Initializer = {
       'Weights': helpers.XavierInitializer(),
       'Bias': helpers.ConstantInitializer(0),
@@ -70,6 +71,18 @@ class CSetup():
     else:
       print("* Do not store Feature Maps")
 
+
+  def setupStoreSparsity(self, IsEnabled):
+    self._StoreSparsity = IsEnabled
+    if self._StoreSparsity:
+      print("* Store the sparsity of parameters")
+    else:
+      print("* Do not store the sparsity of parameters")
+
+
+  @property
+  def StoreSparsity(self):
+    return self._StoreSparsity
 
   @property
   def StoreFeatureMap(self):

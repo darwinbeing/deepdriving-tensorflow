@@ -33,6 +33,7 @@ class CNetwork(dl.network.CNetwork):
     dl.layer.Setup.setupHistogram(False)
     dl.layer.Setup.setupOutputText(True)
     dl.layer.Setup.setupFeatureMap(True)
+    dl.layer.Setup.setupStoreSparsity(True)
 
     Scope = "Network"
 

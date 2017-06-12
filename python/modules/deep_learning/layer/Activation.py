@@ -52,4 +52,7 @@ def createActivation(Input, Func="ReLU", Name=None):
   if Setup.StoreHistogram:
     tf.summary.histogram("Activation", A)
 
+  if Setup.StoreSparsity:
+    tf.summary.scalar("Activation/Sparsity", tf.nn.zero_fraction(A))
+
   return A
