@@ -122,7 +122,7 @@ class CNetwork(dl.network.CNetwork):
       reshape = tf.reshape(pool2, [FLAGS.batch_size, -1])
       dim = reshape.get_shape()[1].value
       weights = _variable_with_weight_decay('weights', shape=[dim, 384],
-                                            stddev=0.04, wd=0.004)
+                                            stddev=0.04, wd=1.0)
       biases = _variable_on_cpu('biases', [384], tf.constant_initializer(0.1))
       local3 = tf.nn.relu(tf.matmul(reshape, weights) + biases, name=scope.name)
       _activation_summary(local3)
@@ -130,7 +130,7 @@ class CNetwork(dl.network.CNetwork):
     # local4
     with tf.variable_scope('local4') as scope:
       weights = _variable_with_weight_decay('weights', shape=[384, 192],
-                                            stddev=0.04, wd=0.004)
+                                            stddev=0.04, wd=1.0)
       biases = _variable_on_cpu('biases', [192], tf.constant_initializer(0.1))
       local4 = tf.nn.relu(tf.matmul(local3, weights) + biases, name=scope.name)
       _activation_summary(local4)
