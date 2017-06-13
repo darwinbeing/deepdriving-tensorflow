@@ -21,8 +21,13 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CError import CError
-from .CMerger import CMerger
-from .CNetwork import CNetwork
-from .CReader import CReader
-from .CMeanCalculator import CMeanCalculator
+import deep_learning as dl
+
+class CMeanCalculator(dl.calculator.CMeanCalculator):
+  def _getImage(self, Reader):
+    return Reader.getOutputs()['Image']
+
+  def _calculationIteration(self, Session, RunTargets, Reader, Iteration, Batch, Epoch):
+    Data = Reader.readBatch(Session)
+    AllTargets = RunTargets
+    return Session.run(AllTargets, feed_dict = Data)

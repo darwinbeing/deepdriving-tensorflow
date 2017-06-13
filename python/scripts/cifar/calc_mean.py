@@ -23,7 +23,6 @@
 
 import misc.settings
 import deep_learning as dl
-import deep_driving.model as model
 import deep_driving.model.cifar as cifar
 
 class CCalcSettings(misc.settings.CSettings):
@@ -37,8 +36,8 @@ class CCalcSettings(misc.settings.CSettings):
   },
   'MeanCalculator': {
     'EpochSize': 1,
-    'NumberOfEpochs': 1,
-    'MeanFile': 'image-mean',
+    'NumberOfEpochs': 2,
+    'MeanFile': 'image-mean.tfrecord',
   },
   }
 
@@ -47,11 +46,20 @@ SettingFile = "calc_mean.cfg"
 def main():
   Settings = CCalcSettings(SettingFile)
 
-  Calculator = dl.calculator.CMeanCalculator(cifar.CReader, Settings)
+  Calculator = cifar.CMeanCalculator(cifar.CReader, Settings)
 
   Calculator.calculate()
   Calculator.store()
 
+  MeanReader = dl.data.CMeanReader()
+  MeanReader.read(Settings['MeanCalculator']['MeanFile'])
+
+  print(MeanReader.MeanColor)
+  print(MeanReader.VarColor)
+
+  import cv2
+  cv2.imshow("MeanImage", cv2.resize(MeanReader.MeanImage[...,::-1], (128, 128)))
+  cv2.waitKey(0)
 
 if __name__ == "__main__":
   main()

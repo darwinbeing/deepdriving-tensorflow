@@ -99,6 +99,19 @@ class CBaseRunner():
     return self._getSummaryDir(self._Settings)
 
 
+  def _printProgressBar(self, PrefixName, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch):
+    Percent = Batch/IterationsPerEpoch
+    Bar = '.' * int((BarSize*Percent))
+    BarString = str("{:<"+str(BarSize)+"}").format(Bar)
+
+    Prefix = str("{} Epoch {}").format(PrefixName, Epoch)
+
+    print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+    print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
+    if Batch >= (IterationsPerEpoch-1):
+      print("\r", end='', flush=True)
+
+
 def saveCheckpointToFile(Saver, Session, Filename, Tries = 5):
   print("Store current model as checkpoint: {}".format(Filename))
   IsStored = False
