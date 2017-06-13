@@ -36,12 +36,11 @@ class CNetwork(dl.network.CNetwork):
     dl.layer.Setup.setupFeatureMap(True)
     dl.layer.Setup.setupStoreSparsity(True)
 
-    Input = self._preprocessImage(Inputs['Image'])
-
     Scope = "Network"
     with tf.variable_scope(Scope):
       self.log("Creating network Graph...")
 
+      Input = Inputs['Image']
       Output = Input
 
       self.log(" * network Input-Shape: {}".format(Input.shape))
@@ -64,25 +63,6 @@ class CNetwork(dl.network.CNetwork):
     return {'Output': Structure['Output']}
 
 ## Custom methods
-
-  def _preprocessImage(self, Image, Name = "Preprocessing"):
-    MeanReader = dl.data.CMeanReader()
-    MeanReader.read(self._Settings['PreProcessing']['MeanFile'])
-    with tf.name_scope(Name):
-      self.log("* Preprocess Image (Per-Image Standardization)")
-
-      MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[1]), int(Image.shape[2])))
-      VarImage  = tf.image.resize_images(MeanReader.VarImage,  size=(int(Image.shape[1]), int(Image.shape[2])))
-      #Image = tf.subtract(Image, MeanImage)
-      #Image = tf.div(Image, tf.sqrt(VarImage))
-
-      #Image = dl.layer.createBatchNormalization(Input=Image)
-
-      tf.summary.image("Preprocessed", Image)
-      tf.summary.image("MeanImage", tf.reshape(MeanImage, shape=[1, int(Image.shape[1]), int(Image.shape[2]), int(Image.shape[3])]))
-
-    return Image
-
 
   def _buildNetwork(self, images):
 

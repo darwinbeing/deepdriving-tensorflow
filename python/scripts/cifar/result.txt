@@ -1,5 +1,4 @@
 # Evaluation of Network:
-* Preprocess Image (Per-Image Standardization)
 Creating network Graph...
  * network Input-Shape: (64, 32, 32, 3)
  * network Output-Shape: (64, 10)
@@ -58,4 +57,4 @@ Finished to build network with 1756426 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 29.54%
+ *  Error: 28.59%

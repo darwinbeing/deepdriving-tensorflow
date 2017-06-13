@@ -100,9 +100,23 @@ class CReader(dl.data.CReader):
 
   def _buildPreprocessing(self, Settings, Inputs, IsTraining):
     if self._IsPreprocessingEnabled:
-      print("* Perform per-image standardization")
-      Inputs[0] = tf.image.per_image_standardization(Inputs[0])
+      MeanReader = dl.data.CMeanReader()
+      MeanReader.read(Settings['PreProcessing']['MeanFile'])
 
+      with tf.name_scope("Preprocessing"):
+        print("* Perform per-pixel standardization")
+
+        Image = Inputs[0]
+        MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+
+        Image = tf.subtract(Image, MeanImage)
+        Image = tf.div(Image, tf.sqrt(VarImage))
+
+        print("* Perform per-image standardization")
+        Image = tf.image.per_image_standardization(Image)
+
+        Inputs[0] = Image
     return Inputs
 
 
