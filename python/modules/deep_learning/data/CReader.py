@@ -4,10 +4,11 @@ from .. import helpers
 
 
 class CReader():
-  def __init__(self, Settings = None, IsTraining = False):
+  def __init__(self, Settings = None, IsTraining = False, IsPreprocessing=True):
     self._IsReady =  False
     self._Inputs = []
     self._IsTraining = IsTraining
+    self._IsPreprocessingEnabled = IsPreprocessing
     if Settings != None:
       self._Settings = Settings
     else:
@@ -23,9 +24,19 @@ class CReader():
   def _prepare(self):
     if not self._IsReady:
       self._Inputs = self._build(self._Settings)
+
+      if self.IsPreprocessing:
+        print("* Enable Data Preprocessing")
+      else:
+        print("* Disable Data Preprocessing")
+
       self._addSummaries(self._Inputs)
       self._IsReady = True
 
+
+  @property
+  def IsPreprocessing(self):
+    return self._IsPreprocessingEnabled
 
   @property
   def IsTraining(self):
@@ -55,6 +66,9 @@ class CReader():
     # You can overrite this function to add the inputs to the summary
     pass
 
+  def _buildPreprocessing(self, Settings, Inputs, IsTraining):
+    # You can overrite this function to add your own preprocessing
+    return Inputs
 
   def _createBatch(self, Inputs, BatchSize, IsShuffle):
     #ReshapedBatchedInputs = []

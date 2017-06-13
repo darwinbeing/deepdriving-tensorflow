@@ -69,10 +69,11 @@ class CNetwork(dl.network.CNetwork):
     MeanReader = dl.data.CMeanReader()
     MeanReader.read(self._Settings['PreProcessing']['MeanFile'])
     with tf.name_scope(Name):
-      self.log("* Preprocess Image (Per-Pixel Mean-Substraction)")
+      self.log("* Preprocess Image (Per-Image Standardization)")
+
       MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[1]), int(Image.shape[2])))
-      #VarImage  = tf.image.resize_images(MeanReader.VarImage,  size=(int(Image.shape[1]), int(Image.shape[2])))
-      Image = tf.subtract(Image, MeanImage)
+      VarImage  = tf.image.resize_images(MeanReader.VarImage,  size=(int(Image.shape[1]), int(Image.shape[2])))
+      #Image = tf.subtract(Image, MeanImage)
       #Image = tf.div(Image, tf.sqrt(VarImage))
 
       #Image = dl.layer.createBatchNormalization(Input=Image)

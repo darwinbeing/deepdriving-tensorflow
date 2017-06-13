@@ -5,7 +5,7 @@ import re
 import tensorflow as tf
 
 class CReader(dl.data.CReader):
-  def __init__(self, Settings, IsTraining):
+  def __init__(self, Settings, IsTraining, IsPreprocessing):
     self._BatchesInQueue = 10
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
@@ -16,7 +16,7 @@ class CReader(dl.data.CReader):
       "IsTraining": tf.placeholder(dtype=tf.bool, name="IsTraining"),
       "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
     }
-    super().__init__(Settings, IsTraining)
+    super().__init__(Settings, IsTraining, IsPreprocessing)
 
 
   def _getOutputs(self, Inputs):
@@ -32,13 +32,15 @@ class CReader(dl.data.CReader):
         TrainingFilenames     = self._getFilenames(Settings['Data']['TrainingPath'])
         TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
         TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
-        TrainingBatchedInputs = self._createBatch(TrainingInputs, self.getBatchSize(), self._IsTraining)
+        TrainingPreprocInputs = self._buildPreprocessing(Settings, TrainingInputs, self._IsTraining)
+        TrainingBatchedInputs = self._createBatch(TrainingPreprocInputs, self.getBatchSize(), self._IsTraining)
 
     with tf.name_scope("ValidationReader"):
       TestingFilenames     = self._getFilenames(Settings['Data']['ValidatingPath'])
       TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
       TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
-      TestingBatchedInputs = self._createBatch(TestingInputs, self.getBatchSize(), self._IsTraining)
+      TestingPreprocInputs = self._buildPreprocessing(Settings, TestingInputs, False)
+      TestingBatchedInputs = self._createBatch(TestingPreprocInputs, self.getBatchSize(), self._IsTraining)
 
     if self._IsTraining:
       BatchedInput = tf.cond(self._Outputs['IsTraining'], lambda: TrainingBatchedInputs, lambda: TestingBatchedInputs)
@@ -94,6 +96,14 @@ class CReader(dl.data.CReader):
       Images = tf.cast(tf.transpose(RawImage, [1, 2, 0]), tf.float32, name="Image")/255.0
 
     return [Images, Labels]
+
+
+  def _buildPreprocessing(self, Settings, Inputs, IsTraining):
+    if self._IsPreprocessingEnabled:
+      print("* Perform per-image standardization")
+      Inputs[0] = tf.image.per_image_standardization(Inputs[0])
+
+    return Inputs
 
 
   def _getWeightDecayFactor(self):
