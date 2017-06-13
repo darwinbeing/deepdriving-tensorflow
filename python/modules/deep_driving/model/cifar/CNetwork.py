@@ -67,7 +67,7 @@ class CNetwork(dl.network.CNetwork):
 
   def _preprocessImage(self, Image, Name = "Preprocessing"):
     with tf.name_scope(Name):
-      #self.log("* Preprocess Image")
+      self.log("* Preprocess Image")
       #Image -= 0.5
       #Image = dl.layer.createBatchNormalization(Input=Image)
       return Image
@@ -89,10 +89,12 @@ class CNetwork(dl.network.CNetwork):
       biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.0))
       pre_activation = tf.nn.bias_add(conv, biases)
       conv1 = tf.nn.relu(pre_activation, name=scope.name)
+      dl.helpers.saveFeatureMap(conv1, "Features")
       _activation_summary(conv1)
 
     # pool1
     pool1 = tf.nn.max_pool(conv1, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='SAME', name='pool1')
+    dl.helpers.saveFeatureMap(pool1, "Pool1/Features")
 
     # norm1
     norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
@@ -107,6 +109,7 @@ class CNetwork(dl.network.CNetwork):
       biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.1))
       pre_activation = tf.nn.bias_add(conv, biases)
       conv2 = tf.nn.relu(pre_activation, name=scope.name)
+      dl.helpers.saveFeatureMap(conv2, "Features")
       _activation_summary(conv2)
 
     # norm2
@@ -115,6 +118,7 @@ class CNetwork(dl.network.CNetwork):
     # pool2
     pool2 = tf.nn.max_pool(norm2, ksize=[1, 3, 3, 1],
                            strides=[1, 2, 2, 1], padding='SAME', name='pool2')
+    dl.helpers.saveFeatureMap(pool2, "Pool2/Features")
 
     # local3
     with tf.variable_scope('local3') as scope:

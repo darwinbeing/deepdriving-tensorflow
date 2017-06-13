@@ -1,5 +1,6 @@
 # Evaluation of Network:
 Creating network Graph...
+* Preprocess Image
  * network Input-Shape: (64, 32, 32, 3)
  * network Output-Shape: (64, 10)
 Finished to build network with 1756426 trainable variables in 10 tensors.
@@ -17,7 +18,7 @@ Finished to build network with 1756426 trainable variables in 10 tensors.
     "ValidatingPath": "C:/Data/Cifar-10/validation"
   },
   "Optimizer": {
-    "EpochsPerDecay": 10,
+    "EpochsPerDecay": 1,
     "LearnRateDecay": 0.95,
     "StartingLearningRate": 0.005,
     "WeightDecay": 0.004
@@ -51,4 +52,4 @@ Finished to build network with 1756426 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 38.39%
+ *  Error: 34.30%

@@ -55,7 +55,7 @@ class CTrainSettings(misc.settings.CSettings):
   }
 
 SettingFile = "train.cfg"
-IsRetrain = True
+IsRetrain = False
 
 def main():
   Settings = CTrainSettings(SettingFile)
