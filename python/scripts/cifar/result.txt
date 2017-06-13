@@ -1,6 +1,6 @@
 # Evaluation of Network:
+* Preprocess Image (Color Standardization)
 Creating network Graph...
-* Preprocess Image
  * network Input-Shape: (64, 32, 32, 3)
  * network Output-Shape: (64, 10)
 Finished to build network with 1756426 trainable variables in 10 tensors.
@@ -22,6 +22,9 @@ Finished to build network with 1756426 trainable variables in 10 tensors.
     "LearnRateDecay": 0.95,
     "StartingLearningRate": 0.005,
     "WeightDecay": 0.004
+  },
+  "PreProcessing": {
+    "MeanFile": "image-mean.tfrecord"
   },
   "Trainer": {
     "CheckpointEpochs": 2,
@@ -47,9 +50,12 @@ Finished to build network with 1756426 trainable variables in 10 tensors.
     "CheckpointPath": "Checkpoint",
     "EpochSize": 1000,
     "NumberOfEpochs": 10
+  },
+  "PreProcessing": {
+    "MeanFile": "image-mean.tfrecord"
   }
 }
 
 # Evaluation Results:
 Full Summary:
- *  Error: 31.32%
+ *  Error: 32.07%

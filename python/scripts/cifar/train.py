@@ -52,7 +52,11 @@ class CTrainSettings(misc.settings.CSettings):
   },
   'Validation': {
     'Samples': 10000
-  }
+  },
+  'PreProcessing':
+  {
+    'MeanFile': 'image-mean.tfrecord'
+  },
   }
 
 SettingFile = "train.cfg"
