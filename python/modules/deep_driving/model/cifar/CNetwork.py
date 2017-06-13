@@ -68,7 +68,7 @@ class CNetwork(dl.network.CNetwork):
   def _preprocessImage(self, Image, Name = "Preprocessing"):
     with tf.name_scope(Name):
       self.log("* Preprocess Image")
-      #Image -= 0.5
+      Image -= 0.5
       #Image = dl.layer.createBatchNormalization(Input=Image)
       return Image
 
