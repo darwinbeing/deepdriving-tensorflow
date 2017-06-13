@@ -69,13 +69,16 @@ class CNetwork(dl.network.CNetwork):
     MeanReader = dl.data.CMeanReader()
     MeanReader.read(self._Settings['PreProcessing']['MeanFile'])
     with tf.name_scope(Name):
-      self.log("* Preprocess Image (Color Standardization)")
-      Image = tf.subtract(Image, MeanReader.MeanColor)
-      Image = tf.div(Image, tf.sqrt(MeanReader.VarColor))
+      self.log("* Preprocess Image (Per-Pixel Color Standardization)")
+      MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[1]), int(Image.shape[2])))
+      VarImage  = tf.image.resize_images(MeanReader.VarImage,  size=(int(Image.shape[1]), int(Image.shape[2])))
+      Image = tf.subtract(Image, MeanImage)
+      Image = tf.div(Image, tf.sqrt(VarImage))
 
       #Image = dl.layer.createBatchNormalization(Input=Image)
 
       tf.summary.image("Preprocessed", Image)
+      tf.summary.image("MeanImage", tf.reshape(MeanImage, shape=[1, int(Image.shape[1]), int(Image.shape[2]), int(Image.shape[3])]))
 
     return Image
 
@@ -102,7 +105,6 @@ class CNetwork(dl.network.CNetwork):
 
     # pool1
     pool1 = tf.nn.max_pool(conv1, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='SAME', name='pool1')
-    dl.helpers.saveFeatureMap(pool1, "Pool1/Features")
 
     # norm1
     norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
@@ -126,7 +128,6 @@ class CNetwork(dl.network.CNetwork):
     # pool2
     pool2 = tf.nn.max_pool(norm2, ksize=[1, 3, 3, 1],
                            strides=[1, 2, 2, 1], padding='SAME', name='pool2')
-    dl.helpers.saveFeatureMap(pool2, "Pool2/Features")
 
     # local3
     with tf.variable_scope('local3') as scope:
