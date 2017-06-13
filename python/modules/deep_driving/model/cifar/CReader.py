@@ -50,7 +50,7 @@ class CReader(dl.data.CReader):
     self._Outputs["Labels"] = BatchedInput[1]
 
     print("* Input-Image has shape {}".format(self._Outputs["Image"].shape))
-    print("* Input-Label has shape {}".format(self._Outputs["Labels"]))
+    print("* Input-Label has shape {}".format(self._Outputs["Labels"].shape))
 
     return BatchedInput
 
