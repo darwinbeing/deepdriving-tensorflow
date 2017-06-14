@@ -27,12 +27,13 @@ import tensorflow as tf
 import debug
 
 from .. import layer
+from . import getNameScope
 
 def saveFeatureMap(Features, Name="FeatureMap"):
   # Taken from: https://stackoverflow.com/questions/33802336/visualizing-output-of-convolutional-layer-in-tensorflow
 
   if layer.Setup.StoreFeatureMap:
-    Name = tf.contrib.framework.get_name_scope() + "/" + Name
+    Name = getNameScope() + "/" + Name
     BatchSize   = int(Features.shape[0])
     ImageHeight = int(Features.shape[1])+4
     ImageWidth  = int(Features.shape[2])+4

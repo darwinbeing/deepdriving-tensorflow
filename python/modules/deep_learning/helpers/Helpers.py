@@ -46,3 +46,11 @@ def checkVersion(Major, Minor):
     debug.logWarning("Tensorflow Version is {}.{}, but any feature expects at least {}.{}. This feature will be disabled.".format(Version[0], Version[1], Major, Minor))
 
   return IsVersonOk
+
+
+def getNameScope():
+  if checkVersion(1, 2):
+    return tf.contrib.framework.get_name_scope()
+
+  else:
+    return tf.get_default_graph()._name_stack
