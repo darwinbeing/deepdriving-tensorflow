@@ -5,3 +5,4 @@ library/install
 misc.xml
 workspace.xml
 tasks.xml
+/python/scripts/bvlc_alexnet.npy

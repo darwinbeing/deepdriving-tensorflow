@@ -8,7 +8,7 @@ from .. import db
 
 class CReader(dl.data.CReader):
   def __init__(self, Settings, IsTraining, IsPreprocessing):
-    self._BatchesInQueue = 10
+    self._BatchesInQueue = 100
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
 #      "Features": tf.placeholder(dtype=tf.float32, shape=[None, ] + self._ImageShape, name="Image"),
@@ -103,6 +103,7 @@ class CReader(dl.data.CReader):
         print("* Perform per-pixel standardization")
 
         Image = Inputs[0]
+
         MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
         VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
 
@@ -110,8 +111,8 @@ class CReader(dl.data.CReader):
         Image = tf.div(Image, tf.sqrt(VarImage))
 
 
-        print("* Perform per-image standardization")
-        Image = tf.image.per_image_standardization(Image)
+        #print("* Perform per-image standardization")
+        #Image = tf.image.per_image_standardization(Image)
 
         Inputs[0] = Image
 
