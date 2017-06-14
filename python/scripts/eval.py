@@ -38,6 +38,10 @@ class CEvalSettings(misc.settings.CSettings):
     'NumberOfEpochs': 24,
     'CheckpointPath': 'Checkpoint',
   },
+  'PreProcessing':
+  {
+    'MeanFile': 'image-mean.tfrecord'
+  },
   }
 
 SettingFile = "eval.cfg"

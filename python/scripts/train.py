@@ -33,8 +33,8 @@ class CTrainSettings(misc.settings.CSettings):
     'TrainingPath':   "../../../training",
     'ValidatingPath': "../../../validation",
     'BatchSize': 128,
-    'ImageWidth': 32,
-    'ImageHeight': 24
+    'ImageWidth': 210,
+    'ImageHeight': 280
   },
   'Trainer': {
     'EpochSize':        10000,
@@ -51,11 +51,15 @@ class CTrainSettings(misc.settings.CSettings):
   },
   'Validation': {
     'Samples': 1000
-  }
+  },
+  'PreProcessing':
+  {
+    'MeanFile': 'image-mean.tfrecord'
+  },
   }
 
 SettingFile = "train.cfg"
-IsRetrain = False
+IsRetrain = True
 
 def main():
   Settings = CTrainSettings(SettingFile)
