@@ -29,5 +29,6 @@ from .CPrinter import CPrinter
 from .CMerger import CMerger
 from .CEvaluator import CEvaluator
 from .CMeanCalculator import CMeanCalculator
+from .CAlexNet import CAlexNet
 
 from . import cifar

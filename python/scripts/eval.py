@@ -49,7 +49,7 @@ SettingFile = "eval.cfg"
 def main():
   Settings = CEvalSettings(SettingFile)
 
-  Model = dl.CModel(model.CNetwork)
+  Model = dl.CModel(model.CAlexNet)
 
   Evaluator = Model.createEvaluator(model.CEvaluator, model.CReader, model.CError, Settings)
   Evaluator.addPrinter(model.CPrinter())

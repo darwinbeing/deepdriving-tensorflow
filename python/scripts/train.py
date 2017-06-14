@@ -65,7 +65,7 @@ def main():
   Settings = CTrainSettings(SettingFile)
   dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 3)
 
-  Model = dl.CModel(model.CNetwork)
+  Model = dl.CModel(model.CAlexNet)
 
   Trainer = Model.createTrainer(model.CTrainer, model.CReader, model.CError, Settings)
   Trainer.addPrinter(model.CPrinter())
