@@ -126,15 +126,15 @@ class CReader(dl.data.CReader):
           #Image = tf.image.resize_image_with_crop_or_pad(Image, CropSize[0], CropSize[1])
           pass
 
-        print("* Perform per-pixel standardization")
-        MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-        VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        #print("* Perform per-pixel standardization")
+        #MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        #VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
 
-        Image = tf.subtract(Image, MeanImage)
-        Image = tf.div(Image, tf.sqrt(VarImage))
+        #Image = tf.subtract(Image, MeanImage)
+        #Image = tf.div(Image, tf.sqrt(VarImage))
 
-        #print("* Perform per-image standardization")
-        #Image = tf.image.per_image_standardization(Image)
+        print("* Perform per-image standardization")
+        Image = tf.image.per_image_standardization(Image)
 
         Inputs[0] = Image
     return Inputs
