@@ -111,7 +111,7 @@ class CReader(dl.data.CReader):
 
           Image = tf.random_crop(Image, [24, 24, 3])
 
-          #Image = tf.image.random_flip_left_right(Image)
+          Image = tf.image.random_flip_left_right(Image)
 
           #Image = tf.image.random_brightness(Image, max_delta=63)
 
