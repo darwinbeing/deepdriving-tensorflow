@@ -106,13 +106,6 @@ class CReader(dl.data.CReader):
       with tf.name_scope("Preprocessing"):
         Image = Inputs[0]
 
-        #print("* Perform per-pixel standardization")
-        #MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-        #VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-
-        #Image = tf.subtract(Image, MeanImage)
-        #Image = tf.div(Image, tf.sqrt(VarImage))
-
         CropSize = [28, 28]
         if IsTraining:
           print("* Perform data-augmentation")
@@ -132,6 +125,13 @@ class CReader(dl.data.CReader):
         else:
           #Image = tf.image.resize_image_with_crop_or_pad(Image, CropSize[0], CropSize[1])
           pass
+
+        print("* Perform per-pixel standardization")
+        MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+
+        Image = tf.subtract(Image, MeanImage)
+        Image = tf.div(Image, tf.sqrt(VarImage))
 
         #print("* Perform per-image standardization")
         #Image = tf.image.per_image_standardization(Image)
