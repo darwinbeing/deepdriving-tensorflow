@@ -105,10 +105,10 @@ class CReader(dl.data.CReader):
         Image = Inputs[0]
 
         MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-        #VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
 
         Image = tf.subtract(Image, MeanImage)
-        #Image = tf.div(Image, tf.sqrt(VarImage))
+        Image = tf.div(Image, tf.sqrt(VarImage))
 
         Inputs[0] = Image
 
