@@ -113,7 +113,7 @@ class CReader(dl.data.CReader):
 
           Image = tf.image.random_flip_left_right(Image)
 
-          #Image = tf.image.random_brightness(Image, max_delta=63)
+          Image = tf.image.random_brightness(Image, max_delta=63)
 
           #Image = tf.image.random_contrast(Image, lower=0.2, upper=1.8)
 
