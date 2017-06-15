@@ -1,8 +1,8 @@
 # Evaluation of Network:
 Creating network Graph...
- * network Input-Shape: (64, 24, 24, 3)
+ * network Input-Shape: (64, 32, 32, 3)
  * network Output-Shape: (64, 10)
-Finished to build network with 1068298 trainable variables in 10 tensors.
+Finished to build network with 1756426 trainable variables in 10 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_30.ckpt
@@ -57,4 +57,4 @@ Finished to build network with 1068298 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 39.39%
+ *  Error: 30.52%

@@ -113,22 +113,28 @@ class CReader(dl.data.CReader):
         #Image = tf.subtract(Image, MeanImage)
         #Image = tf.div(Image, tf.sqrt(VarImage))
 
+        CropSize = [28, 28]
         if IsTraining:
           print("* Perform data-augmentation")
 
-          Image = tf.random_crop(Image, [24, 24, 3])
+          #Image = tf.random_crop(Image, [CropSize[0], CropSize[1], 3])
 
-          Image = tf.image.random_flip_left_right(Image)
+          #Image = tf.image.random_flip_left_right(Image)
 
-          Image = tf.image.random_brightness(Image, max_delta=63)
+          Image = tf.image.random_brightness(Image, max_delta=0.25)
 
-          #Image = tf.image.random_contrast(Image, lower=0.2, upper=1.8)
+          Image = tf.image.random_contrast(Image, lower=0.75, upper=1.25)
+
+          Image = tf.image.random_saturation(Image, lower=0.75, upper=1.25)
+
+          Image = tf.image.random_hue(Image, max_delta=0.1)
 
         else:
-          Image = tf.image.resize_image_with_crop_or_pad(Image, 24, 24)
+          #Image = tf.image.resize_image_with_crop_or_pad(Image, CropSize[0], CropSize[1])
+          pass
 
-        print("* Perform per-image standardization")
-        Image = tf.image.per_image_standardization(Image)
+        #print("* Perform per-image standardization")
+        #Image = tf.image.per_image_standardization(Image)
 
         Inputs[0] = Image
     return Inputs
