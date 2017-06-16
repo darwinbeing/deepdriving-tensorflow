@@ -1,11 +1,12 @@
 # Evaluation of Network:
 Creating network Graph...
  * network Input-Shape: (64, 28, 28, 3)
+ * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 64 Feature Maps
  * network Output-Shape: (64, 10)
 Finished to build network with 1387786 trainable variables in 10 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_30.ckpt
+* Checkpoint\State_0\model_24.ckpt
 
 # Using Training-Settings:
 {
@@ -57,4 +58,4 @@ Finished to build network with 1387786 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 22.31%
+ *  Error: 90.06%

@@ -65,6 +65,8 @@ class CNetwork(dl.network.CNetwork):
 ## Custom methods
 
   def _buildNetwork(self, images):
+    dl.layer.Setup.setupKernelInitializer(dl.helpers.NormalInitializer(mean=0, stddev=5e-2))
+    dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.1))
 
     # We instantiate all variables using tf.get_variable() instead of
     # tf.Variable() in order to share variables across multiple GPU training runs.
@@ -74,19 +76,21 @@ class CNetwork(dl.network.CNetwork):
     # conv1
     with tf.variable_scope('conv1') as scope:
 
-      Kernel = dl.helpers.createKernel2D(Shape=[5, 5, 3, 64], Initializer=dl.helpers.NormalInitializer(mean=0, stddev=5e-2), WeightDecayFactor=0.0, LearningRate=1.0)
-      Bias   = dl.helpers.createBias(Shape=[64],              Initializer=dl.helpers.ConstantInitializer(0), LearningRate=1.0)
+      #Kernel = dl.helpers.createKernel2D(Shape=[5, 5, 3, 64], Initializer=dl.helpers.NormalInitializer(mean=0, stddev=5e-2), WeightDecayFactor=0.0, LearningRate=1.0)
+      #Bias   = dl.helpers.createBias(Shape=[64],              Initializer=dl.helpers.ConstantInitializer(0.1), LearningRate=1.0)
 
       #kernel = _variable_with_weight_decay('weights',
       #                                     shape=[5, 5, 3, 64],
       #                                     stddev=5e-2,
       #                                     wd=0.0)
 
-      conv = tf.nn.conv2d(images, Kernel, [1, 1, 1, 1], padding='SAME')
+      #conv = tf.nn.conv2d(images, Kernel, [1, 1, 1, 1], padding='SAME')
 
       #biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.0))
 
-      pre_activation = tf.nn.bias_add(conv, Bias)
+      #pre_activation = tf.nn.bias_add(conv, Bias)
+
+      pre_activation = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
 
       conv1 = tf.nn.relu(pre_activation, name=scope.name)
       dl.helpers.saveFeatureMap(conv1, "Features")
