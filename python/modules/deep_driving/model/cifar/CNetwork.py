@@ -75,31 +75,21 @@ class CNetwork(dl.network.CNetwork):
     #
     # conv1
     with tf.variable_scope('conv1') as scope:
-      pre_activation = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
-      conv1          = dl.layer.createActivation(pre_activation, Func="ReLU")
-      dl.helpers.saveFeatureMap(conv1, "Features")
-      pool1          = dl.layer.createPooling(conv1, Size=3, Stride=2, Pool="MAX")
+      conv1 = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
+      act1           = dl.layer.createActivation(conv1, Func="ReLU")
+      dl.helpers.saveFeatureMap(act1, "Features")
+      pool1          = dl.layer.createPooling(act1, Size=3, Stride=2, Pool="MAX")
       norm1          = dl.layer.createLRN(pool1, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
+
 
     # conv2
     with tf.variable_scope('conv2') as scope:
-      kernel = _variable_with_weight_decay('weights',
-                                           shape=[5, 5, 64, 64],
-                                           stddev=5e-2,
-                                           wd=0.0)
-      conv = tf.nn.conv2d(norm1, kernel, [1, 1, 1, 1], padding='SAME')
-      biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.1))
-      pre_activation = tf.nn.bias_add(conv, biases)
-      conv2 = tf.nn.relu(pre_activation, name=scope.name)
-      dl.helpers.saveFeatureMap(conv2, "Features")
-      _activation_summary(conv2)
+      conv2 = dl.layer.createConvolution2d(norm1, Size=5, Filters=64, WeightDecay=0.0)
+      act2           = dl.layer.createActivation(conv2, Func="ReLU")
+      dl.helpers.saveFeatureMap(act2, "Features")
+      norm2          = dl.layer.createLRN(act2, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
+      pool2          = dl.layer.createPooling(norm2, Size=3, Stride=2, Pool="MAX")
 
-    # norm2
-    norm2 = tf.nn.lrn(conv2, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
-                      name='norm2')
-    # pool2
-    pool2 = tf.nn.max_pool(norm2, ksize=[1, 3, 3, 1],
-                           strides=[1, 2, 2, 1], padding='SAME', name='pool2')
 
     # local3
     with tf.variable_scope('local3') as scope:
