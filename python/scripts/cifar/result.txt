@@ -7,6 +7,9 @@ Creating network Graph...
  * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 64 Feature Maps
  * Create LRN Layer LRN with LocalSize 5.0, Alpha 0.00011111111111111112, Beta 0.75
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
+ * Create Fully-Connected-Layer "FC" with 384 output-nodes.
+   * Reshape layer input (64, 7, 7, 64) to vector with 3136 elements.
+   * With Activation ReLU
  * network Output-Shape: (64, 10)
 Finished to build network with 1387786 trainable variables in 10 tensors.
 
@@ -63,4 +66,4 @@ Finished to build network with 1387786 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 23.40%
+ *  Error: 25.34%
