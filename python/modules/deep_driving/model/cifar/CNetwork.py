@@ -75,32 +75,14 @@ class CNetwork(dl.network.CNetwork):
     #
     # conv1
     with tf.variable_scope('conv1') as scope:
-
-      #Kernel = dl.helpers.createKernel2D(Shape=[5, 5, 3, 64], Initializer=dl.helpers.NormalInitializer(mean=0, stddev=5e-2), WeightDecayFactor=0.0, LearningRate=1.0)
-      #Bias   = dl.helpers.createBias(Shape=[64],              Initializer=dl.helpers.ConstantInitializer(0.1), LearningRate=1.0)
-
-      #kernel = _variable_with_weight_decay('weights',
-      #                                     shape=[5, 5, 3, 64],
-      #                                     stddev=5e-2,
-      #                                     wd=0.0)
-
-      #conv = tf.nn.conv2d(images, Kernel, [1, 1, 1, 1], padding='SAME')
-
-      #biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.0))
-
-      #pre_activation = tf.nn.bias_add(conv, Bias)
-
       pre_activation = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
-
-      conv1 = tf.nn.relu(pre_activation, name=scope.name)
+      conv1          = dl.layer.createActivation(pre_activation, Func="ReLU")
       dl.helpers.saveFeatureMap(conv1, "Features")
       _activation_summary(conv1)
+      pool1          = dl.layer.createPooling(conv1, Size=3, Stride=2, Pool="MAX")
 
-    # pool1
-    pool1 = tf.nn.max_pool(conv1, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='SAME', name='pool1')
-
-    # norm1
-    norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
+      # norm1
+      norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
 
     # conv2
     with tf.variable_scope('conv2') as scope:

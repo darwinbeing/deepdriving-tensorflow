@@ -2,6 +2,7 @@
 Creating network Graph...
  * network Input-Shape: (64, 28, 28, 3)
  * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 64 Feature Maps
+ * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
  * network Output-Shape: (64, 10)
 Finished to build network with 1387786 trainable variables in 10 tensors.
 
@@ -58,4 +59,4 @@ Finished to build network with 1387786 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 22.25%
+ *  Error: 22.70%
