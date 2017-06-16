@@ -80,6 +80,15 @@ class CSetup():
       print("* Do not store the sparsity of parameters")
 
 
+  def setupKernelInitializer(self, Initializer):
+    self._Initializer["Kernel2D"] = Initializer
+
+  def setupWeightInitializer(self, Initializer):
+    self._Initializer["Weights"] = Initializer
+
+  def setupBiasInitializer(self, Initializer):
+    self._Initializer["Bias"] = Initializer
+
   @property
   def StoreSparsity(self):
     return self._StoreSparsity
