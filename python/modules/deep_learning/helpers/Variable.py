@@ -5,7 +5,7 @@ from tensorflow.contrib.layers import xavier_initializer           as XavierInit
 from tensorflow                import truncated_normal_initializer as NormalInitializer
 from tensorflow                import constant_initializer         as ConstantInitializer
 
-def createVariable(Shape, Initializer = XavierInitializer(), WeightDecayFactor = 1.0, LearningRate=1.0, Name = "Variable", WeightDecayCollection="Losses"):
+def createVariable(Shape, Initializer = XavierInitializer(), WeightDecayFactor = 1.0, LearningRate=1.0, Name = "Weights", WeightDecayCollection="Losses"):
   """Helper to create an initialized Variable with weight decay.
   Note that the Variable is initialized with a truncated normal distribution.
   A weight decay is added only if one is specified.
@@ -35,6 +35,8 @@ def createVariable(Shape, Initializer = XavierInitializer(), WeightDecayFactor =
   if WeightDecayFactor is not None:
     WeightDecay = tf.multiply(tf.nn.l2_loss(Variable), WeightDecayFactor, name='WeightDecay')
     tf.add_to_collection(WeightDecayCollection, WeightDecay)
+
+  tf.summary.scalar(Variable.name + '/sparsity', tf.nn.zero_fraction(Variable))
 
   return Variable
 
