@@ -82,6 +82,8 @@ class CNetwork(dl.network.CNetwork):
       norm1          = dl.layer.createLRN(pool1, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
 
 
+    dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.1))
+
     # conv2
     with tf.variable_scope('conv2') as scope:
       conv2 = dl.layer.createConvolution2d(norm1, Size=5, Filters=64, WeightDecay=0.0)
