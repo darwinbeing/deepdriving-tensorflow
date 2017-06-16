@@ -26,6 +26,8 @@ import numpy as np
 import tensorflow as tf
 
 
+from deep_learning.layer import LearningRates
+
 class CAlexNet(dl.network.CNetwork):
   def _build(self, Inputs, Settings):
     dl.layer.Setup.setupLogger(self.log)
@@ -118,7 +120,9 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 4
       s_w = 4
       conv1W = tf.Variable(net_data["conv1"][0])
+      LearningRates.set(conv1W.name, 0)
       conv1b = tf.Variable(net_data["conv1"][1])
+      LearningRates.set(conv1b.name, 0)
       conv1_in = conv(Input, conv1W, conv1b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=1)
       conv1 = tf.nn.relu(conv1_in)
       dl.helpers.saveFeatureMap(conv1, "Features")
@@ -157,7 +161,9 @@ class CAlexNet(dl.network.CNetwork):
       s_w = 1
       group = 2
       conv2W = tf.Variable(net_data["conv2"][0])
+      LearningRates.set(conv2W.name, 0)
       conv2b = tf.Variable(net_data["conv2"][1])
+      LearningRates.set(conv2b.name, 0)
       conv2_in = conv(maxpool1, conv2W, conv2b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
       conv2 = tf.nn.relu(conv2_in)
       dl.helpers.saveFeatureMap(conv2, "Features")
@@ -196,7 +202,9 @@ class CAlexNet(dl.network.CNetwork):
       s_w = 1;
       group = 1
       conv3W = tf.Variable(net_data["conv3"][0])
+      LearningRates.set(conv3W.name, 0.0)
       conv3b = tf.Variable(net_data["conv3"][1])
+      LearningRates.set(conv3b.name, 0.0)
       conv3_in = conv(maxpool2, conv3W, conv3b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
       conv3 = tf.nn.relu(conv3_in)
       dl.helpers.saveFeatureMap(conv3, "Features")
@@ -212,7 +220,9 @@ class CAlexNet(dl.network.CNetwork):
       s_w = 1
       group = 2
       conv4W = tf.Variable(net_data["conv4"][0])
+      LearningRates.set(conv4W.name, 0.0)
       conv4b = tf.Variable(net_data["conv4"][1])
+      LearningRates.set(conv4b.name, 0.0)
       conv4_in = conv(conv3, conv4W, conv4b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
       conv4 = tf.nn.relu(conv4_in)
       dl.helpers.saveFeatureMap(conv4, "Features")
@@ -228,7 +238,9 @@ class CAlexNet(dl.network.CNetwork):
       s_w = 1
       group = 2
       conv5W = tf.Variable(net_data["conv5"][0])
+      LearningRates.set(conv5W.name, 0.005)
       conv5b = tf.Variable(net_data["conv5"][1])
+      LearningRates.set(conv5b.name, 0.005)
       conv5_in = conv(conv4, conv5W, conv5b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
       conv5 = tf.nn.relu(conv5_in)
       dl.helpers.saveFeatureMap(conv5, "Features")
