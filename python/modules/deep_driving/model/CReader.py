@@ -99,10 +99,22 @@ class CReader(dl.data.CReader):
       MeanReader = dl.data.CMeanReader()
       MeanReader.read(Settings['PreProcessing']['MeanFile'])
 
-      with tf.name_scope("Preprocessing"):
-        print("* Perform per-pixel standardization")
 
+      with tf.name_scope("Preprocessing"):
         Image = Inputs[0]
+
+        if IsTraining:
+          print("* Perform data-augmentation")
+
+          Image = tf.image.random_brightness(Image, max_delta=0.25)
+
+          Image = tf.image.random_contrast(Image, lower=0.75, upper=1.25)
+
+          Image = tf.image.random_saturation(Image, lower=0.75, upper=1.25)
+
+          Image = tf.image.random_hue(Image, max_delta=0.1)
+
+        print("* Perform per-pixel standardization")
 
         MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
         VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
