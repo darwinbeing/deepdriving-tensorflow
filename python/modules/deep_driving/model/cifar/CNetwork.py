@@ -66,7 +66,7 @@ class CNetwork(dl.network.CNetwork):
 
   def _buildNetwork(self, images):
     dl.layer.Setup.setupKernelInitializer(dl.helpers.NormalInitializer(mean=0, stddev=5e-2))
-    dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.1))
+    dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.0))
 
     # We instantiate all variables using tf.get_variable() instead of
     # tf.Variable() in order to share variables across multiple GPU training runs.
