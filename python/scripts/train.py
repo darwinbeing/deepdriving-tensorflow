@@ -63,7 +63,7 @@ IsRetrain = True
 
 def main():
   Settings = CTrainSettings(SettingFile)
-  dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 3)
+  dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 30)
 
   Model = dl.CModel(model.CAlexNet)
 
