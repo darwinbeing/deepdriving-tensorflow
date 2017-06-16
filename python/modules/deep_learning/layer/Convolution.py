@@ -96,19 +96,21 @@ def createPooling(Input, Size = 3, Stride = 2, Pool="MAX", Name="Pooling", Paddi
   return Output
 
 
-def createLRN(Input, LocalSize, Alpha, Beta, Name="LRN"):
+def createLRN(Input, LocalSize = 5.0, Alpha = 2e-5, Beta=0.75, Bias=1, Name="LRN", Radius=None):
+  if Radius == None:
+    Radius = int(LocalSize/2)
 
-  def create(Input, LocalSize, Alpha, Beta):
-    return tf.nn.lrn(Input, depth_radius=int(LocalSize/2), bias=1, alpha=Alpha, beta=Beta)
+  def create(Input, Radius, Alpha, Beta, Bias):
+    return tf.nn.lrn(Input, depth_radius=Radius, bias=Bias, alpha=Alpha, beta=Beta)
 
   if Name != None:
     with tf.name_scope(Name):
       Setup.Log(" * Create LRN Layer {} with LocalSize {}, Alpha {}, Beta {}".format(Name, LocalSize, Alpha, Beta))
-      Output = create(Input, LocalSize, Alpha, Beta)
+      Output = create(Input, Radius, Alpha, Beta, Bias)
 
   else:
     Setup.Log("   * LRN: LocalSize {}; Alpha {}; Beta {}".format(LocalSize, Alpha, Beta))
-    Output = create(Input, LocalSize, Alpha, Beta)
+    Output = create(Input, Radius, Alpha, Beta, Bias)
 
   return Output
 
