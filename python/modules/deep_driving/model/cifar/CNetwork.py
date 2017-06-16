@@ -78,11 +78,8 @@ class CNetwork(dl.network.CNetwork):
       pre_activation = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
       conv1          = dl.layer.createActivation(pre_activation, Func="ReLU")
       dl.helpers.saveFeatureMap(conv1, "Features")
-      _activation_summary(conv1)
       pool1          = dl.layer.createPooling(conv1, Size=3, Stride=2, Pool="MAX")
-
-      # norm1
-      norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
+      norm1          = dl.layer.createLRN(pool1, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
 
     # conv2
     with tf.variable_scope('conv2') as scope:
