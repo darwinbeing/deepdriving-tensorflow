@@ -93,17 +93,12 @@ class CNetwork(dl.network.CNetwork):
       pool2          = dl.layer.createPooling(norm2, Size=3, Stride=2, Pool="MAX")
 
 
+    dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
+
     # local3
     with tf.variable_scope('local3') as scope:
       local3 = dl.layer.createFullyConnected(pool2, Size=384, Func="ReLU")
-      # Move everything into depth so we can perform a single matrix multiply.
-      #reshape = tf.reshape(pool2, [FLAGS.batch_size, -1])
-      #dim = reshape.get_shape()[1].value
-      #weights = _variable_with_weight_decay('weights', shape=[dim, 384],
-      #                                      stddev=0.04, wd=1.0)
-      #biases = _variable_on_cpu('biases', [384], tf.constant_initializer(0.1))
-      #local3 = tf.nn.relu(tf.matmul(reshape, weights) + biases, name=scope.name)
-      #_activation_summary(local3)
+
 
     # local4
     with tf.variable_scope('local4') as scope:
