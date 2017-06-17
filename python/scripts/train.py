@@ -47,7 +47,8 @@ class CTrainSettings(misc.settings.CSettings):
     'StartingLearningRate': 0.005,
     'EpochsPerDecay':       10,
     'LearnRateDecay':       0.95,
-    'WeightDecay':          0.004
+    'WeightDecay':          0.004,
+    'Momentum':             0.9
   },
   'Validation': {
     'Samples': 1000
