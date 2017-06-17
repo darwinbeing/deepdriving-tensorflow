@@ -228,8 +228,11 @@ class CEvaluator(internal.CBaseRunner):
     else:
       CheckpointFile = checkpoint.getCheckpointFilename(self.getCheckpointDir(), Epoch)
 
-    debug.Assert(CheckpointFile != None, "Cannot find checkpoint file {}.".format(CheckpointFile))
-    super().restore(CheckpointFile)
+    if CheckpointFile is None:
+      debug.logWarning("Cannot find any checkpoint file. The evaluation is running with a random initialized network.")
+
+    else:
+      super().restore(CheckpointFile)
 
 
   def _printEvalBar(self, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch):
