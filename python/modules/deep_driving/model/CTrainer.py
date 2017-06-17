@@ -24,7 +24,8 @@ class CTrainer(dl.trainer.CTrainer):
       tf.summary.scalar("LearnRate", LearnRate)
       tf.summary.scalar("Step", CurrentOptimizationStep)
 
-      Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
+      #Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
+      Optimizer = tf.train.MomentumOptimizer(learning_rate=LearnRate, momentum=Settings['Optimizer']['Momentum'])
       Gradients = Optimizer.compute_gradients(ErrorMeasurement.getOutputs()['Loss'])
 
       print("Apply individual learning rate scales...")
