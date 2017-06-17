@@ -53,7 +53,11 @@ class CError(dl.error.CMeasurement):
 
   _Name = [
     "Angle",
-    "Fast",
+    "L",
+    "M",
+    "R",
+    "DistL",
+    "DistR",
     "LL",
     "ML",
     "MR",
@@ -61,11 +65,7 @@ class CError(dl.error.CMeasurement):
     "DistLL",
     "DistMM",
     "DistRR",
-    "L",
-    "M",
-    "R",
-    "DistL",
-    "DistR",
+    "Fast",
   ]
 
   def _buildError(self, NormOutput, Label):

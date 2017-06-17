@@ -26,23 +26,25 @@ import tensorflow as tf
 def normalizeLabels(Labels):
   OutLabels = []
 
-  Angle      = Labels[0]/1.1 + 0.5           # Angle  - Range -0.5 .. 0.5 and clamping between 0 and 1
+  Angle      = Labels[0]/1.1 + 0.5                 # Angle  - Range -0.5 .. 0.5 and clamping between 0 and 1
   Angle      = tf.minimum(Angle, 1)
   OutLabels.append(tf.maximum(Angle, 0))
 
-  OutLabels.append(Labels[1])                      # Fast   - Range  0 .. 1    mapping to   0 .. 1
-  OutLabels.append(Labels[2]  * 0.14545 + 1.40909) # LL     - Range -9 .. -3.5 mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[3]  * 0.16    + 0.9)     # ML     - Range -5 .. 0    mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[4]  * 0.16    + 0.1)     # MR     - Range  0 .. 5    mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[5]  * 0.14545 - 0.40909) # RR     - Range 3.5 .. 9   mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[6]  / 112     + 0.1)     # DistLL - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[7]  / 112     + 0.1)     # DistMM - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[8]  / 112     + 0.1)     # DistRR - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[9]  * 0.17778 + 1.34445) # L      - Range -7 .. -2.5 mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[10] * 0.1149  + 0.6714)  # M      - Range -5 ..  2   mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[11] * 0.17778 - 0.34445) # R      - Range 2.5 .. 7   mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[12] / 112     + 0.1)     # DistL  - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[13] / 112     + 0.1)     # DistR  - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[1]  * 0.17778 + 1.34445) # L      - Range -7 .. -2.5 mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[2]  * 0.1149  + 0.6714)  # M      - Range -5 ..  2   mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[3]  * 0.17778 - 0.34445) # R      - Range 2.5 .. 7   mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[4]  / 112     + 0.1)     # DistL  - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[5]  / 112     + 0.1)     # DistR  - Range  0 ..  90  mapping to 0.1 .. 0.9
+
+  OutLabels.append(Labels[6]  * 0.14545 + 1.40909) # LL     - Range -9 .. -3.5 mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[7]  * 0.16    + 0.9)     # ML     - Range -5 .. 0    mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[8]  * 0.16    + 0.1)     # MR     - Range  0 .. 5    mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[9]  * 0.14545 - 0.40909) # RR     - Range 3.5 .. 9   mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[10] / 112     + 0.1)     # DistLL - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[11] / 112     + 0.1)     # DistMM - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[12] / 112     + 0.1)     # DistRR - Range  0 ..  90  mapping to 0.1 .. 0.9
+
+  OutLabels.append(Labels[13])                     # Fast   - Range  0 .. 1    mapping to   0 .. 1
 
   return OutLabels
 
@@ -51,19 +53,22 @@ def denormalizeLabels(Labels):
   OutLabels = []
 
   OutLabels.append((Labels[0]  - 0.5)     * 1.1)      # Angle  - Range 0.05 .. 0.95 mapping to -0.5 .. 0.5
-  OutLabels.append(Labels[1])                         # Fast   - Range    0 .. 1    mapping to    0 .. 1
-  OutLabels.append((Labels[2]  - 1.40909) / 0.14545)  # LL     - Range  0.1 .. 0.9  mapping to   -9 .. -3.5
-  OutLabels.append((Labels[3]  - 0.9)     / 0.16)     # ML     - Range  0.1 .. 0.9  mapping to   -5 .. 0
-  OutLabels.append((Labels[4]  - 0.1)     / 0.16)     # MR     - Range  0.1 .. 0.9  mapping to    0 .. 5
-  OutLabels.append((Labels[5]  + 0.40909) / 0.14545)  # RR     - Range  0.1 .. 0.9  mapping to  3.5 .. 9
-  OutLabels.append((Labels[6]  - 0.1)     * 112)      # DistLL - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[7]  - 0.1)     * 112)      # DistMM - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[8]  - 0.1)     * 112)      # DistRR - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[9]  - 1.34445) / 0.17778)  # L      - Range  0.1 .. 0.9  mapping to   -7 .. -2.5
-  OutLabels.append((Labels[10] - 0.6714)  / 0.1149)   # M      - Range  0.1 .. 0.9  mapping to   -5 .. 2
-  OutLabels.append((Labels[11] + 0.34445) / 0.17778)  # R      - Range  0.1 .. 0.9  mapping to  2.5 .. 7
-  OutLabels.append((Labels[12] - 0.1)     * 112)      # DistL  - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[13] - 0.1)     * 112)      # DistR  - Range  0.1 .. 0.9  mapping to    0 .. 90
+
+  OutLabels.append((Labels[1]  - 1.34445) / 0.17778)  # L      - Range  0.1 .. 0.9  mapping to   -7 .. -2.5
+  OutLabels.append((Labels[2]  - 0.6714)  / 0.1149)   # M      - Range  0.1 .. 0.9  mapping to   -5 .. 2
+  OutLabels.append((Labels[3]  + 0.34445) / 0.17778)  # R      - Range  0.1 .. 0.9  mapping to  2.5 .. 7
+  OutLabels.append((Labels[4]  - 0.1)     * 112)      # DistL  - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[5]  - 0.1)     * 112)      # DistR  - Range  0.1 .. 0.9  mapping to    0 .. 90
+
+  OutLabels.append((Labels[6]  - 1.40909) / 0.14545)  # LL     - Range  0.1 .. 0.9  mapping to   -9 .. -3.5
+  OutLabels.append((Labels[7]  - 0.9)     / 0.16)     # ML     - Range  0.1 .. 0.9  mapping to   -5 .. 0
+  OutLabels.append((Labels[8]  - 0.1)     / 0.16)     # MR     - Range  0.1 .. 0.9  mapping to    0 .. 5
+  OutLabels.append((Labels[9]  + 0.40909) / 0.14545)  # RR     - Range  0.1 .. 0.9  mapping to  3.5 .. 9
+  OutLabels.append((Labels[10] - 0.1)     * 112)      # DistLL - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[11] - 0.1)     * 112)      # DistMM - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[12] - 0.1)     * 112)      # DistRR - Range  0.1 .. 0.9  mapping to    0 .. 90
+
+  OutLabels.append(Labels[13])                        # Fast   - Range    0 .. 1    mapping to    0 .. 1
 
   return OutLabels
 
@@ -117,19 +122,22 @@ def buildFeatureParser(SerializedExample):
   Inputs = [
     Image,                                     # 0
     tf.reshape(Features['Angle'],  shape=[1]), # 1
-    tf.reshape(Features['Fast'],   shape=[1]), # 2
-    tf.reshape(Features['LL'],     shape=[1]), # 3
-    tf.reshape(Features['ML'],     shape=[1]), # 4
-    tf.reshape(Features['MR'],     shape=[1]), # 5
-    tf.reshape(Features['RR'],     shape=[1]), # 6
-    tf.reshape(Features['DistLL'], shape=[1]), # 7
-    tf.reshape(Features['DistMM'], shape=[1]), # 8
-    tf.reshape(Features['DistRR'], shape=[1]), # 9
-    tf.reshape(Features['L'],      shape=[1]), # 10
-    tf.reshape(Features['M'],      shape=[1]), # 11
-    tf.reshape(Features['R'],      shape=[1]), # 12
-    tf.reshape(Features['DistL'],  shape=[1]), # 13
-    tf.reshape(Features['DistR'],  shape=[1]), # 14
+
+    tf.reshape(Features['L'],      shape=[1]), # 2
+    tf.reshape(Features['M'],      shape=[1]), # 3
+    tf.reshape(Features['R'],      shape=[1]), # 4
+    tf.reshape(Features['DistL'],  shape=[1]), # 5
+    tf.reshape(Features['DistR'],  shape=[1]), # 6
+
+    tf.reshape(Features['LL'],     shape=[1]), # 7
+    tf.reshape(Features['ML'],     shape=[1]), # 8
+    tf.reshape(Features['MR'],     shape=[1]), # 9
+    tf.reshape(Features['RR'],     shape=[1]), # 10
+    tf.reshape(Features['DistLL'], shape=[1]), # 11
+    tf.reshape(Features['DistMM'], shape=[1]), # 12
+    tf.reshape(Features['DistRR'], shape=[1]), # 13
+
+    tf.reshape(Features['Fast'],   shape=[1]), # 14
   ]
 
   return Inputs
