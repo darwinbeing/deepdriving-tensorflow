@@ -134,7 +134,7 @@ class CAlexNet(dl.network.CNetwork):
       LearningRates.set(conv1b.name, 2)
 
       conv1_in = conv(Input, conv1W, conv1b, k_h, k_w, c_o, s_h, s_w, padding="VALID", group=1)
-      conv1 = tf.nn.relu(conv1_in)
+      conv1 = tf.nn.relu(dl.layer.createBatchNormalization(conv1_in))
       dl.helpers.saveFeatureMap(conv1, "Features")
       _activation_summary(conv1)
 
@@ -183,14 +183,14 @@ class CAlexNet(dl.network.CNetwork):
       #LearningRates.set(conv2b.name, 0)
 
       conv2W = _variable_with_weight_decay('weights', [k_h, k_h, 48, c_o], stddev=0.01, wd=1.0)
-      conv2b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(1.0))
+      conv2b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(0.1))
       LearningRates.set(conv2b.name, 2)
 
       #padded_lrn1 = tf.pad(lrn1, [[0, 0], [2, 2], [2, 2], [0, 0]], "SYMMETRIC")
       #print("PadConv2-Output shape: {}".format(padded_lrn1.shape))
 
       conv2_in = conv(lrn1, conv2W, conv2b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv2 = tf.nn.relu(conv2_in)
+      conv2 = tf.nn.relu(dl.layer.createBatchNormalization(conv2_in))
       dl.helpers.saveFeatureMap(conv2, "Features")
       _activation_summary(conv2)
 
@@ -239,11 +239,11 @@ class CAlexNet(dl.network.CNetwork):
       #LearningRates.set(conv3b.name, 0.0)
 
       conv3W = _variable_with_weight_decay('weights', [k_h, k_h, 256, c_o], stddev=0.01, wd=1.0)
-      conv3b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(0.0))
+      conv3b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(0.1))
       LearningRates.set(conv3b.name, 2)
 
       conv3_in = conv(lrn2, conv3W, conv3b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv3 = tf.nn.relu(conv3_in)
+      conv3 = tf.nn.relu(dl.layer.createBatchNormalization(conv3_in))
       dl.helpers.saveFeatureMap(conv3, "Features")
       _activation_summary(conv3)
 
@@ -265,11 +265,11 @@ class CAlexNet(dl.network.CNetwork):
       #LearningRates.set(conv4b.name, 0.0)
 
       conv4W = _variable_with_weight_decay('weights', [k_h, k_h, 192, c_o], stddev=0.01, wd=1.0)
-      conv4b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(1.0))
+      conv4b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(0.1))
       LearningRates.set(conv4b.name, 2)
 
       conv4_in = conv(conv3, conv4W, conv4b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv4 = tf.nn.relu(conv4_in)
+      conv4 = tf.nn.relu(dl.layer.createBatchNormalization(conv4_in))
       dl.helpers.saveFeatureMap(conv4, "Features")
       _activation_summary(conv4)
 
@@ -291,11 +291,11 @@ class CAlexNet(dl.network.CNetwork):
       #LearningRates.set(conv5b.name, 0.005)
 
       conv5W = _variable_with_weight_decay('weights', [k_h, k_h, 192, c_o], stddev=0.01, wd=1.0)
-      conv5b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(1.0))
+      conv5b = _variable_on_cpu('biases', [c_o], tf.constant_initializer(0.1))
       LearningRates.set(conv5b.name, 2)
 
       conv5_in = conv(conv4, conv5W, conv5b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv5 = tf.nn.relu(conv5_in)
+      conv5 = tf.nn.relu(dl.layer.createBatchNormalization(conv5_in))
       dl.helpers.saveFeatureMap(conv5, "Features")
       _activation_summary(conv5)
 
@@ -328,15 +328,16 @@ class CAlexNet(dl.network.CNetwork):
       #fc6b = tf.Variable(net_data["fc6"]['biases'])
 
       fc6W = _variable_with_weight_decay('weights', [Layer5Nodes, 4096], stddev=0.005, wd=1.0)
-      fc6b = _variable_on_cpu('biases', [4096], tf.constant_initializer(1.0))
-      LearningRates.set(fc6b.name, 2)
+      #fc6b = _variable_on_cpu('biases', [4096], tf.constant_initializer(0.1))
+      #LearningRates.set(fc6b.name, 2)
 
-      fc6 = tf.nn.relu_layer(layer5, fc6W, fc6b)
+      fc6_in = tf.matmul(layer5, fc6W)
+      fc6 = tf.nn.relu(dl.layer.createBatchNormalization(fc6_in))
       _activation_summary(fc6)
 
       print("fc6-Output shape: {}".format(fc6.shape))
 
-      fc6drop = dl.layer.createDropout(Input=fc6, Ratio=0.5, Name="Drop")
+      fc6_drop = dl.layer.createDropout(Input=fc6, Ratio=0.5, Name="Drop")
 
     # fc7
     # fc(4096, name='fc7')
@@ -348,15 +349,16 @@ class CAlexNet(dl.network.CNetwork):
       #fc7b = tf.Variable(net_data["fc7"]['biases'])
 
       fc7W = _variable_with_weight_decay('weights', [4096, 4096], stddev=0.005, wd=1.0)
-      fc7b = _variable_on_cpu('biases', [4096], tf.constant_initializer(1.0))
-      LearningRates.set(fc7b.name, 2)
+      #fc7b = _variable_on_cpu('biases', [4096], tf.constant_initializer(0.1))
+      #LearningRates.set(fc7b.name, 2)
 
-      fc7 = tf.nn.relu_layer(fc6drop, fc7W, fc7b)
+      fc7_in = tf.matmul(fc6_drop, fc7W)
+      fc7 = tf.nn.relu(dl.layer.createBatchNormalization(fc7_in))
       _activation_summary(fc7)
 
       print("fc7-Output shape: {}".format(fc7.shape))
 
-      fc7drop = dl.layer.createDropout(Input=fc7, Ratio=0.5, Name="Drop")
+      fc7_drop = dl.layer.createDropout(Input=fc7, Ratio=0.5, Name="Drop")
 
     # fc8
     # fc(256, name='fc8')
@@ -368,15 +370,16 @@ class CAlexNet(dl.network.CNetwork):
       #fc8b = tf.Variable(net_data["fc8"]['biases'])
 
       fc8W = _variable_with_weight_decay('weights', [4096, 256], stddev=0.01, wd=1.0)
-      fc8b = _variable_on_cpu('biases', [256], tf.constant_initializer(0.0))
-      LearningRates.set(fc8b.name, 2)
+      #fc8b = _variable_on_cpu('biases', [256], tf.constant_initializer(0.1))
+      #LearningRates.set(fc8b.name, 2)
 
-      fc8 = tf.nn.relu_layer(fc7drop, fc8W, fc8b)
+      fc8_in = tf.matmul(fc7_drop, fc8W)
+      fc8 = tf.nn.relu(dl.layer.createBatchNormalization(fc8_in))
       _activation_summary(fc8)
 
       print("fc8-Output shape: {}".format(fc8.shape))
 
-      fc8drop = dl.layer.createDropout(Input=fc8, Ratio=0.5, Name="Drop")
+      fc8_drop = dl.layer.createDropout(Input=fc8, Ratio=0.5, Name="Drop")
 
     # fc9(14, sigmoid)
     with tf.variable_scope('fc9') as scope:
@@ -387,10 +390,11 @@ class CAlexNet(dl.network.CNetwork):
       #fc9b = tf.Variable(net_data["fc9"]['biases'])
 
       fc9W = _variable_with_weight_decay('weights', [256, 14], stddev=0.01, wd=1.0)
-      fc9b = _variable_on_cpu('biases', [14], tf.constant_initializer(0.0))
-      LearningRates.set(fc9b.name, 2)
+      #fc9b = _variable_on_cpu('biases', [14], tf.constant_initializer(0.0))
+      #LearningRates.set(fc9b.name, 2)
 
-      fc9 = tf.nn.sigmoid(tf.matmul(fc8drop, fc9W) + fc9b)
+      fc9_in = tf.matmul(fc8_drop, fc9W)
+      fc9 = tf.nn.sigmoid(dl.layer.createBatchNormalization(fc9_in))
       _activation_summary(fc9)
 
       print("fc9-Output shape: {}".format(fc9.shape))

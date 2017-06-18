@@ -1,5 +1,17 @@
 # Evaluation of Network:
 Creating network Graph...
+   * With Batch-Normalization
+   * With Batch-Normalization
+   * With Batch-Normalization
+   * With Batch-Normalization
+   * With Batch-Normalization
+   * With Batch-Normalization
+ * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
+   * With Batch-Normalization
+ * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
+   * With Batch-Normalization
+ * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
+   * With Batch-Normalization
  * network Output-Shape: (32, 14)
    * Output 0 has shape (32, 1)
    * Output 1 has shape (32, 1)
@@ -15,24 +27,25 @@ Creating network Graph...
    * Output 11 has shape (32, 1)
    * Output 12 has shape (32, 1)
    * Output 13 has shape (32, 1)
-Finished to build network with 56872078 trainable variables in 18 tensors.
+Finished to build network with 70534456 trainable variables in 50 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_20.ckpt
+* Checkpoint\State_0\model_500.ckpt
 
 # Using Training-Settings:
 {
   "Data": {
-    "BatchSize": 32,
+    "BatchSize": 64,
     "ImageHeight": 210,
     "ImageWidth": 280,
     "TrainingPath": "C:/Data/training",
     "ValidatingPath": "C:/Data/validation"
   },
   "Optimizer": {
-    "EpochsPerDecay": 10,
-    "LearnRateDecay": 0.95,
-    "StartingLearningRate": 0.0025,
+    "EpochsPerDecay": 40,
+    "LearnRateDecay": 0.9,
+    "Momentum": 0.9,
+    "StartingLearningRate": 0.01,
     "WeightDecay": 0.0005
   },
   "PreProcessing": {
@@ -69,12 +82,12 @@ Finished to build network with 56872078 trainable variables in 18 tensors.
 }
 
 # Evaluation Results:
-Full Summary:  ( Error: 144.68,  SD: 73.49 )
+Full Summary:  ( Error: 57.37,  SD: 30.84 )
 
 |  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|  MAE   |   0.55 |   2.74 |   3.30 |   3.05 |   2.68 |  28.09 |  32.49 |  29.03 |   1.45 |   2.55 |   1.52 |  18.21 |  18.78 |   0.24 |
-|   SD   |   0.10 |   1.57 |   1.19 |   1.16 |   1.52 |  31.43 |  33.08 |  31.63 |   1.45 |   2.39 |   1.52 |  21.97 |  22.47 |   0.43 |
+|  MAE   |   0.04 |   0.41 |   0.30 |   0.30 |   0.74 |  12.28 |  13.59 |  14.31 |   0.30 |   0.49 |   0.35 |   6.84 |   7.35 |   0.07 |
+|   SD   |   0.05 |   0.44 |   0.40 |   0.40 |   0.56 |  12.78 |  10.17 |  14.41 |   0.49 |   0.77 |   0.53 |   9.19 |   9.66 |   0.18 |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|MAE/Ref |1664.8% |1458.5% |2127.9% |1921.0% |1465.0% | 552.4% | 685.6% | 363.6% | 457.6% | 826.8% | 518.3% | 204.4% | 172.9% |  N/A % |
-| SD/Ref | 118.1% | 289.0% | 287.3% | 261.1% | 287.2% | 345.2% | 423.3% | 251.5% | 206.6% | 332.0% | 277.3% | 170.0% | 153.5% |  N/A % |
+|MAE/Ref | 124.1% | 217.1% | 194.7% | 185.9% | 405.6% | 241.4% | 286.9% | 179.3% |  95.2% | 159.4% | 119.0% |  76.8% |  67.7% |  N/A % |
+| SD/Ref |  58.9% |  80.0% |  96.6% |  90.2% | 106.8% | 140.4% | 130.1% | 114.5% |  69.8% | 107.6% |  96.7% |  71.1% |  66.0% |  N/A % |

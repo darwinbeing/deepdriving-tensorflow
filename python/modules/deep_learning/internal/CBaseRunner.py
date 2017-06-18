@@ -25,7 +25,9 @@ class CBaseRunner():
     self._initBase()
 
   def _initBase(self):
-    self._Session = tf.Session()
+    # ToDo: Reduce Memory usage for this GPU
+    GPUOptions = tf.GPUOptions(per_process_gpu_memory_fraction=0.6)
+    self._Session = tf.Session(config=tf.ConfigProto(gpu_options=GPUOptions))
     self._Saver = None
 
   def reset(self, CheckpointDir):
