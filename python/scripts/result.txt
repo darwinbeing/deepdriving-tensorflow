@@ -11,7 +11,6 @@ Creating network Graph...
  * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
    * With Batch-Normalization
  * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
-   * With Batch-Normalization
  * network Output-Shape: (64, 14)
    * Output 0 has shape (64, 1)
    * Output 1 has shape (64, 1)
@@ -27,7 +26,7 @@ Creating network Graph...
    * Output 11 has shape (64, 1)
    * Output 12 has shape (64, 1)
    * Output 13 has shape (64, 1)
-Finished to build network with 70533080 trainable variables in 45 tensors.
+Finished to build network with 70533038 trainable variables in 42 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_50.ckpt
@@ -88,12 +87,12 @@ Finished to build network with 70533080 trainable variables in 45 tensors.
 }
 
 # Evaluation Results:
-Full Summary:  ( Error: 87.34,  SD: 44.12 )
+Full Summary:  ( Error: 143.21,  SD: 47.74 )
 
 |  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|  MAE   |   0.05 |   0.51 |   0.38 |   0.38 |   1.05 |  19.50 |  15.02 |  18.66 |   0.59 |   0.97 |   0.66 |  17.99 |  11.39 |   0.19 |
-|   SD   |   0.06 |   0.50 |   0.47 |   0.50 |   0.89 |  18.41 |  15.40 |  20.81 |   0.64 |   0.97 |   0.70 |  19.72 |  13.67 |   0.24 |
+|  MAE   |   0.06 |   0.69 |   0.59 |   0.85 |   1.30 |  33.10 |  54.84 |  25.66 |   0.64 |   1.20 |   0.77 |  11.38 |  11.85 |   0.27 |
+|   SD   |   0.07 |   0.61 |   0.67 |   0.76 |   1.00 |  23.07 |  26.36 |  20.93 |   0.81 |   1.37 |   1.08 |  16.48 |  16.98 |   0.33 |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|MAE/Ref | 157.7% | 272.3% | 247.6% | 237.3% | 575.6% | 383.5% | 317.0% | 233.7% | 187.7% | 313.4% | 223.5% | 201.9% | 104.9% |  N/A % |
-| SD/Ref |  67.0% |  91.4% | 114.3% | 112.4% | 168.6% | 202.2% | 197.1% | 165.4% |  91.5% | 135.4% | 127.1% | 152.6% |  93.4% |  N/A % |
+|MAE/Ref | 195.5% | 367.3% | 382.0% | 535.4% | 712.4% | 650.9% |1157.4% | 321.4% | 203.3% | 389.2% | 263.4% | 127.7% | 109.1% |  N/A % |
+| SD/Ref |  80.0% | 112.4% | 161.7% | 171.0% | 190.1% | 253.4% | 337.2% | 166.4% | 114.9% | 190.9% | 197.4% | 127.5% | 116.0% |  N/A % |

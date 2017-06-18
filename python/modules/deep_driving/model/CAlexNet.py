@@ -308,9 +308,12 @@ class CAlexNet(dl.network.CNetwork):
     # fc9(14, sigmoid)
     with tf.variable_scope('fc9') as scope:
       fc9W = _variable_with_weight_decay('weights', [256, 14], stddev=0.01, wd=1.0)
+      fc9b = _variable_on_cpu('biases', [14], tf.constant_initializer(0.0))
+      LearningRates.set(fc9b.name, 2)
 
-      fc9_in = tf.matmul(fc8_drop, fc9W)
-      fc9 = tf.nn.sigmoid(dl.layer.createBatchNormalization(fc9_in))
+      #fc9_in = tf.matmul(fc8_drop, fc9W)
+      #fc9 = tf.nn.sigmoid(dl.layer.createBatchNormalization(fc9_in))
+      fc9 = tf.matmul(fc8_drop, fc9W) + fc9b
       _activation_summary(fc9)
 
       print("fc9-Output shape: {}".format(fc9.shape))
