@@ -12,25 +12,25 @@ Creating network Graph...
    * With Batch-Normalization
  * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
    * With Batch-Normalization
- * network Output-Shape: (32, 14)
-   * Output 0 has shape (32, 1)
-   * Output 1 has shape (32, 1)
-   * Output 2 has shape (32, 1)
-   * Output 3 has shape (32, 1)
-   * Output 4 has shape (32, 1)
-   * Output 5 has shape (32, 1)
-   * Output 6 has shape (32, 1)
-   * Output 7 has shape (32, 1)
-   * Output 8 has shape (32, 1)
-   * Output 9 has shape (32, 1)
-   * Output 10 has shape (32, 1)
-   * Output 11 has shape (32, 1)
-   * Output 12 has shape (32, 1)
-   * Output 13 has shape (32, 1)
-Finished to build network with 70534456 trainable variables in 50 tensors.
+ * network Output-Shape: (64, 14)
+   * Output 0 has shape (64, 1)
+   * Output 1 has shape (64, 1)
+   * Output 2 has shape (64, 1)
+   * Output 3 has shape (64, 1)
+   * Output 4 has shape (64, 1)
+   * Output 5 has shape (64, 1)
+   * Output 6 has shape (64, 1)
+   * Output 7 has shape (64, 1)
+   * Output 8 has shape (64, 1)
+   * Output 9 has shape (64, 1)
+   * Output 10 has shape (64, 1)
+   * Output 11 has shape (64, 1)
+   * Output 12 has shape (64, 1)
+   * Output 13 has shape (64, 1)
+Finished to build network with 70533080 trainable variables in 45 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_500.ckpt
+* Checkpoint\State_0\model_50.ckpt
 
 # Using Training-Settings:
 {
@@ -51,6 +51,9 @@ Finished to build network with 70534456 trainable variables in 50 tensors.
   "PreProcessing": {
     "MeanFile": "image-mean.tfrecord"
   },
+  "Runner": {
+    "Memory": 0.6
+  },
   "Trainer": {
     "CheckpointEpochs": 10,
     "CheckpointPath": "Checkpoint",
@@ -66,7 +69,7 @@ Finished to build network with 70534456 trainable variables in 50 tensors.
 # Using Evaluation-Settings:
 {
   "Data": {
-    "BatchSize": 32,
+    "BatchSize": 64,
     "ImageHeight": 210,
     "ImageWidth": 280,
     "ValidatingPath": "C:/Data/validation"
@@ -78,16 +81,19 @@ Finished to build network with 70534456 trainable variables in 50 tensors.
   },
   "PreProcessing": {
     "MeanFile": "image-mean.tfrecord"
+  },
+  "Runner": {
+    "Memory": 0.6
   }
 }
 
 # Evaluation Results:
-Full Summary:  ( Error: 57.37,  SD: 30.84 )
+Full Summary:  ( Error: 87.34,  SD: 44.12 )
 
 |  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|  MAE   |   0.04 |   0.41 |   0.30 |   0.30 |   0.74 |  12.28 |  13.59 |  14.31 |   0.30 |   0.49 |   0.35 |   6.84 |   7.35 |   0.07 |
-|   SD   |   0.05 |   0.44 |   0.40 |   0.40 |   0.56 |  12.78 |  10.17 |  14.41 |   0.49 |   0.77 |   0.53 |   9.19 |   9.66 |   0.18 |
+|  MAE   |   0.05 |   0.51 |   0.38 |   0.38 |   1.05 |  19.50 |  15.02 |  18.66 |   0.59 |   0.97 |   0.66 |  17.99 |  11.39 |   0.19 |
+|   SD   |   0.06 |   0.50 |   0.47 |   0.50 |   0.89 |  18.41 |  15.40 |  20.81 |   0.64 |   0.97 |   0.70 |  19.72 |  13.67 |   0.24 |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|MAE/Ref | 124.1% | 217.1% | 194.7% | 185.9% | 405.6% | 241.4% | 286.9% | 179.3% |  95.2% | 159.4% | 119.0% |  76.8% |  67.7% |  N/A % |
-| SD/Ref |  58.9% |  80.0% |  96.6% |  90.2% | 106.8% | 140.4% | 130.1% | 114.5% |  69.8% | 107.6% |  96.7% |  71.1% |  66.0% |  N/A % |
+|MAE/Ref | 157.7% | 272.3% | 247.6% | 237.3% | 575.6% | 383.5% | 317.0% | 233.7% | 187.7% | 313.4% | 223.5% | 201.9% | 104.9% |  N/A % |
+| SD/Ref |  67.0% |  91.4% | 114.3% | 112.4% | 168.6% | 202.2% | 197.1% | 165.4% |  91.5% | 135.4% | 127.1% | 152.6% |  93.4% |  N/A % |
