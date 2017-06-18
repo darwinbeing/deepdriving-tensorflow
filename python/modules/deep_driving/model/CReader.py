@@ -104,24 +104,23 @@ class CReader(dl.data.CReader):
         Image = Inputs[0]
 
         if UseDataAugmentation:
-          #print("* Perform data-augmentation")
+          print("* Perform data-augmentation")
 
-          #Image = tf.image.random_brightness(Image, max_delta=0.25)
+          Image = tf.image.random_brightness(Image, max_delta=0.10)
 
-          #Image = tf.image.random_contrast(Image, lower=0.75, upper=1.25)
+          Image = tf.image.random_contrast(Image, lower=0.90, upper=1.10)
 
-          #Image = tf.image.random_saturation(Image, lower=0.75, upper=1.25)
+          Image = tf.image.random_saturation(Image, lower=0.90, upper=1.10)
 
-          #Image = tf.image.random_hue(Image, max_delta=0.10)
-          pass
+          Image = tf.image.random_hue(Image, max_delta=0.07)
 
         print("* Perform per-pixel standardization")
 
         MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-        VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        #VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
 
         Image = tf.subtract(Image, MeanImage)
-        Image = tf.div(Image, tf.sqrt(VarImage))
+        #Image = tf.div(Image, tf.sqrt(VarImage))
 
         Inputs[0] = Image
 
