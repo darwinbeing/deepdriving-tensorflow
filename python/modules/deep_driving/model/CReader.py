@@ -112,7 +112,7 @@ class CReader(dl.data.CReader):
 
           Image = tf.image.random_saturation(Image, lower=0.90, upper=1.10)
 
-          Image = tf.image.random_hue(Image, max_delta=0.07)
+          Image = tf.image.random_hue(Image, max_delta=0.05)
 
         print("* Perform per-pixel standardization")
 
