@@ -30,7 +30,7 @@ Creating network Graph...
 Finished to build network with 70533080 trainable variables in 45 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_240.ckpt
+* Checkpoint\State_0\model_70.ckpt
 
 # Using Training-Settings:
 {
@@ -46,7 +46,7 @@ Finished to build network with 70533080 trainable variables in 45 tensors.
     "LearnRateDecay": 0.9,
     "Momentum": 0.9,
     "StartingLearningRate": 0.01,
-    "WeightDecay": 0.0005
+    "WeightDecay": 0.0
   },
   "PreProcessing": {
     "MeanFile": "image-mean.tfrecord"
@@ -88,12 +88,12 @@ Finished to build network with 70533080 trainable variables in 45 tensors.
 }
 
 # Evaluation Results:
-Full Summary:  ( Error: 67.61,  SD: 39.34 )
+Full Summary:  ( Error: 57.51,  SD: 35.44 )
 
 |  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|  MAE   |   0.05 |   0.46 |   0.34 |   0.33 |   0.96 |  14.34 |  15.63 |  17.16 |   0.34 |   0.61 |   0.46 |   8.58 |   8.22 |   0.12 |
-|   SD   |   0.05 |   0.50 |   0.49 |   0.44 |   0.74 |  15.43 |  11.66 |  18.96 |   0.52 |   0.92 |   0.76 |  12.04 |  13.47 |   0.26 |
+|  MAE   |   0.05 |   0.47 |   0.36 |   0.33 |   0.83 |  14.33 |  11.40 |  13.20 |   0.38 |   0.61 |   0.46 |   7.17 |   7.84 |   0.08 |
+|   SD   |   0.05 |   0.47 |   0.43 |   0.49 |   0.76 |  14.59 |  11.76 |  16.84 |   0.50 |   0.77 |   0.56 |  10.83 |  11.60 |   0.20 |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|MAE/Ref | 142.8% | 243.0% | 219.1% | 209.4% | 524.4% | 282.0% | 329.9% | 215.0% | 108.4% | 197.9% | 157.4% |  96.3% |  75.7% |  N/A % |
-| SD/Ref |  62.3% |  92.5% | 119.0% |  98.5% | 140.9% | 169.4% | 149.1% | 150.7% |  74.2% | 127.9% | 138.7% |  93.2% |  92.0% |  N/A % |
+|MAE/Ref | 147.2% | 250.4% | 229.2% | 209.6% | 451.2% | 281.9% | 240.7% | 165.4% | 121.6% | 198.6% | 155.1% |  80.5% |  72.2% |  N/A % |
+| SD/Ref |  62.9% |  85.5% | 104.2% | 109.7% | 143.8% | 160.2% | 150.5% | 133.9% |  70.9% | 107.3% | 101.7% |  83.8% |  79.3% |  N/A % |
