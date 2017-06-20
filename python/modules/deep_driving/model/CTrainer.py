@@ -24,8 +24,8 @@ class CTrainer(dl.trainer.CTrainer):
       tf.summary.scalar("LearnRate", LearnRate)
       tf.summary.scalar("Step", CurrentOptimizationStep)
 
-      #Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
-      Optimizer = tf.train.AdadeltaOptimizer(learning_rate=1.0)
+      Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
+      #Optimizer = tf.train.AdadeltaOptimizer(learning_rate=1.0)
       #Optimizer = tf.train.MomentumOptimizer(learning_rate=LearnRate, momentum=Settings['Optimizer']['Momentum'], use_nesterov = True)
       Gradients = Optimizer.compute_gradients(ErrorMeasurement.getOutputs()['Loss'])
 
