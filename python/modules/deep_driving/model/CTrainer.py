@@ -30,30 +30,37 @@ class CTrainer(dl.trainer.CTrainer):
       Gradients = Optimizer.compute_gradients(ErrorMeasurement.getOutputs()['Loss'])
 
 
-      GradientNoise = None
+      GradientNoise = self._getGradientNoise(Settings)
       if GradientNoise is not None:
-        print("Apply noise to gradients...")
+        NoisyGradients = []
+        print("Apply noise to gradients (nu = {})...".format(GradientNoise))
         # Taken from: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/layers/python/layers/optimizers.py
         for Gradient, Variable in Gradients:
           if Gradient is not None:
-            if isinstance(Gradient, ops.IndexedSlices):
+            if isinstance(Gradient, tf.IndexedSlices):
               GradientShape = Gradient.dense_shape
             else:
               GradientShape = Gradient.get_shape()
 
-            Noise = tf.truncated_normal(GradientShape) * (GradientNoise / ((1 + CurrentOptimizationStep) ** 0.55))
+            Noise = tf.truncated_normal(GradientShape) * ( GradientNoise / ( tf.sqrt(tf.cast((CurrentOptimizationStep + 1), tf.float32)) ) )
             Gradient += Noise
+
+          NoisyGradients.append((Gradient, Variable))
+
+      else:
+        NoisyGradients = Gradients
 
 
       print("Apply individual learning rate scales...")
       ScaledGradients = []
-      for Gradient, Variable in Gradients:
+      for Gradient, Variable in NoisyGradients:
         Scale = dl.layer.LearningRates.get(Variable.name)
         if Scale != None:
           Gradient *= Scale
           print(" * \"{}\" has scale {}".format(Variable.name, Scale))
 
         ScaledGradients.append((Gradient, Variable))
+
 
       UpdateOperations = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
       with tf.control_dependencies(UpdateOperations):
@@ -66,3 +73,10 @@ class CTrainer(dl.trainer.CTrainer):
     AllTargets = RunTargets
     return Session.run(AllTargets, feed_dict = Data)
 
+
+  def _getGradientNoise(self, Settings):
+    if "Trainer" in Settings:
+      if "Noise" in Settings["Trainer"]:
+        return Settings["Trainer"]["Noise"]
+
+    return None
