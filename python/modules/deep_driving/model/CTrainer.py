@@ -32,6 +32,7 @@ class CTrainer(dl.trainer.CTrainer):
 
       GradientNoise = self._getGradientNoise(Settings)
       if GradientNoise is not None:
+        NoiseLevel = GradientNoise / (tf.sqrt(tf.cast((CurrentOptimizationStep + 1), tf.float32)))
         NoisyGradients = []
         print("Apply noise to gradients (nu = {})...".format(GradientNoise))
         # Taken from: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/layers/python/layers/optimizers.py
@@ -42,14 +43,16 @@ class CTrainer(dl.trainer.CTrainer):
             else:
               GradientShape = Gradient.get_shape()
 
-            Noise = tf.truncated_normal(GradientShape) * ( GradientNoise / ( tf.sqrt(tf.cast((CurrentOptimizationStep + 1), tf.float32)) ) )
+            Noise = tf.truncated_normal(GradientShape) * NoiseLevel
             Gradient += Noise
 
           NoisyGradients.append((Gradient, Variable))
 
       else:
+        NoiseLevel = 0
         NoisyGradients = Gradients
 
+      tf.summary.scalar("NoiseLevel", NoiseLevel)
 
       print("Apply individual learning rate scales...")
       ScaledGradients = []
