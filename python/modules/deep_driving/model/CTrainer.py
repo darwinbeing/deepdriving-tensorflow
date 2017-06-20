@@ -24,10 +24,26 @@ class CTrainer(dl.trainer.CTrainer):
       tf.summary.scalar("LearnRate", LearnRate)
       tf.summary.scalar("Step", CurrentOptimizationStep)
 
-      Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
-      #Optimizer = tf.train.AdadeltaOptimizer(learning_rate=1.0)
+      #Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
+      Optimizer = tf.train.AdadeltaOptimizer(learning_rate=LearnRate)
       #Optimizer = tf.train.MomentumOptimizer(learning_rate=LearnRate, momentum=Settings['Optimizer']['Momentum'], use_nesterov = True)
       Gradients = Optimizer.compute_gradients(ErrorMeasurement.getOutputs()['Loss'])
+
+
+      GradientNoise = None
+      if GradientNoise is not None:
+        print("Apply noise to gradients...")
+        # Taken from: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/layers/python/layers/optimizers.py
+        for Gradient, Variable in Gradients:
+          if Gradient is not None:
+            if isinstance(Gradient, ops.IndexedSlices):
+              GradientShape = Gradient.dense_shape
+            else:
+              GradientShape = Gradient.get_shape()
+
+            Noise = tf.truncated_normal(GradientShape) * (GradientNoise / ((1 + CurrentOptimizationStep) ** 0.55))
+            Gradient += Noise
+
 
       print("Apply individual learning rate scales...")
       ScaledGradients = []
