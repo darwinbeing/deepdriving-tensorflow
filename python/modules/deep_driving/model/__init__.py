@@ -30,5 +30,6 @@ from .CMerger import CMerger
 from .CEvaluator import CEvaluator
 from .CMeanCalculator import CMeanCalculator
 from .CAlexNet import CAlexNet
+from .CVGG import CVGG
 
 from . import cifar

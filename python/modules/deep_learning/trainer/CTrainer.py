@@ -87,9 +87,21 @@ class CTrainer(internal.CBaseRunner):
     # Initial Eval Step
     StartTime = time.time()
     SummaryResult, OtherResults = self._internalEvalStep(Session, Iteration, 0, Epoch)
-    self._postEpochAction(TrainWriter, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
+
+    Writer = TrainWriter
+    if Epoch > 0:
+      # Do not write to summary, since is has already been written by the training before
+      Writer = None
+
+    self._postEpochAction(Writer, SummaryResult, OtherResults, StartTime, Iteration, Epoch, BatchSize)
     SummaryResult = self._internalValidationStep(Session, Iteration, 0, Epoch)
-    self._postValidationAction(ValWriter, SummaryResult, Iteration, Epoch, BatchSize)
+
+    Writer = ValWriter
+    if Epoch > 0:
+      # Do not write to summary, since is has already been written by the training before
+      Writer = None
+
+    self._postValidationAction(Writer, SummaryResult, Iteration, Epoch, BatchSize)
 
     # Training Loop
     StartTime = time.time()

@@ -24,18 +24,46 @@ class CTrainer(dl.trainer.CTrainer):
       tf.summary.scalar("LearnRate", LearnRate)
       tf.summary.scalar("Step", CurrentOptimizationStep)
 
-      Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
+      #Optimizer = tf.train.AdamOptimizer(learning_rate=LearnRate)
+      Optimizer = tf.train.AdadeltaOptimizer(learning_rate=LearnRate)
+      #Optimizer = tf.train.MomentumOptimizer(learning_rate=LearnRate, momentum=Settings['Optimizer']['Momentum'], use_nesterov = True)
       Gradients = Optimizer.compute_gradients(ErrorMeasurement.getOutputs()['Loss'])
+
+
+      GradientNoise = self._getGradientNoise(Settings)
+      if GradientNoise is not None:
+        NoiseLevel = GradientNoise / (tf.sqrt(tf.cast((CurrentOptimizationStep + 1), tf.float32)))
+        NoisyGradients = []
+        print("Apply noise to gradients (nu = {})...".format(GradientNoise))
+        # Taken from: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/layers/python/layers/optimizers.py
+        for Gradient, Variable in Gradients:
+          if Gradient is not None:
+            if isinstance(Gradient, tf.IndexedSlices):
+              GradientShape = Gradient.dense_shape
+            else:
+              GradientShape = Gradient.get_shape()
+
+            Noise = tf.truncated_normal(GradientShape) * NoiseLevel
+            Gradient += Noise
+
+          NoisyGradients.append((Gradient, Variable))
+
+      else:
+        NoiseLevel = 0
+        NoisyGradients = Gradients
+
+      tf.summary.scalar("NoiseLevel", NoiseLevel)
 
       print("Apply individual learning rate scales...")
       ScaledGradients = []
-      for Gradient, Variable in Gradients:
+      for Gradient, Variable in NoisyGradients:
         Scale = dl.layer.LearningRates.get(Variable.name)
         if Scale != None:
           Gradient *= Scale
           print(" * \"{}\" has scale {}".format(Variable.name, Scale))
 
         ScaledGradients.append((Gradient, Variable))
+
 
       UpdateOperations = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
       with tf.control_dependencies(UpdateOperations):
@@ -48,3 +76,10 @@ class CTrainer(dl.trainer.CTrainer):
     AllTargets = RunTargets
     return Session.run(AllTargets, feed_dict = Data)
 
+
+  def _getGradientNoise(self, Settings):
+    if "Trainer" in Settings:
+      if "Noise" in Settings["Trainer"]:
+        return Settings["Trainer"]["Noise"]
+
+    return None

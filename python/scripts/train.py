@@ -47,7 +47,8 @@ class CTrainSettings(misc.settings.CSettings):
     'StartingLearningRate': 0.005,
     'EpochsPerDecay':       10,
     'LearnRateDecay':       0.95,
-    'WeightDecay':          0.004
+    'WeightDecay':          0.004,
+    'Momentum':             0.9
   },
   'Validation': {
     'Samples': 1000
@@ -63,7 +64,7 @@ IsRetrain = True
 
 def main():
   Settings = CTrainSettings(SettingFile)
-  dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 3)
+  dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 30)
 
   Model = dl.CModel(model.CAlexNet)
 

@@ -25,7 +25,15 @@ class CBaseRunner():
     self._initBase()
 
   def _initBase(self):
-    self._Session = tf.Session()
+    GPUFraction = self._getGPUFraction(self._Settings)
+    if GPUFraction != None and GPUFraction > 0.0 and GPUFraction <= 1.0:
+      print("Limit GPU memory usage to {}%".format(GPUFraction*100))
+      GPUOptions = tf.GPUOptions(per_process_gpu_memory_fraction=GPUFraction)
+
+    else:
+      GPUOptions = tf.GPUOptions()
+
+    self._Session = tf.Session(config=tf.ConfigProto(gpu_options=GPUOptions))
     self._Saver = None
 
   def reset(self, CheckpointDir):
@@ -111,6 +119,13 @@ class CBaseRunner():
     if Batch >= (IterationsPerEpoch-1):
       print("\r", end='', flush=True)
 
+
+  def _getGPUFraction(self, Settings):
+    if "Runner" in Settings:
+      if "Memory" in Settings["Runner"]:
+        return Settings["Runner"]["Memory"]
+
+    return None
 
 def saveCheckpointToFile(Saver, Session, Filename, Tries = 5):
   print("Store current model as checkpoint: {}".format(Filename))

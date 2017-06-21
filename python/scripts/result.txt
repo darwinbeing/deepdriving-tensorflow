@@ -1,87 +1,58 @@
 # Evaluation of Network:
 Creating network Graph...
-* Preprocess Image
    * With Batch-Normalization
- * network Input-Shape: (32, 210, 280, 3)
- * Create Conv2D Layer Conv with Kernel 11, Stride 4, Padding "VALID" and 96 Feature Maps
    * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Pooling Layer Pool with Window 3, Stride 2, Padding "VALID" and Function MAX 
- * Create Conv2D Layer Conv with Kernel 5, Stride 1, Padding "2" and 128.0 Feature Maps
    * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Pooling Layer Pool with Window 3, Stride 2, Padding "VALID" and Function MAX 
- * Create Conv2D Layer Conv with Kernel 5, Stride 1, Padding "2" and 128.0 Feature Maps
    * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Pooling Layer Pool with Window 3, Stride 2, Padding "VALID" and Function MAX 
- * Create Conv2D Layer Conv with Kernel 3, Stride 1, Padding "SAME" and 384 Feature Maps
    * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Conv2D Layer Conv with Kernel 3, Stride 1, Padding "SAME" and 192.0 Feature Maps
    * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Conv2D Layer Conv with Kernel 3, Stride 1, Padding "SAME" and 192.0 Feature Maps
-   * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Conv2D Layer Conv with Kernel 3, Stride 1, Padding "SAME" and 128.0 Feature Maps
-   * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Pooling Layer Pool with Window 3, Stride 2, Padding "VALID" and Function MAX 
- * Create Conv2D Layer Conv with Kernel 3, Stride 1, Padding "SAME" and 128.0 Feature Maps
-   * With Batch-Normalization
- * Create Activation-Layer ReLU with Function ReLU
- * Create Pooling Layer Pool with Window 3, Stride 2, Padding "VALID" and Function MAX 
- * Create Fully-Connected-Layer "FC" with 4096 output-nodes.
-   * Reshape layer input (32, 5, 7, 256) to vector with 8960 elements.
-   * With Batch-Normalization
-   * With Activation ReLU
  * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
- * Create Fully-Connected-Layer "FC" with 4096 output-nodes.
    * With Batch-Normalization
-   * With Activation ReLU
  * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
- * Create Fully-Connected-Layer "FC" with 256 output-nodes.
    * With Batch-Normalization
-   * With Activation ReLU
  * Create Dropout-Layer "Drop" with dropout-ratio 0.5.
- * Create Fully-Connected-Layer "FC" with 14 output-nodes.
    * With Batch-Normalization
-   * With Activation Sigmoid
- * network Output-Shape: (32, 14)
-   * Output 0 has shape (32, 1)
-   * Output 1 has shape (32, 1)
-   * Output 2 has shape (32, 1)
-   * Output 3 has shape (32, 1)
-   * Output 4 has shape (32, 1)
-   * Output 5 has shape (32, 1)
-   * Output 6 has shape (32, 1)
-   * Output 7 has shape (32, 1)
-   * Output 8 has shape (32, 1)
-   * Output 9 has shape (32, 1)
-   * Output 10 has shape (32, 1)
-   * Output 11 has shape (32, 1)
-   * Output 12 has shape (32, 1)
-   * Output 13 has shape (32, 1)
-Finished to build network with 56911442 trainable variables in 76 tensors.
+ * network Output-Shape: (64, 14)
+   * Output 0 has shape (64, 1)
+   * Output 1 has shape (64, 1)
+   * Output 2 has shape (64, 1)
+   * Output 3 has shape (64, 1)
+   * Output 4 has shape (64, 1)
+   * Output 5 has shape (64, 1)
+   * Output 6 has shape (64, 1)
+   * Output 7 has shape (64, 1)
+   * Output 8 has shape (64, 1)
+   * Output 9 has shape (64, 1)
+   * Output 10 has shape (64, 1)
+   * Output 11 has shape (64, 1)
+   * Output 12 has shape (64, 1)
+   * Output 13 has shape (64, 1)
+Finished to build network with 70533080 trainable variables in 45 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_320.ckpt
+* Checkpoint\State_0\model_70.ckpt
 
 # Using Training-Settings:
 {
   "Data": {
-    "BatchSize": 32,
+    "BatchSize": 64,
     "ImageHeight": 210,
     "ImageWidth": 280,
     "TrainingPath": "C:/Data/training",
     "ValidatingPath": "C:/Data/validation"
   },
   "Optimizer": {
-    "EpochsPerDecay": 10,
-    "LearnRateDecay": 0.95,
+    "EpochsPerDecay": 40,
+    "LearnRateDecay": 0.9,
+    "Momentum": 0.9,
     "StartingLearningRate": 0.01,
-    "WeightDecay": 0.0005
+    "WeightDecay": 0.0
+  },
+  "PreProcessing": {
+    "MeanFile": "image-mean.tfrecord"
+  },
+  "Runner": {
+    "Memory": 0.6
   },
   "Trainer": {
     "CheckpointEpochs": 10,
@@ -98,7 +69,7 @@ Finished to build network with 56911442 trainable variables in 76 tensors.
 # Using Evaluation-Settings:
 {
   "Data": {
-    "BatchSize": 32,
+    "BatchSize": 64,
     "ImageHeight": 210,
     "ImageWidth": 280,
     "ValidatingPath": "C:/Data/validation"
@@ -107,16 +78,22 @@ Finished to build network with 56911442 trainable variables in 76 tensors.
     "CheckpointPath": "Checkpoint",
     "EpochSize": 10000,
     "NumberOfEpochs": 12
+  },
+  "PreProcessing": {
+    "MeanFile": "image-mean.tfrecord"
+  },
+  "Runner": {
+    "Memory": 0.6
   }
 }
 
 # Evaluation Results:
-Full Summary:  ( Error: 104.44,  SD: 43.13 )
+Full Summary:  ( Error: 57.51,  SD: 35.44 )
 
 |  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|  MAE   |   0.07 |   1.24 |   0.56 |   0.59 |   1.24 |  20.72 |  22.45 |  26.52 |   0.77 |   1.23 |   0.90 |  14.89 |  12.84 |   0.41 |
-|   SD   |   0.08 |   0.72 |   0.61 |   0.64 |   0.87 |  18.47 |  16.08 |  19.44 |   0.74 |   1.15 |   0.78 |  15.25 |  17.44 |   0.29 |
+|  MAE   |   0.05 |   0.47 |   0.36 |   0.33 |   0.83 |  14.33 |  11.40 |  13.20 |   0.38 |   0.61 |   0.46 |   7.17 |   7.84 |   0.08 |
+|   SD   |   0.05 |   0.47 |   0.43 |   0.49 |   0.76 |  14.59 |  11.76 |  16.84 |   0.50 |   0.77 |   0.56 |  10.83 |  11.60 |   0.20 |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|MAE/Ref | 210.7% | 659.3% | 363.9% | 370.5% | 675.7% | 407.4% | 473.9% | 332.2% | 244.8% | 400.7% | 305.5% | 167.2% | 118.3% |  N/A % |
-| SD/Ref |  88.9% | 132.1% | 147.6% | 144.3% | 164.1% | 202.8% | 205.7% | 154.5% | 104.8% | 159.5% | 142.8% | 118.0% | 119.1% |  N/A % |
+|MAE/Ref | 147.2% | 250.4% | 229.2% | 209.6% | 451.2% | 281.9% | 240.7% | 165.4% | 121.6% | 198.6% | 155.1% |  80.5% |  72.2% |  N/A % |
+| SD/Ref |  62.9% |  85.5% | 104.2% | 109.7% | 143.8% | 160.2% | 150.5% | 133.9% |  70.9% | 107.3% | 101.7% |  83.8% |  79.3% |  N/A % |

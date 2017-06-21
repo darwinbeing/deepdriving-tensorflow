@@ -26,6 +26,8 @@ import numpy as np
 import tensorflow as tf
 
 
+from deep_learning.layer import LearningRates
+
 class CAlexNet(dl.network.CNetwork):
   def _build(self, Inputs, Settings):
     dl.layer.Setup.setupLogger(self.log)
@@ -69,28 +71,31 @@ class CAlexNet(dl.network.CNetwork):
 ## Custom methods
 
   def _buildAlexNet(self, Input, OutputNodes):
-    # This code and the weights are taken from: http://www.cs.toronto.edu/~guerzhoy/tf_alexnet/
-
+    # This code has been taken from the caffe-2-tensorflow generator at
+    # https://github.com/ethereon/caffe-tensorflow
+    #
     ################################################################################
     #
     # (self.feed('data')
-    #         .conv(11, 11, 96, 4, 4, padding='VALID', name='conv1')
-    #         .lrn(2, 2e-05, 0.75, name='norm1')
-    #         .max_pool(3, 3, 2, 2, padding='VALID', name='pool1')
-    #         .conv(5, 5, 256, 1, 1, group=2, name='conv2')
-    #         .lrn(2, 2e-05, 0.75, name='norm2')
-    #         .max_pool(3, 3, 2, 2, padding='VALID', name='pool2')
-    #         .conv(3, 3, 384, 1, 1, name='conv3')
-    #         .conv(3, 3, 384, 1, 1, group=2, name='conv4')
-    #         .conv(3, 3, 256, 1, 1, group=2, name='conv5')
-    #         .fc(4096, name='fc6')
-    #         .fc(4096, name='fc7')
-    #         .fc(1000, relu=False, name='fc8')
-    #         .softmax(name='prob'))
+    #          .conv(11, 11, 96, 4, 4, padding='VALID', name='conv1')
+    #          .max_pool(3, 3, 2, 2, name='pool1')
+    #          .lrn(2, 1.99999994948e-05, 0.75, name='norm1')
+    #          .conv(5, 5, 256, 1, 1, group=2, name='conv2')
+    #          .max_pool(3, 3, 2, 2, padding=None, name='pool2')
+    #          .lrn(2, 1.99999994948e-05, 0.75, name='norm2')
+    #          .conv(3, 3, 384, 1, 1, name='conv3')
+    #          .conv(3, 3, 384, 1, 1, group=2, name='conv4')
+    #          .conv(3, 3, 256, 1, 1, group=2, name='conv5')
+    #          .max_pool(3, 3, 2, 2, padding=None, name='pool5')
+    #          .fc(4096, name='fc6')
+    #          .fc(4096, name='fc7')
+    #          .fc(256, name='fc8')
+    #          .fc(14, name='fc9'))
 
     from .cifar.TutorialHelper import _variable_with_weight_decay, _variable_on_cpu, _activation_summary
     import numpy as np
-    net_data = np.load(open("bvlc_alexnet.npy", "rb"), encoding="latin1").item()
+
+    # net_data = np.load(open("deepdriving.npy", "rb"), encoding="latin1").item()
 
     def conv(input, kernel, biases, k_h, k_w, c_o, s_h, s_w, padding="VALID", group=1):
       '''From https://github.com/ethereon/caffe-tensorflow
@@ -107,7 +112,16 @@ class CAlexNet(dl.network.CNetwork):
         kernel_groups = tf.split(kernel, group, 3)  # tf.split(3, group, kernel)
         output_groups = [convolve(i, k) for i, k in zip(input_groups, kernel_groups)]
         conv = tf.concat(output_groups, 3)  # tf.concat(3, output_groups)
-      return tf.reshape(tf.nn.bias_add(conv, biases), [-1] + conv.get_shape().as_list()[1:])
+
+      if biases is not None:
+        output = tf.nn.bias_add(conv, biases)
+      else:
+        output = conv
+
+      return tf.reshape(output, [-1] + conv.get_shape().as_list()[1:])
+
+
+    print("Input shape: {}".format(Input.shape))
 
     # conv1
     # conv(11, 11, 96, 4, 4, padding='VALID', name='conv1')
@@ -117,25 +131,15 @@ class CAlexNet(dl.network.CNetwork):
       c_o = 96
       s_h = 4
       s_w = 4
-      conv1W = tf.Variable(net_data["conv1"][0])
-      conv1b = tf.Variable(net_data["conv1"][1])
-      conv1_in = conv(Input, conv1W, conv1b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=1)
-      conv1 = tf.nn.relu(conv1_in)
+
+      conv1W = _variable_with_weight_decay('weights', [k_h, k_h, 3, c_o], stddev=0.01, wd=1.0)
+
+      conv1_in = conv(Input, conv1W, None, k_h, k_w, c_o, s_h, s_w, padding="VALID", group=1)
+      conv1 = tf.nn.relu(dl.layer.createBatchNormalization(conv1_in))
       dl.helpers.saveFeatureMap(conv1, "Features")
       _activation_summary(conv1)
 
-    # lrn1
-    # lrn(2, 2e-05, 0.75, name='norm1')
-    with tf.variable_scope('lrn1') as scope:
-      radius = 2
-      alpha = 2e-05
-      beta = 0.75
-      bias = 1.0
-      lrn1 = tf.nn.local_response_normalization(conv1,
-                                              depth_radius=radius,
-                                              alpha=alpha,
-                                              beta=beta,
-                                              bias=bias)
+      print("Conv1-Output shape: {}".format(conv1.shape))
 
     # maxpool1
     # max_pool(3, 3, 2, 2, padding='VALID', name='pool1')
@@ -144,8 +148,11 @@ class CAlexNet(dl.network.CNetwork):
       k_w = 3
       s_h = 2
       s_w = 2
-      padding = 'VALID'
-      maxpool1 = tf.nn.max_pool(lrn1, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+      padding = 'SAME'
+      maxpool1 = tf.nn.max_pool(conv1, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+
+      print("Pool1-Output shape: {}".format(maxpool1.shape))
+
 
     # conv2
     # conv(5, 5, 256, 1, 1, group=2, name='conv2')
@@ -156,25 +163,16 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 1
       s_w = 1
       group = 2
-      conv2W = tf.Variable(net_data["conv2"][0])
-      conv2b = tf.Variable(net_data["conv2"][1])
-      conv2_in = conv(maxpool1, conv2W, conv2b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv2 = tf.nn.relu(conv2_in)
+
+      conv2W = _variable_with_weight_decay('weights', [k_h, k_h, 48, c_o], stddev=0.01, wd=1.0)
+
+      conv2_in = conv(maxpool1, conv2W, None, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
+      conv2 = tf.nn.relu(dl.layer.createBatchNormalization(conv2_in))
       dl.helpers.saveFeatureMap(conv2, "Features")
       _activation_summary(conv2)
 
-    # lrn2
-    # lrn(2, 2e-05, 0.75, name='norm2')
-    with tf.variable_scope('lrn2') as scope:
-      radius = 2
-      alpha = 2e-05
-      beta = 0.75
-      bias = 1.0
-      lrn2 = tf.nn.local_response_normalization(conv2,
-                                              depth_radius=radius,
-                                              alpha=alpha,
-                                              beta=beta,
-                                              bias=bias)
+      print("Conv2-Output shape: {}".format(conv2.shape))
+
 
     # maxpool2
     # max_pool(3, 3, 2, 2, padding='VALID', name='pool2')
@@ -183,8 +181,11 @@ class CAlexNet(dl.network.CNetwork):
       k_w = 3
       s_h = 2
       s_w = 2
-      padding = 'VALID'
-      maxpool2 = tf.nn.max_pool(lrn2, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+      padding = 'SAME'
+      maxpool2 = tf.nn.max_pool(conv2, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+
+      print("Pool2-Output shape: {}".format(maxpool2.shape))
+
 
     # conv3
     # conv(3, 3, 384, 1, 1, name='conv3')
@@ -195,12 +196,16 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 1;
       s_w = 1;
       group = 1
-      conv3W = tf.Variable(net_data["conv3"][0])
-      conv3b = tf.Variable(net_data["conv3"][1])
-      conv3_in = conv(maxpool2, conv3W, conv3b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv3 = tf.nn.relu(conv3_in)
+
+      conv3W = _variable_with_weight_decay('weights', [k_h, k_h, 256, c_o], stddev=0.01, wd=1.0)
+
+      conv3_in = conv(maxpool2, conv3W, None, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
+      conv3 = tf.nn.relu(dl.layer.createBatchNormalization(conv3_in))
       dl.helpers.saveFeatureMap(conv3, "Features")
       _activation_summary(conv3)
+
+      print("Conv3-Output shape: {}".format(conv3.shape))
+
 
     # conv4
     # conv(3, 3, 384, 1, 1, group=2, name='conv4')
@@ -211,12 +216,16 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 1
       s_w = 1
       group = 2
-      conv4W = tf.Variable(net_data["conv4"][0])
-      conv4b = tf.Variable(net_data["conv4"][1])
-      conv4_in = conv(conv3, conv4W, conv4b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv4 = tf.nn.relu(conv4_in)
+
+      conv4W = _variable_with_weight_decay('weights', [k_h, k_h, 192, c_o], stddev=0.01, wd=1.0)
+
+      conv4_in = conv(conv3, conv4W, None, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
+      conv4 = tf.nn.relu(dl.layer.createBatchNormalization(conv4_in))
       dl.helpers.saveFeatureMap(conv4, "Features")
       _activation_summary(conv4)
+
+      print("Conv4-Output shape: {}".format(conv4.shape))
+
 
     # conv5
     # conv(3, 3, 256, 1, 1, group=2, name='conv5')
@@ -227,12 +236,16 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 1
       s_w = 1
       group = 2
-      conv5W = tf.Variable(net_data["conv5"][0])
-      conv5b = tf.Variable(net_data["conv5"][1])
-      conv5_in = conv(conv4, conv5W, conv5b, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
-      conv5 = tf.nn.relu(conv5_in)
+
+      conv5W = _variable_with_weight_decay('weights', [k_h, k_h, 192, c_o], stddev=0.01, wd=1.0)
+
+      conv5_in = conv(conv4, conv5W, None, k_h, k_w, c_o, s_h, s_w, padding="SAME", group=group)
+      conv5 = tf.nn.relu(dl.layer.createBatchNormalization(conv5_in))
       dl.helpers.saveFeatureMap(conv5, "Features")
       _activation_summary(conv5)
+
+      print("Conv5-Output shape: {}".format(conv5.shape))
+
 
     # maxpool5
     # max_pool(3, 3, 2, 2, padding='VALID', name='pool5')
@@ -244,41 +257,63 @@ class CAlexNet(dl.network.CNetwork):
       padding = 'VALID'
       maxpool5 = tf.nn.max_pool(conv5, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
 
+      print("Pool5-Output shape: {}".format(maxpool5.shape))
+
+
     # fc6
     # fc(4096, name='fc6')
     with tf.variable_scope('fc6') as scope:
       Layer5Nodes = int(np.prod(maxpool5.get_shape()[1:]))
       layer5 = tf.reshape(maxpool5, [-1, Layer5Nodes])
-      fc6W = _variable_with_weight_decay('weights6', shape=[Layer5Nodes, 4096],
-                                          stddev=0.04, wd=1.0)
-      fc6b = _variable_on_cpu('biase6', [4096], tf.constant_initializer(0.1))
-      fc6 = tf.nn.relu_layer(layer5, fc6W, fc6b)
+
+      fc6W = _variable_with_weight_decay('weights', [Layer5Nodes, 4096], stddev=0.005, wd=1.0)
+
+      fc6_in = tf.matmul(layer5, fc6W)
+      fc6 = tf.nn.relu(dl.layer.createBatchNormalization(fc6_in))
       _activation_summary(fc6)
+
+      print("fc6-Output shape: {}".format(fc6.shape))
+
+      fc6_drop = dl.layer.createDropout(Input=fc6, Ratio=0.5, Name="Drop")
+
 
     # fc7
     # fc(4096, name='fc7')
     with tf.variable_scope('fc7') as scope:
-      fc7W = _variable_with_weight_decay('weights7', shape=[4096, 4096],
-                                          stddev=0.04, wd=1.0)
-      fc7b = _variable_on_cpu('biase7', [4096], tf.constant_initializer(0.1))
-      fc7 = tf.nn.relu_layer(fc6, fc7W, fc7b)
+      fc7W = _variable_with_weight_decay('weights', [4096, 4096], stddev=0.005, wd=1.0)
+
+      fc7_in = tf.matmul(fc6_drop, fc7W)
+      fc7 = tf.nn.relu(dl.layer.createBatchNormalization(fc7_in))
       _activation_summary(fc7)
+
+      print("fc7-Output shape: {}".format(fc7.shape))
+
+      fc7_drop = dl.layer.createDropout(Input=fc7, Ratio=0.5, Name="Drop")
+
 
     # fc8
     # fc(256, name='fc8')
     with tf.variable_scope('fc8') as scope:
-      fc8W = _variable_with_weight_decay('weights8', shape=[4096, 256],
-                                          stddev=0.04, wd=1.0)
-      fc8b = _variable_on_cpu('biase8', [256], tf.constant_initializer(0.1))
-      fc8 = tf.nn.relu_layer(fc7, fc8W, fc8b)
+      fc8W = _variable_with_weight_decay('weights', [4096, 256], stddev=0.01, wd=1.0)
+
+      fc8_in = tf.matmul(fc7_drop, fc8W)
+      fc8 = tf.nn.relu(dl.layer.createBatchNormalization(fc8_in))
       _activation_summary(fc8)
+
+      print("fc8-Output shape: {}".format(fc8.shape))
+
+      fc8_drop = dl.layer.createDropout(Input=fc8, Ratio=0.5, Name="Drop")
+
 
     # fc9(14, sigmoid)
     with tf.variable_scope('fc9') as scope:
-      fc9W = _variable_with_weight_decay('weights9', shape=[256, OutputNodes],
-                                          stddev=0.04, wd=1.0)
-      fc9b = _variable_on_cpu('biases9', [OutputNodes], tf.constant_initializer(0.1))
-      fc9 = tf.nn.sigmoid(tf.matmul(fc8, fc9W) + fc9b)
+      fc9W = _variable_with_weight_decay('weights', [256, 14], stddev=0.01, wd=1.0)
+
+      fc9_in = tf.matmul(fc8_drop, fc9W)
+      fc9 = tf.nn.sigmoid(dl.layer.createBatchNormalization(fc9_in))
       _activation_summary(fc9)
+
+      print("fc9-Output shape: {}".format(fc9.shape))
+
 
     return fc9

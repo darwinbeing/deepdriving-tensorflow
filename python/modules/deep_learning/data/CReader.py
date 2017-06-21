@@ -67,7 +67,7 @@ class CReader():
     # You can overrite this function to add the inputs to the summary
     pass
 
-  def _buildPreprocessing(self, Settings, Inputs, IsTraining):
+  def _buildPreprocessing(self, Settings, Inputs, UseDataAugmentation):
     # You can overrite this function to add your own preprocessing
     return Inputs
 

@@ -19,6 +19,22 @@ class CError(dl.error.CMeasurement):
   def _getEvalError(self, Structure):
     return Structure['Error']
 
+  _Name = [
+    "Angle",
+    "L",
+    "M",
+    "R",
+    "DistL",
+    "DistR",
+    "LL",
+    "ML",
+    "MR",
+    "RR",
+    "DistLL",
+    "DistMM",
+    "DistRR",
+    "Fast",
+  ]
 
   # Custom Methods
   def _buildLoss(self, Output, Label, Lambda):
@@ -27,13 +43,29 @@ class CError(dl.error.CMeasurement):
 
       NormLabel = db.normalizeLabels(Label)
 
+      if dl.layer.Setup.StoreOutputAsText:
+        ValueTable = dl.helpers.CTable(Header=["Type"]+self._Name)
+        ValueTable.addLine(Line=["Output"]+Output)
+        ValueTable.addLine(Line=["Label"]+NormLabel)
+
+      Loss     = []
+      MeanLoss = []
       SquaredLoss = None
       for i, Out in enumerate(Output):
         SingleSquaredLoss = tf.square(NormLabel[i] - Output[i])
+
+        Loss.append(SingleSquaredLoss[0,:])
+        MeanLoss.append(tf.reduce_mean(SingleSquaredLoss))
+
         if SquaredLoss is None:
           SquaredLoss = SingleSquaredLoss
         else:
           SquaredLoss = SquaredLoss + SingleSquaredLoss
+
+      if dl.layer.Setup.StoreOutputAsText:
+        ValueTable.addLine(Line=["Loss"]+Loss)
+        ValueTable.addLine(Line=["MeanLoss"]+MeanLoss)
+        tf.summary.text("Values", ValueTable.build())
 
       print("* Squared Loss shape: {}".format(SquaredLoss.shape))
 
@@ -45,28 +77,12 @@ class CError(dl.error.CMeasurement):
 
       Loss = tf.reduce_mean(SquaredLoss) + WeightDecay * Lambda
 
+      tf.summary.scalar('LabelLoss', tf.reduce_mean(SquaredLoss))
       tf.summary.scalar('Loss', Loss)
       tf.summary.scalar('WeightDecayTerm', WeightDecay)
       tf.summary.scalar('WeightDecayRate', Lambda)
       return Loss
 
-
-  _Name = [
-    "Angle",
-    "Fast",
-    "LL",
-    "ML",
-    "MR",
-    "RR",
-    "DistLL",
-    "DistMM",
-    "DistRR",
-    "L",
-    "M",
-    "R",
-    "DistL",
-    "DistR",
-  ]
 
   def _buildError(self, NormOutput, Label):
     with tf.name_scope("DetailError"):
