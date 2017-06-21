@@ -33,7 +33,7 @@ class CMeanCalculator(internal.CBaseRunner):
   def __init__(self, ReaderFactoryArg, Settings):
     super().__init__(Settings)
     ReaderFactory    = internal.getFactory(ReaderFactoryArg, data.CFactory, data.CReader)
-    self._Reader = ReaderFactory.create(Settings, IsTraining=True, IsPreprocessing=False)
+    self._Reader = ReaderFactory.create(Settings, IsTraining=True, UsePreprocessing=False, UseDataAugmentation=True)
     self._Targets = self._buildTarget(self._Reader)
     self._MeanImageList = []
     self._VarImageList  = []

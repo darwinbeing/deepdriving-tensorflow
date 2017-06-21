@@ -7,7 +7,7 @@ import tensorflow as tf
 from .. import db
 
 class CReader(dl.data.CReader):
-  def __init__(self, Settings, IsTraining, IsPreprocessing):
+  def __init__(self, Settings, IsTraining, UsePreprocessing, ForceDataAugmentation):
     self._BatchesInQueue = 100
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
@@ -18,7 +18,7 @@ class CReader(dl.data.CReader):
       "IsTraining": tf.placeholder(dtype=tf.bool, name="IsTraining"),
       "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
     }
-    super().__init__(Settings, IsTraining, IsPreprocessing)
+    super().__init__(Settings, IsTraining, UsePreprocessing, ForceDataAugmentation)
 
 
   def _getOutputs(self, Inputs):
@@ -95,35 +95,30 @@ class CReader(dl.data.CReader):
     return Inputs
 
   def _buildPreprocessing(self, Settings, Inputs, UseDataAugmentation):
-    if self._IsPreprocessingEnabled:
-      MeanReader = dl.data.CMeanReader()
-      MeanReader.read(Settings['PreProcessing']['MeanFile'])
+    Image = Inputs[0]
 
+    if self._ForceDataAugmentation or UseDataAugmentation:
+      with tf.name_scope("DataAugmentation"):
 
+        print("* Perform data-augmentation")
+
+        Image = tf.image.random_brightness(Image, max_delta=0.25)
+        Image = tf.image.random_contrast(Image, lower=0.75, upper=1.25)
+        Image = tf.image.random_saturation(Image, lower=0.75, upper=1.25)
+        Image = tf.image.random_hue(Image, max_delta=0.10)
+
+    if self._UsePreprocessing:
       with tf.name_scope("Preprocessing"):
-        Image = Inputs[0]
 
-        if UseDataAugmentation:
-          print("* Perform data-augmentation")
+        print("* Perform per-pixel normalization")
 
-          Image = tf.image.random_brightness(Image, max_delta=0.10)
-
-          Image = tf.image.random_contrast(Image, lower=0.90, upper=1.10)
-
-          Image = tf.image.random_saturation(Image, lower=0.90, upper=1.10)
-
-          Image = tf.image.random_hue(Image, max_delta=0.05)
-
-        print("* Perform per-pixel standardization")
+        MeanReader = dl.data.CMeanReader()
+        MeanReader.read(Settings['PreProcessing']['MeanFile'])
 
         MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-        #VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
-
         Image = tf.subtract(Image, MeanImage)
-        #Image = tf.div(Image, tf.sqrt(VarImage))
 
-        Inputs[0] = Image
-
+    Inputs[0] = Image
     return Inputs
 
   def _getWeightDecayFactor(self):
