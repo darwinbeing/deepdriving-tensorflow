@@ -5,7 +5,7 @@ import re
 import tensorflow as tf
 
 class CReader(dl.data.CReader):
-  def __init__(self, Settings, IsTraining, IsPreprocessing):
+  def __init__(self, Settings, IsTraining, UsePreprocessing, ForceDataAugmentation):
     self._BatchesInQueue = 10
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
@@ -16,7 +16,7 @@ class CReader(dl.data.CReader):
       "IsTraining": tf.placeholder(dtype=tf.bool, name="IsTraining"),
       "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
     }
-    super().__init__(Settings, IsTraining, IsPreprocessing)
+    super().__init__(Settings, IsTraining, UsePreprocessing, ForceDataAugmentation)
 
 
   def _getOutputs(self, Inputs):
@@ -29,6 +29,7 @@ class CReader(dl.data.CReader):
 
     if self._IsTraining:
       with tf.name_scope("TrainingReader"):
+        print("Create Data-Reader for Training-Data:")
         TrainingFilenames     = self._getFilenames(Settings['Data']['TrainingPath'])
         TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
         TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
@@ -36,6 +37,7 @@ class CReader(dl.data.CReader):
         TrainingBatchedInputs = self._createBatch(TrainingPreprocInputs, self.getBatchSize(), self._IsTraining)
 
     with tf.name_scope("ValidationReader"):
+      print("Create Data-Reader for Validation-Data:")
       TestingFilenames     = self._getFilenames(Settings['Data']['ValidatingPath'])
       TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
       TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
@@ -98,35 +100,30 @@ class CReader(dl.data.CReader):
     return [Images, Labels]
 
 
-  def _buildPreprocessing(self, Settings, Inputs, IsTraining):
-    if self._IsPreprocessingEnabled:
+  def _buildPreprocessing(self, Settings, Inputs, UseDataAugmentation):
+    Image = Inputs[0]
+
+    CropSize = [28, 28]
+    if self._ForceDataAugmentation or UseDataAugmentation:
+      with tf.name_scope("DataAugmentation"):
+        print("* Perform data-augmentation")
+
+        Image = tf.random_crop(Image, [CropSize[0], CropSize[1], 3])
+        Image = tf.image.random_flip_left_right(Image)
+        Image = tf.image.random_brightness(Image, max_delta=0.25)
+        Image = tf.image.random_contrast(Image, lower=0.75, upper=1.25)
+        Image = tf.image.random_saturation(Image, lower=0.75, upper=1.25)
+        Image = tf.image.random_hue(Image, max_delta=0.1)
+
+    else:
+      Image = tf.image.resize_image_with_crop_or_pad(Image, CropSize[0], CropSize[1])
+
+
+    if self._UsePreprocessing:
       MeanReader = dl.data.CMeanReader()
       MeanReader.read(Settings['PreProcessing']['MeanFile'])
 
       with tf.name_scope("Preprocessing"):
-        Image = Inputs[0]
-
-
-        CropSize = [28, 28]
-        if IsTraining:
-          print("* Perform data-augmentation")
-
-          Image = tf.random_crop(Image, [CropSize[0], CropSize[1], 3])
-
-          Image = tf.image.random_flip_left_right(Image)
-
-          Image = tf.image.random_brightness(Image, max_delta=0.25)
-
-          Image = tf.image.random_contrast(Image, lower=0.75, upper=1.25)
-
-          Image = tf.image.random_saturation(Image, lower=0.75, upper=1.25)
-
-          Image = tf.image.random_hue(Image, max_delta=0.1)
-
-        else:
-          Image = tf.image.resize_image_with_crop_or_pad(Image, CropSize[0], CropSize[1])
-
-
         print("* Perform per-pixel standardization")
         MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
         VarImage = tf.image.resize_images(MeanReader.VarImage, size=(int(Image.shape[0]), int(Image.shape[1])))
@@ -134,8 +131,7 @@ class CReader(dl.data.CReader):
         Image = tf.subtract(Image, MeanImage)
         Image = tf.div(Image, tf.sqrt(VarImage))
 
-
-        Inputs[0] = Image
+    Inputs[0] = Image
     return Inputs
 
 

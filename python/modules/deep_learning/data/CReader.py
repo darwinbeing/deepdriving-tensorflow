@@ -4,12 +4,12 @@ from .. import helpers
 
 
 class CReader():
-  def __init__(self, Settings = None, IsTraining = False, UsePreprocessing=True, UseDataAugmentation=True):
+  def __init__(self, Settings = None, IsTraining = False, UsePreprocessing=True, ForceDataAugmentation=False):
     self._IsReady =  False
     self._Inputs = []
     self._IsTraining = IsTraining
-    self._UsePreprocessing    = UsePreprocessing
-    self._UseDataAugmentation = UseDataAugmentation
+    self._UsePreprocessing      = UsePreprocessing
+    self._ForceDataAugmentation = ForceDataAugmentation
     if Settings != None:
       self._Settings = Settings
     else:
@@ -26,7 +26,7 @@ class CReader():
     if not self._IsReady:
       self._Inputs = self._build(self._Settings)
 
-      if self.IsPreprocessing:
+      if self._UsePreprocessing:
         print("* Enable Data Preprocessing")
       else:
         print("* Disable Data Preprocessing")
@@ -34,10 +34,6 @@ class CReader():
       self._addSummaries(self._Inputs)
       self._IsReady = True
 
-
-  @property
-  def IsPreprocessing(self):
-    return self._IsPreprocessingEnabled
 
   @property
   def IsTraining(self):
