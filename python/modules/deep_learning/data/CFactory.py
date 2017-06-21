@@ -5,5 +5,5 @@ class CFactory(CBaseFactory):
   def __init__(self, ReaderClass):
     super().__init__(ReaderClass, CReader)
 
-  def create(self, Settings = None, IsTraining = False, IsPreprocessing=True):
-    return self._Class(Settings, IsTraining, IsPreprocessing)
+  def create(self, Settings = None, IsTraining = False, UsePreprocessing=True, UseDataAugmentation=True):
+    return self._Class(Settings, IsTraining, UsePreprocessing, UseDataAugmentation)

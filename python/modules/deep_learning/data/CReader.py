@@ -4,11 +4,12 @@ from .. import helpers
 
 
 class CReader():
-  def __init__(self, Settings = None, IsTraining = False, IsPreprocessing=True):
+  def __init__(self, Settings = None, IsTraining = False, UsePreprocessing=True, UseDataAugmentation=True):
     self._IsReady =  False
     self._Inputs = []
     self._IsTraining = IsTraining
-    self._IsPreprocessingEnabled = IsPreprocessing
+    self._UsePreprocessing    = UsePreprocessing
+    self._UseDataAugmentation = UseDataAugmentation
     if Settings != None:
       self._Settings = Settings
     else:
