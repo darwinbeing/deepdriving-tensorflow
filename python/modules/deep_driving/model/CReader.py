@@ -8,7 +8,7 @@ from .. import db
 
 class CReader(dl.data.CReader):
   def __init__(self, Settings, IsTraining, UsePreprocessing, ForceDataAugmentation):
-    self._BatchesInQueue = 100
+    self._BatchesInQueue = 30
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
 #      "Features": tf.placeholder(dtype=tf.float32, shape=[None, ] + self._ImageShape, name="Image"),

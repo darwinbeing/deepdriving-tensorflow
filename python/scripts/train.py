@@ -60,13 +60,13 @@ class CTrainSettings(misc.settings.CSettings):
   }
 
 SettingFile = "train.cfg"
-IsRetrain = True
+IsRetrain = False
 
 def main():
   Settings = CTrainSettings(SettingFile)
   dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 30)
 
-  Model = dl.CModel(model.CVGG)
+  Model = dl.CModel(model.CAlexNet)
 
   Trainer = Model.createTrainer(model.CTrainer, model.CReader, model.CError, Settings)
   Trainer.addPrinter(model.CPrinter())
