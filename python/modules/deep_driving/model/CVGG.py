@@ -82,11 +82,11 @@ def buildVGG(Input, OutputNodes):
     n_in = input_tensor.get_shape()[-1].value
     with tf.variable_scope(name):
       weights = _variable_with_weight_decay('weights', [kh, kw, n_in, n_out], stddev=0.01, wd=1.0)
-      biases = _variable_on_cpu("bias", [n_out], tf.constant_initializer(0.0))
+      #biases = _variable_on_cpu("bias", [n_out], tf.constant_initializer(0.0))
       conv = tf.nn.conv2d(input_tensor, weights, (1, dh, dw, 1), padding='SAME')
-      activation = activation_fn(tf.nn.bias_add(conv, biases))
-      #activation = activation_fn(dl.layer.createBatchNormalization(conv))
-      #_activation_summary(activation)
+      #activation = activation_fn(tf.nn.bias_add(conv, biases))
+      activation = activation_fn(dl.layer.createBatchNormalization(conv))
+      _activation_summary(activation)
 
     return activation
 
@@ -95,9 +95,9 @@ def buildVGG(Input, OutputNodes):
     n_in = input_tensor.get_shape()[-1].value
     with tf.variable_scope(name):
       weights = _variable_with_weight_decay('weights', [n_in, n_out], stddev=0.01, wd=1.0)
-      biases = _variable_on_cpu("bias", [n_out], tf.constant_initializer(0.0))
-      logits = tf.nn.bias_add(tf.matmul(input_tensor, weights), biases)
-      #logits = dl.layer.createBatchNormalization(tf.matmul(input_tensor, weights))
+      #biases = _variable_on_cpu("bias", [n_out], tf.constant_initializer(0.0))
+      #logits = tf.nn.bias_add(tf.matmul(input_tensor, weights), biases)
+      logits = dl.layer.createBatchNormalization(tf.matmul(input_tensor, weights))
 
     return activation_fn(logits)
 
