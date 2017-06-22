@@ -78,8 +78,8 @@ class CTrainer(dl.trainer.CTrainer):
 
 
   def _getGradientNoise(self, Settings):
-    if "Trainer" in Settings:
-      if "Noise" in Settings["Trainer"]:
-        return Settings["Trainer"]["Noise"]
+    if "Optimizer" in Settings:
+      if "Noise" in Settings["Optimizer"]:
+        return Settings["Optimizer"]["Noise"]
 
     return None
