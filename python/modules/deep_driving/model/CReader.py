@@ -100,12 +100,13 @@ class CReader(dl.data.CReader):
     if self._ForceDataAugmentation or UseDataAugmentation:
       with tf.name_scope("DataAugmentation"):
 
-        print("* Perform data-augmentation")
+        #print("* Perform data-augmentation")
 
-        Image = tf.image.random_brightness(Image, max_delta=0.10)
-        Image = tf.image.random_contrast(Image, lower=0.90, upper=1.10)
-        Image = tf.image.random_saturation(Image, lower=0.90, upper=1.10)
-        Image = tf.image.random_hue(Image, max_delta=0.05)
+        #Image = tf.image.random_brightness(Image, max_delta=0.10)
+        #Image = tf.image.random_contrast(Image, lower=0.90, upper=1.10)
+        #Image = tf.image.random_saturation(Image, lower=0.90, upper=1.10)
+        #Image = tf.image.random_hue(Image, max_delta=0.05)
+        pass
 
     if self._UsePreprocessing:
       with tf.name_scope("Preprocessing"):
