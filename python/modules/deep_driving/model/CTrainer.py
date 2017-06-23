@@ -38,7 +38,7 @@ class CTrainer(dl.trainer.CTrainer):
 
       self._addSumGradientSummary(OriginalGradients)
 
-    with tf.name_scope("Gradients"):
+    with tf.name_scope("OptimizerGradients"):
       self._addSingleGradientSummary(OriginalGradients)
 
     with tf.name_scope("OptimizerNoise"):

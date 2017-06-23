@@ -9,6 +9,7 @@ from .. import helpers
 from .. import internal
 from .. import network
 from .. import checkpoint
+from .. import layer
 
 
 class CTrainer(internal.CBaseRunner):
@@ -334,7 +335,7 @@ class CTrainer(internal.CBaseRunner):
     print("Apply individual learning rate scales...")
     ScaledGradients = []
     for Gradient, Variable in Gradients:
-      Scale = dl.layer.LearningRates.get(Variable.name)
+      Scale = layer.LearningRates.get(Variable.name)
       if Scale != None:
         Gradient *= Scale
         print(" * \"{}\" has scale {}".format(Variable.name, Scale))
