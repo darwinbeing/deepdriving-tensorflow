@@ -25,7 +25,7 @@ import deep_learning
 
 class CPrinter(deep_learning.printer.CProgressPrinter):
   def __init__(self):
-    super().__init__(LossName="Loss/Loss")
+    super().__init__(LossName="Loss/LabelLoss")
 
 
   def _getErrorString(self, SummaryDict):
