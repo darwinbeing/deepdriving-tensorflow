@@ -278,6 +278,7 @@ class CTrainer(internal.CBaseRunner):
 
     return None
 
+
   def getValidationIterations(self, Settings):
     # You can overrite this function to specify the number of epochs until a checkpoint is stored
     if 'Validation' in Settings:
@@ -285,6 +286,7 @@ class CTrainer(internal.CBaseRunner):
         return int(Settings['Validation']['Samples']/self._Reader.getBatchSize())
 
     return 1
+
 
   def _printTrainingBar(self, BarSize, Iteration, Epoch, Batch, IterationsPerEpoch, IsTraining=True):
     Percent = Batch/IterationsPerEpoch
@@ -300,3 +302,61 @@ class CTrainer(internal.CBaseRunner):
     print("\r{:>8}: ({}) [{}] - {} / {}".format(Iteration, Prefix, BarString, Batch, IterationsPerEpoch), end='', flush=True)
     if Batch >= (IterationsPerEpoch-1):
       print("\r", end='', flush=True)
+
+
+  def _applyNoise(self, Gradients, GradientNoise):
+    if GradientNoise is not None and GradientNoise > 0.0:
+      NoiseLevel = GradientNoise / (tf.sqrt(tf.cast((CurrentOptimizationStep + 1), tf.float32)))
+      NoisyGradients = []
+      print("Apply noise to gradients (nu = {})...".format(GradientNoise))
+      # Taken from: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/layers/python/layers/optimizers.py
+      for Gradient, Variable in Gradients:
+        if Gradient is not None:
+          if isinstance(Gradient, tf.IndexedSlices):
+            GradientShape = Gradient.dense_shape
+          else:
+            GradientShape = Gradient.get_shape()
+
+          Noise = tf.truncated_normal(GradientShape) * NoiseLevel
+          Gradient += Noise
+
+        NoisyGradients.append((Gradient, Variable))
+
+    else:
+      NoiseLevel = 0
+      NoisyGradients = Gradients
+
+    tf.summary.scalar("NoiseLevel", NoiseLevel)
+    return NoisyGradients
+
+
+  def _applyIndiviualLearningRates(self, Gradients):
+    print("Apply individual learning rate scales...")
+    ScaledGradients = []
+    for Gradient, Variable in Gradients:
+      Scale = dl.layer.LearningRates.get(Variable.name)
+      if Scale != None:
+        Gradient *= Scale
+        print(" * \"{}\" has scale {}".format(Variable.name, Scale))
+
+      ScaledGradients.append((Gradient, Variable))
+
+    return ScaledGradients
+
+
+  def _addSumGradientSummary(self, Gradients):
+    Sum = 0.0
+    for Gradient, Variable in Gradients:
+      Sum += tf.norm(Gradient)
+
+    tf.summary.scalar("GradientNorm", Sum)
+
+
+  def _addSingleGradientSummary(self, Gradients):
+    for Gradient, Variable in Gradients:
+      tf.summary.scalar(Variable.name, tf.norm(Gradient))
+
+
+  def _addGradientNoiseSummary(self, Gradients, NoisyGradients):
+    for i, (Gradients, Variable) in enumerate(Gradients):
+      tf.summary.scalar(Variable.name, tf.norm(NoisyGradients[i][0]) - tf.norm(Gradients))
