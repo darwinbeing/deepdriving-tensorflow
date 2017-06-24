@@ -32,14 +32,20 @@ class CInferenceReader(dl.data.CReader):
     self._BatchesInQueue = 0
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
     self._Outputs = {
-#      "Features": tf.placeholder(dtype=tf.float32, shape=[None, ] + self._ImageShape, name="Image"),
-#      "Label": tf.placeholder(dtype=tf.int32, shape=[None, ], name="Label"),
-      "Images":     None,
-      "Labels":     None,
+      "Image":      None,
+      "Labels":     tf.split(tf.placeholder(dtype=tf.int32, shape=[1, 14], name="Label"), 14, axis=1),
       "IsTraining": tf.placeholder(dtype=tf.bool, name="IsTraining"),
       "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
     }
 
-
-
     super().__init__(Settings, IsTraining, UsePreprocessing, ForceDataAugmentation)
+
+
+  def _build(self, Settings):
+    Image = tf.placeholder(dtype=tf.float32, shape=[1] + self._ImageShape)
+    self._Outputs["Image"] = Image
+    return Image
+
+
+  def _getOutputs(self, Inputs):
+    return self._Outputs

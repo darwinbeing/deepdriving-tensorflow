@@ -52,17 +52,12 @@ def main():
 
   Model = dl.CModel(model.CAlexNet)
 
-  Inference = Model.createInference(model.CInference, model.CInferenceReader, model.CError, Settings)
+  Inference = Model.createInference(model.CInference, model.CInferenceReader, Settings)
   Inference.restore()
 
   for i in range(10):
-    StartTime = time.time()
-
     Inference.run()
-
-    DeltaTime = time.time() - StartTime
-    print("Inference took {}s ({})".format(DeltaTime, misc.time.getStringFromTime(DeltaTime)))
-
+    print("Run-Time: {}; Mean-Time: {}".format(Inference.getLastTime(), Inference.getMeanTime()))
 
 
 if __name__ == "__main__":

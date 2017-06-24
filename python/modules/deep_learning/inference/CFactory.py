@@ -29,5 +29,5 @@ class CFactory(CBaseFactory):
   def __init__(self, InferenceClass):
     super().__init__(InferenceClass, CInference)
 
-  def create(self, Network, Reader, ErrorMeas, Settings = None):
-    return self._Class(Network, Reader, ErrorMeas, Settings)
+  def create(self, Network, Reader, Settings = None):
+    return self._Class(Network, Reader, Settings)

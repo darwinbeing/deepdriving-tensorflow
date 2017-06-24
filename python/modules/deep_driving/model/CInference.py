@@ -24,4 +24,6 @@
 import deep_learning as dl
 
 class CInference(dl.inference.CInference):
-  pass
+
+  def _runIteration(self, Session, RunTargets, Inputs, Reader, Iteration):
+    return []
