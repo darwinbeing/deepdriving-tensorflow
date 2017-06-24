@@ -66,7 +66,7 @@ class CInference(internal.CBaseRunner):
     TimeDelta = time.time() - StartTime
     self._addTimeStatistics(TimeDelta)
 
-    return RawResults
+    return self._postProcess(RawResults)
 
 
   def _addTimeStatistics(self, TimeDelta):
@@ -104,6 +104,11 @@ class CInference(internal.CBaseRunner):
     # You must overwrite this function to run a single inference step
     raise Exception("You must overwrite this function to run a single inference step.")
     return []
+
+
+  def _postProcess(self, Results):
+    # you can overwrite this function to post-process the result-values
+    return Results
 
 
   def restore(self, Epoch=None):

@@ -55,6 +55,10 @@ class CReader():
     raise Exception("You must override this function to read a batch!")
     return {}
 
+  def readSingle(self, Session, Input):
+    raise Exception("You must override this function to read a batch!")
+    return {}
+
   def _getBatchSize(self, Settings):
     raise Exception("You must override this function output the batchsize!")
     return {}

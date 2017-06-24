@@ -31,6 +31,9 @@ class CInferenceReader(dl.data.CReader):
   def __init__(self, Settings, IsTraining, UsePreprocessing, ForceDataAugmentation):
     self._BatchesInQueue = 0
     self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
+    self._NetInputs = {
+      "RawImage": None
+    }
     self._Outputs = {
       "Image":      None,
       "Labels":     tf.split(tf.placeholder(dtype=tf.int32, shape=[1, 14], name="Label"), 14, axis=1),
@@ -42,10 +45,38 @@ class CInferenceReader(dl.data.CReader):
 
 
   def _build(self, Settings):
-    Image = tf.placeholder(dtype=tf.float32, shape=[1] + self._ImageShape)
+    self._NetInputs["RawImage"] = tf.placeholder(dtype=tf.uint8, shape=self._ImageShape)
+    Image = self._NetInputs["RawImage"]
+
+    Image = tf.cast(Image, tf.float32, name="Image") / 255.0
+
+    Blue, Green, Red = tf.split(Image, 3, axis=2)
+    Image = tf.concat([Red, Green, Blue], axis=2)
+
+    if self._UsePreprocessing:
+      with tf.name_scope("Preprocessing"):
+
+        print("* Perform per-pixel normalization")
+
+        MeanReader = dl.data.CMeanReader()
+        MeanReader.read(Settings['PreProcessing']['MeanFile'])
+
+        MeanImage = tf.image.resize_images(MeanReader.MeanImage, size=(int(Image.shape[0]), int(Image.shape[1])))
+        Image = tf.subtract(Image, MeanImage)
+
+    Image = tf.reshape(Image, shape=[1] + self._ImageShape)
+
     self._Outputs["Image"] = Image
     return Image
 
 
   def _getOutputs(self, Inputs):
     return self._Outputs
+
+
+  def readSingle(self, Session, Inputs):
+    return {
+      self._NetInputs['RawImage']: Inputs[0],
+      self._Outputs['IsTraining']: self._IsTraining,
+      self._Outputs['Lambda']:     0.0
+    }

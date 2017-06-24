@@ -23,7 +23,15 @@
 
 import deep_learning as dl
 
+from .. import db
+
 class CInference(dl.inference.CInference):
 
   def _runIteration(self, Session, RunTargets, Inputs, Reader, Iteration):
-    return []
+    Data = Reader.readSingle(Session, Inputs)
+    AllTargets = self._Network.getOutputs()['Output']
+    return Session.run(AllTargets, feed_dict = Data)
+
+  def _postProcess(self, Results):
+    RealResults = db.denormalizeLabels(Results)
+    return RealResults

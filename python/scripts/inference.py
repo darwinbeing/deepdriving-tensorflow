@@ -33,8 +33,8 @@ import deep_driving.db as db
 class CInferenceSettings(misc.settings.CSettings):
   _Dict = {
   'Data': {
-    'ImageWidth': 210,
-    'ImageHeight': 280
+    'ImageWidth': 280,
+    'ImageHeight': 210
   },
   'Inference': {
     'CheckpointPath':   'Checkpoint',
@@ -68,8 +68,8 @@ def main():
     if cv2.waitKey(0) == 27:
       break
 
-    Inference.run(Database.Image)
-    print("Run-Time: {}; Mean-Time: {}".format(Inference.getLastTime(), Inference.getMeanTime()))
+    print(Inference.run([Database.Image]))
+    print("Run-Time: {:.3f}s; Mean-Time: {:.3f}s".format(Inference.getLastTime(), Inference.getMeanTime()))
 
 
 if __name__ == "__main__":
