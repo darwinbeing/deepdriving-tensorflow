@@ -24,3 +24,4 @@
 from .OutputDB import COutputDB
 from .Common import getDBFilenames
 from .GraphDB import buildFeatureParser, normalizeLabels, denormalizeLabels
+from .Reader import CDBReader

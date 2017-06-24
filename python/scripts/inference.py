@@ -22,10 +22,12 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import time
+import cv2
 
 import misc.settings
 import deep_learning as dl
 import deep_driving.model as model
+import deep_driving.db as db
 
 
 class CInferenceSettings(misc.settings.CSettings):
@@ -55,8 +57,18 @@ def main():
   Inference = Model.createInference(model.CInference, model.CInferenceReader, Settings)
   Inference.restore()
 
-  for i in range(10):
-    Inference.run()
+  Database = db.CDBReader("../../../testing")
+
+  for i in range(1000):
+    if not Database.next():
+      print("No more images available...")
+      break
+
+    cv2.imshow("Image", Database.Image)
+    if cv2.waitKey(0) == 27:
+      break
+
+    Inference.run(Database.Image)
     print("Run-Time: {}; Mean-Time: {}".format(Inference.getLastTime(), Inference.getMeanTime()))
 
 
