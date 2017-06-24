@@ -21,16 +21,49 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CNetwork import CNetwork
-from .CTrainer import CTrainer
-from .CReader import CReader
-from .CError import CError
-from .CPrinter import CPrinter
-from .CMerger import CMerger
-from .CEvaluator import CEvaluator
-from .CMeanCalculator import CMeanCalculator
-from .CAlexNet import CAlexNet
-from .CVGG import CVGG
-from .CInference import CInference
+import time
 
-from . import cifar
+import misc.settings
+import deep_learning as dl
+import deep_driving.model as model
+
+
+class CInferenceSettings(misc.settings.CSettings):
+  _Dict = {
+  'Data': {
+    'ImageWidth': 210,
+    'ImageHeight': 280
+  },
+  'Inference': {
+    'CheckpointPath':   'Checkpoint',
+    'Epoch': None,
+  },
+  'PreProcessing':
+  {
+    'MeanFile': 'image-mean.tfrecord'
+  },
+  }
+
+SettingFile = "inference.cfg"
+
+
+def main():
+  Settings = CInferenceSettings(SettingFile)
+
+  Model = dl.CModel(model.CAlexNet)
+
+  Inference = Model.createInference(model.CInference, model.CInferenceReader, model.CError, Settings)
+  Inference.restore()
+
+  for i in range(10):
+    StartTime = time.time()
+
+    Inference.run()
+
+    DeltaTime = time.time() - StartTime
+    print("Inference took {}s ({})".format(DeltaTime, misc.time.getStringFromTime(DeltaTime)))
+
+
+
+if __name__ == "__main__":
+  main()

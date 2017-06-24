@@ -21,16 +21,8 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CNetwork import CNetwork
-from .CTrainer import CTrainer
-from .CReader import CReader
-from .CError import CError
-from .CPrinter import CPrinter
-from .CMerger import CMerger
-from .CEvaluator import CEvaluator
-from .CMeanCalculator import CMeanCalculator
-from .CAlexNet import CAlexNet
-from .CVGG import CVGG
-from .CInference import CInference
+from .. import internal
 
-from . import cifar
+class CInference(internal.CBaseRunner):
+  def __init__(self, Network, Reader, ErrorMeasurement, Settings = None):
+    super().__init__(Settings)

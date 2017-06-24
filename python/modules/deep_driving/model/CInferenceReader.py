@@ -21,16 +21,25 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from .CNetwork import CNetwork
-from .CTrainer import CTrainer
-from .CReader import CReader
-from .CError import CError
-from .CPrinter import CPrinter
-from .CMerger import CMerger
-from .CEvaluator import CEvaluator
-from .CMeanCalculator import CMeanCalculator
-from .CAlexNet import CAlexNet
-from .CVGG import CVGG
-from .CInference import CInference
+import debug
+import deep_learning as dl
+import tensorflow as tf
 
-from . import cifar
+from .. import db
+
+class CInferenceReader(dl.data.CReader):
+  def __init__(self, Settings, IsTraining, UsePreprocessing, ForceDataAugmentation):
+    self._BatchesInQueue = 0
+    self._ImageShape = [Settings['Data']['ImageHeight'], Settings['Data']['ImageWidth'], 3]
+    self._Outputs = {
+#      "Features": tf.placeholder(dtype=tf.float32, shape=[None, ] + self._ImageShape, name="Image"),
+#      "Label": tf.placeholder(dtype=tf.int32, shape=[None, ], name="Label"),
+      "Images":     None,
+      "Labels":     None,
+      "IsTraining": tf.placeholder(dtype=tf.bool, name="IsTraining"),
+      "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
+    }
+
+    
+
+    super().__init__(Settings, IsTraining, UsePreprocessing, ForceDataAugmentation)

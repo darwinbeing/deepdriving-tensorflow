@@ -25,3 +25,4 @@ from .CModel import CModel
 from . import summary
 from . import layer
 from . import calculator
+from . import inference
