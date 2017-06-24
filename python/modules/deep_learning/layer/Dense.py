@@ -81,18 +81,14 @@ def createFullyConnected(Input, Size, Func="ReLU", Name="FC", WeightDecay=1.0, W
   return Output
 
 
-def createDropout(Input, Ratio, Name="Drop"):
-  Output = Input
-
-  with tf.name_scope(Name):
-    Setup.Log(" * Create Dropout-Layer \"{}\" with dropout-ratio {}.".format(Name, Ratio))
-    Output = tf.nn.dropout(Output, keep_prob=1-Ratio)
-
-  return Output
-
-
 def createBatchNormalization(Input, Name="BN"):
   with tf.name_scope(Name):
     Setup.Log("   * With Batch-Normalization")
     debug.Assert(Setup.IsTraining != None, "You must define the IsTraining boolean before using Batch-Normalization!")
     return tf.contrib.layers.batch_norm(Input, center=True, scale=True, is_training=Setup.IsTraining)
+
+
+def createDropout(Input, KeepRatio=0.5, Name="Dropout"):
+  Setup.Log("   * With Dropout (keep={})".format(KeepRatio))
+  debug.Assert(Setup.IsTraining != None, "You must define the IsTraining boolean before using DropOut!")
+  return tf.layers.dropout(Input, rate=KeepRatio, training=Setup.IsTraining)

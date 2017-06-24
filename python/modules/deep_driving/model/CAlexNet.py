@@ -274,8 +274,7 @@ class CAlexNet(dl.network.CNetwork):
 
       print("fc6-Output shape: {}".format(fc6.shape))
 
-      #fc6_drop = dl.layer.createDropout(Input=fc6, Ratio=0.5, Name="Drop")
-      fc6_drop = fc6
+      fc6_drop = dl.layer.createDropout(Input=fc6, KeepRatio=0.5, Name="Drop")
 
 
     # fc7
@@ -289,8 +288,7 @@ class CAlexNet(dl.network.CNetwork):
 
       print("fc7-Output shape: {}".format(fc7.shape))
 
-      #fc7_drop = dl.layer.createDropout(Input=fc7, Ratio=0.5, Name="Drop")
-      fc7_drop = fc7
+      fc7_drop = dl.layer.createDropout(Input=fc7, KeepRatio=0.5, Name="Drop")
 
 
     # fc8
@@ -304,8 +302,7 @@ class CAlexNet(dl.network.CNetwork):
 
       print("fc8-Output shape: {}".format(fc8.shape))
 
-      #fc8_drop = dl.layer.createDropout(Input=fc8, Ratio=0.5, Name="Drop")
-      fc8_drop = fc8
+      fc8_drop = dl.layer.createDropout(Input=fc8, KeepRatio=0.5, Name="Drop")
 
 
     # fc9(14, sigmoid)
