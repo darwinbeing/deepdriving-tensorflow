@@ -32,5 +32,6 @@ from .CMeanCalculator import CMeanCalculator
 from .CAlexNet import CAlexNet
 from .CVGG import CVGG
 from .CInference import CInference
+from .CInferenceReader import CInferenceReader
 
 from . import cifar

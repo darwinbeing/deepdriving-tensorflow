@@ -22,17 +22,19 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import time
+import cv2
 
 import misc.settings
 import deep_learning as dl
 import deep_driving.model as model
+import deep_driving.db as db
 
 
 class CInferenceSettings(misc.settings.CSettings):
   _Dict = {
   'Data': {
-    'ImageWidth': 210,
-    'ImageHeight': 280
+    'ImageWidth': 280,
+    'ImageHeight': 210
   },
   'Inference': {
     'CheckpointPath':   'Checkpoint',
@@ -52,17 +54,22 @@ def main():
 
   Model = dl.CModel(model.CAlexNet)
 
-  Inference = Model.createInference(model.CInference, model.CInferenceReader, model.CError, Settings)
+  Inference = Model.createInference(model.CInference, model.CInferenceReader, Settings)
   Inference.restore()
 
-  for i in range(10):
-    StartTime = time.time()
+  Database = db.CDBReader("../../../testing")
 
-    Inference.run()
+  for i in range(1000):
+    if not Database.next():
+      print("No more images available...")
+      break
 
-    DeltaTime = time.time() - StartTime
-    print("Inference took {}s ({})".format(DeltaTime, misc.time.getStringFromTime(DeltaTime)))
+    cv2.imshow("Image", Database.Image)
+    if cv2.waitKey(0) == 27:
+      break
 
+    print(Inference.run([Database.Image]))
+    print("Run-Time: {:.3f}s; Mean-Time: {:.3f}s".format(Inference.getLastTime(), Inference.getMeanTime()))
 
 
 if __name__ == "__main__":

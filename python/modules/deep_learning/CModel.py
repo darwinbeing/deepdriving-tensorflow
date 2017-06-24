@@ -4,11 +4,13 @@ from . import evaluator
 from . import trainer
 from . import internal
 from . import network
+from . import inference
 
 
 class CModel():
   def __init__(self, Factory):
     self._NetworkFactory = internal.getFactory(Factory, network.CFactory, network.CNetwork)
+
 
   def createTrainer(self, TrainerFactoryArg, ReaderFactoryArg, ErrorMeasFactoryArg, Settings = None):
     TrainerFactory   = internal.getFactory(TrainerFactoryArg, trainer.CFactory, trainer.CTrainer)
@@ -37,3 +39,14 @@ class CModel():
 
     return Evaluator
 
+
+  def createInference(self, InferenceFactoryArg, ReaderFactoryArg, Settings = None):
+    InferenceFactory   = internal.getFactory(InferenceFactoryArg, inference.CFactory, inference.CInference)
+    ReaderFactory      = internal.getFactory(ReaderFactoryArg, data.CFactory, data.CReader)
+
+    Reader  = ReaderFactory.create(Settings, IsTraining = False)
+    Network = self._NetworkFactory.create(Reader, 0, Settings)
+
+    Inference = InferenceFactory.create(Network, Reader, Settings)
+
+    return Inference

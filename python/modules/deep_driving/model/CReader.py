@@ -13,7 +13,7 @@ class CReader(dl.data.CReader):
     self._Outputs = {
 #      "Features": tf.placeholder(dtype=tf.float32, shape=[None, ] + self._ImageShape, name="Image"),
 #      "Label": tf.placeholder(dtype=tf.int32, shape=[None, ], name="Label"),
-      "Images":     None,
+      "Image":     None,
       "Labels":     None,
       "IsTraining": tf.placeholder(dtype=tf.bool, name="IsTraining"),
       "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
