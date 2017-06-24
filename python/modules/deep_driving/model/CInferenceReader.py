@@ -40,6 +40,6 @@ class CInferenceReader(dl.data.CReader):
       "Lambda":     tf.placeholder(dtype=tf.float32, name="Lambda")
     }
 
-    
+
 
     super().__init__(Settings, IsTraining, UsePreprocessing, ForceDataAugmentation)
