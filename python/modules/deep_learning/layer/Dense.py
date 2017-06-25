@@ -85,7 +85,7 @@ def createBatchNormalization(Input, Name="BN"):
   with tf.name_scope(Name):
     Setup.Log("   * With Batch-Normalization")
     debug.Assert(Setup.IsTraining != None, "You must define the IsTraining boolean before using Batch-Normalization!")
-    return tf.contrib.layers.batch_norm(Input, center=True, scale=True, is_training=Setup.IsTraining)
+    return tf.contrib.layers.batch_norm(Input, center=True, scale=True, fused=True, is_training=Setup.IsTraining, data_format="NCHW")
 
 
 def createDropout(Input, KeepRatio=0.5, Name="Dropout"):
