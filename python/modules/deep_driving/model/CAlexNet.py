@@ -100,18 +100,18 @@ class CAlexNet(dl.network.CNetwork):
     def conv(input, kernel, biases, k_h, k_w, c_o, s_h, s_w, padding="VALID", group=1):
       '''From https://github.com/ethereon/caffe-tensorflow
       '''
-      c_i = input.get_shape()[1]
+      c_i = input.get_shape()[-1]
       assert c_i % group == 0
       assert c_o % group == 0
-      convolve = lambda i, k: tf.nn.conv2d(i, k, [1, 1, s_h, s_w], padding=padding, data_format="NCHW")
+      convolve = lambda i, k: tf.nn.conv2d(i, k, [1, s_h, s_w, 1], padding=padding)
 
       if group == 1:
         conv = convolve(input, kernel)
       else:
-        input_groups  = tf.split(input, group, 1)  # tf.split(3, group, input)
+        input_groups = tf.split(input, group, 3)  # tf.split(3, group, input)
         kernel_groups = tf.split(kernel, group, 3)  # tf.split(3, group, kernel)
         output_groups = [convolve(i, k) for i, k in zip(input_groups, kernel_groups)]
-        conv = tf.concat(output_groups, 1)  # tf.concat(3, output_groups)
+        conv = tf.concat(output_groups, 3)  # tf.concat(3, output_groups)
 
       if biases is not None:
         output = tf.nn.bias_add(conv, biases)
@@ -120,8 +120,6 @@ class CAlexNet(dl.network.CNetwork):
 
       return tf.reshape(output, [-1] + conv.get_shape().as_list()[1:])
 
-
-    Input = tf.transpose(Input, [0, 3, 1, 2])
 
     print("Input shape: {}".format(Input.shape))
 
@@ -151,7 +149,7 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 2
       s_w = 2
       padding = 'SAME'
-      maxpool1 = tf.nn.max_pool(conv1, ksize=[1, 1, k_h, k_w], strides=[1, 1, s_h, s_w], padding=padding, data_format="NCHW")
+      maxpool1 = tf.nn.max_pool(conv1, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
 
       print("Pool1-Output shape: {}".format(maxpool1.shape))
 
@@ -184,8 +182,8 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 2
       s_w = 2
       padding = 'SAME'
-      maxpool2 = tf.nn.max_pool(conv2, ksize=[1, 1, k_h, k_w], strides=[1, 1, s_h, s_w], padding=padding,
-                                data_format="NCHW")
+      maxpool2 = tf.nn.max_pool(conv2, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+
       print("Pool2-Output shape: {}".format(maxpool2.shape))
 
 
@@ -257,11 +255,10 @@ class CAlexNet(dl.network.CNetwork):
       s_h = 2
       s_w = 2
       padding = 'VALID'
-      maxpool5 = tf.nn.max_pool(conv5, ksize=[1, 1, k_h, k_w], strides=[1, 1, s_h, s_w], padding=padding,
-                                data_format="NCHW")
+      maxpool5 = tf.nn.max_pool(conv5, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
 
-    maxpool5 = tf.transpose(maxpool5, [0, 2, 3, 1])
-    print("Pool5-Output shape: {}".format(maxpool5.shape))
+      print("Pool5-Output shape: {}".format(maxpool5.shape))
+
 
     # fc6
     # fc(4096, name='fc6')
