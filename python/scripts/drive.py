@@ -33,11 +33,42 @@ import dd.drive_controller as dddc
 import dd
 from kivydd.app import CAppThread, Widget
 
+import deep_driving.model as model
+import deep_learning as dl
+import misc
+
 class DriveWindow(Widget):
   LayoutFile = "drive.kv"
 
+class CInferenceSettings(misc.settings.CSettings):
+  _Dict = {
+  'Data': {
+    'ImageWidth': 280,
+    'ImageHeight': 210
+  },
+  'Inference': {
+    'CheckpointPath':   'Checkpoint',
+    'Epoch': None,
+  },
+  'PreProcessing':
+  {
+    'MeanFile': 'image-mean.tfrecord'
+  },
+  }
+
+SettingFile = "inference.cfg"
+
 class CApplication(CAppThread):
+
+  _Model     = None
+  _Settings  = None
+  _Inference = None
   def initMemory(self):
+    self._Settings  = CInferenceSettings(SettingFile)
+    self._Model     = dl.CModel(model.CAlexNet)
+    self._Inference = self._Model.createInference(model.CInference, model.CInferenceReader, self._Settings)
+    self._Inference.restore()
+
     Memory = sd.CSharedMemory()
     Memory.setSyncMode(True)
     return Memory
@@ -61,18 +92,28 @@ class CApplication(CAppThread):
 
   _LastRaceID = 0
   def doLoop(self, Memory, App):
+    import time
+    StartTime = time.clock()
+    String = ""
+
     if Memory.read():
+      String = "Update: "
       if Memory.Data.Game.UniqueRaceID != self._LastRaceID:
         self._initRace(Memory)
-      self.control(Memory)
-      App.update()
+      self.control(Memory, App)
       Memory.indicateReady()
+      App.update()
 
     else:
+      String = "Wait:   "
       import time
-      time.sleep(0.01)
+      time.sleep(0.001)
 
+    DeltaTime = time.clock() - StartTime
+    #if DeltaTime > 0.01:
+    print(String + " {:.3f}".format(DeltaTime))
     return True
+
 
   _DriveController = None
   _Indicators      = None
@@ -80,26 +121,36 @@ class CApplication(CAppThread):
   def _initRace(self, Memory):
     print("Initialize a new race...")
     self._DriveController = dddc.CDriveController(Memory.Data.Game.Lanes)
-    self._Indicators = dd.Indicators_t()
-    self._Control    = dd.Control_t()
-    self._LastRaceID = Memory.Data.Game.UniqueRaceID
+    self._Indicators      = dd.Indicators_t()
+    self._Control         = dd.Control_t()
+    self._LastRaceID      = Memory.Data.Game.UniqueRaceID
 
-  def control(self, Memory):
-    self._Indicators.Speed  = Memory.Data.Game.Speed
-    self._Indicators.Fast   = Memory.Data.Labels.Fast
-    self._Indicators.Angle  = Memory.Data.Labels.Angle
-    self._Indicators.LL     = Memory.Data.Labels.LL
-    self._Indicators.ML     = Memory.Data.Labels.ML
-    self._Indicators.MR     = Memory.Data.Labels.MR
-    self._Indicators.RR     = Memory.Data.Labels.RR
-    self._Indicators.DistLL = Memory.Data.Labels.DistLL
-    self._Indicators.DistMM = Memory.Data.Labels.DistMM
-    self._Indicators.DistRR = Memory.Data.Labels.DistRR
-    self._Indicators.L      = Memory.Data.Labels.L
-    self._Indicators.M      = Memory.Data.Labels.M
-    self._Indicators.R      = Memory.Data.Labels.R
-    self._Indicators.DistL  = Memory.Data.Labels.DistL
-    self._Indicators.DistR  = Memory.Data.Labels.DistR
+
+  def control(self, Memory, App):
+    if self._IsAIEnabled:
+      Image = Memory.Image
+      self._Indicators = self._Inference.run([Image])
+      self._Indicators.Speed  = Memory.Data.Game.Speed
+      print("Run-Time: {:.3f}s; Mean-Time: {:.3f}s".format(self._Inference.getLastTime(), self._Inference.getMeanTime()))
+      App.setLabels(self._Indicators)
+
+    else:
+      self._Indicators.Speed  = Memory.Data.Game.Speed
+      self._Indicators.Fast   = Memory.Data.Labels.Fast
+      self._Indicators.Angle  = Memory.Data.Labels.Angle
+      self._Indicators.LL     = Memory.Data.Labels.LL
+      self._Indicators.ML     = Memory.Data.Labels.ML
+      self._Indicators.MR     = Memory.Data.Labels.MR
+      self._Indicators.RR     = Memory.Data.Labels.RR
+      self._Indicators.DistLL = Memory.Data.Labels.DistLL
+      self._Indicators.DistMM = Memory.Data.Labels.DistMM
+      self._Indicators.DistRR = Memory.Data.Labels.DistRR
+      self._Indicators.L      = Memory.Data.Labels.L
+      self._Indicators.M      = Memory.Data.Labels.M
+      self._Indicators.R      = Memory.Data.Labels.R
+      self._Indicators.DistL  = Memory.Data.Labels.DistL
+      self._Indicators.DistR  = Memory.Data.Labels.DistR
+      App.setLabels(None)
 
     self._DriveController.control(self._Indicators, self._Control)
 

@@ -24,6 +24,7 @@
 import debug
 import deep_learning as dl
 import tensorflow as tf
+import cv2
 
 from .. import db
 
@@ -75,8 +76,12 @@ class CInferenceReader(dl.data.CReader):
 
 
   def readSingle(self, Session, Inputs):
+    Image = Inputs[0]
+    if Image.shape[0] != self._ImageShape[0] or Image.shape[1] != self._ImageShape[1]:
+      Image = cv2.resize(Image, (self._ImageShape[1], self._ImageShape[0]))
+
     return {
-      self._NetInputs['RawImage']: Inputs[0],
+      self._NetInputs['RawImage']: Image,
       self._Outputs['IsTraining']: self._IsTraining,
       self._Outputs['Lambda']:     0.0
     }

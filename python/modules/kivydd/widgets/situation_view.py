@@ -144,6 +144,7 @@ class SituationView(Widget):
       Image = np.flip(Image, 0)
       self._Texture.blit_buffer(Image.tostring(), bufferfmt="ubyte", colorfmt="rgb")
 
+
   def setGroundTruth(self, Indicators):
     self._GroundTruth = Indicators
     self.updateTexture()
