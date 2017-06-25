@@ -87,17 +87,13 @@ class CApplication(CAppThread):
   def disableDriver(self):
     self._IsDriverEnabled = False
 
+  _Labels = dd.Indicators_t()
   def initApp(self, Memory, App):
-    App.setLabels(Memory.Data.Labels)
+    App.setLabels(self._Labels)
 
   _LastRaceID = 0
   def doLoop(self, Memory, App):
-    import time
-    StartTime = time.clock()
-    String = ""
-
     if Memory.read():
-      String = "Update: "
       if Memory.Data.Game.UniqueRaceID != self._LastRaceID:
         self._initRace(Memory)
       self.control(Memory, App)
@@ -105,13 +101,9 @@ class CApplication(CAppThread):
       App.update()
 
     else:
-      String = "Wait:   "
       import time
       time.sleep(0.001)
 
-    DeltaTime = time.clock() - StartTime
-    #if DeltaTime > 0.01:
-    print(String + " {:.3f}".format(DeltaTime))
     return True
 
 
@@ -126,13 +118,21 @@ class CApplication(CAppThread):
     self._LastRaceID      = Memory.Data.Game.UniqueRaceID
 
 
+  _PerformanceOutput = 100
+  _CurrentRun = 0
   def control(self, Memory, App):
     if self._IsAIEnabled:
       Image = Memory.Image
       self._Indicators = self._Inference.run([Image])
       self._Indicators.Speed  = Memory.Data.Game.Speed
-      print("Run-Time: {:.3f}s; Mean-Time: {:.3f}s".format(self._Inference.getLastTime(), self._Inference.getMeanTime()))
-      App.setLabels(self._Indicators)
+      self._Indicators.copyTo(self._Labels)
+      App._DrawLabels = True
+
+      self._CurrentRun += 1
+      if self._CurrentRun > self._PerformanceOutput:
+        print("Run-Time: {:.3f}s; Mean-Time: {:.3f}s".format(self._Inference.getLastTime(), self._Inference.getMeanTime()))
+        self._CurrentRun = 0
+
 
     else:
       self._Indicators.Speed  = Memory.Data.Game.Speed
@@ -150,7 +150,8 @@ class CApplication(CAppThread):
       self._Indicators.R      = Memory.Data.Labels.R
       self._Indicators.DistL  = Memory.Data.Labels.DistL
       self._Indicators.DistR  = Memory.Data.Labels.DistR
-      App.setLabels(None)
+      self._Labels.reset()
+      App._DrawLabels = False
 
     self._DriveController.control(self._Indicators, self._Control)
 
