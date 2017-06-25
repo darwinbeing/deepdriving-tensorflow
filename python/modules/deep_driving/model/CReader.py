@@ -29,26 +29,29 @@ class CReader(dl.data.CReader):
     print("Build File-Reader Graph:")
     print("* Training is enabled: {}".format(self._IsTraining))
 
-    if self._IsTraining:
-      with tf.name_scope("TrainingReader"):
-        TrainingFilenames     = db.getDBFilenames(Settings['Data']['TrainingPath'])
-        TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
-        TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
-        TrainingPreprocInputs = self._buildPreprocessing(Settings, TrainingInputs, self._IsTraining)
-        TrainingBatchedInputs = self._createBatch(TrainingPreprocInputs, self.getBatchSize(), self._IsTraining)
+    # perform preprocessing of CPU to not switch between GPU/CPU all the time
+    # see: https://www.tensorflow.org/performance/performance_guide
+    with tf.device('/cpu:0'):
+      if self._IsTraining:
+        with tf.name_scope("TrainingReader"):
+          TrainingFilenames     = db.getDBFilenames(Settings['Data']['TrainingPath'])
+          TrainingFileQueue     = self._createFileQueue(TrainingFilenames, self._IsTraining)
+          TrainingInputs        = self._buildRawReader(Settings, TrainingFileQueue)
+          TrainingPreprocInputs = self._buildPreprocessing(Settings, TrainingInputs, self._IsTraining)
+          TrainingBatchedInputs = self._createBatch(TrainingPreprocInputs, self.getBatchSize(), self._IsTraining)
 
-    with tf.name_scope("ValidationReader"):
-      TestingFilenames     = db.getDBFilenames(Settings['Data']['ValidatingPath'])
-      TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
-      TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
-      TestingPreprocInputs = self._buildPreprocessing(Settings, TestingInputs, False)
-      TestingBatchedInputs = self._createBatch(TestingPreprocInputs, self.getBatchSize(), self._IsTraining)
+      with tf.name_scope("ValidationReader"):
+        TestingFilenames     = db.getDBFilenames(Settings['Data']['ValidatingPath'])
+        TestingFileQueue     = self._createFileQueue(TestingFilenames, self._IsTraining)
+        TestingInputs        = self._buildRawReader(Settings, TestingFileQueue)
+        TestingPreprocInputs = self._buildPreprocessing(Settings, TestingInputs, False)
+        TestingBatchedInputs = self._createBatch(TestingPreprocInputs, self.getBatchSize(), self._IsTraining)
 
-    if self._IsTraining:
-      BatchedInput = tf.cond(self._Outputs['IsTraining'], lambda: TrainingBatchedInputs, lambda: TestingBatchedInputs)
+      if self._IsTraining:
+        BatchedInput = tf.cond(self._Outputs['IsTraining'], lambda: TrainingBatchedInputs, lambda: TestingBatchedInputs)
 
-    else:
-      BatchedInput = TestingBatchedInputs
+      else:
+        BatchedInput = TestingBatchedInputs
 
     self._Outputs["Image"]  = BatchedInput[0]
     self._Outputs["Labels"] = BatchedInput[1:15]
