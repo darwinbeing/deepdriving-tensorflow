@@ -1,0 +1,97 @@
+From 20ab39c008365c0fe48304b72d7483f5fc9ddbcb Mon Sep 17 00:00:00 2001
+From: Andre <andre.netzeband@hm.edu>
+Date: Sun, 25 Jun 2017 16:41:33 +0200
+Subject: [PATCH] Enable NCHW data-format for increasing performance.
+
+---
+ python/modules/deep_driving/model/CAlexNet.py | 23 +++++++++++++----------
+ python/modules/deep_learning/layer/Dense.py   |  2 +-
+ 2 files changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/python/modules/deep_driving/model/CAlexNet.py b/python/modules/deep_driving/model/CAlexNet.py
+index 44a9d68..3d74be4 100644
+--- a/python/modules/deep_driving/model/CAlexNet.py
++++ b/python/modules/deep_driving/model/CAlexNet.py
+@@ -100,18 +100,18 @@ class CAlexNet(dl.network.CNetwork):
+     def conv(input, kernel, biases, k_h, k_w, c_o, s_h, s_w, padding="VALID", group=1):
+       '''From https://github.com/ethereon/caffe-tensorflow
+       '''
+-      c_i = input.get_shape()[-1]
++      c_i = input.get_shape()[1]
+       assert c_i % group == 0
+       assert c_o % group == 0
+-      convolve = lambda i, k: tf.nn.conv2d(i, k, [1, s_h, s_w, 1], padding=padding)
++      convolve = lambda i, k: tf.nn.conv2d(i, k, [1, 1, s_h, s_w], padding=padding, data_format="NCHW")
+ 
+       if group == 1:
+         conv = convolve(input, kernel)
+       else:
+-        input_groups = tf.split(input, group, 3)  # tf.split(3, group, input)
++        input_groups  = tf.split(input, group, 1)  # tf.split(3, group, input)
+         kernel_groups = tf.split(kernel, group, 3)  # tf.split(3, group, kernel)
+         output_groups = [convolve(i, k) for i, k in zip(input_groups, kernel_groups)]
+-        conv = tf.concat(output_groups, 3)  # tf.concat(3, output_groups)
++        conv = tf.concat(output_groups, 1)  # tf.concat(3, output_groups)
+ 
+       if biases is not None:
+         output = tf.nn.bias_add(conv, biases)
+@@ -121,6 +121,8 @@ class CAlexNet(dl.network.CNetwork):
+       return tf.reshape(output, [-1] + conv.get_shape().as_list()[1:])
+ 
+ 
++    Input = tf.transpose(Input, [0, 3, 1, 2])
++
+     print("Input shape: {}".format(Input.shape))
+ 
+     # conv1
+@@ -149,7 +151,7 @@ class CAlexNet(dl.network.CNetwork):
+       s_h = 2
+       s_w = 2
+       padding = 'SAME'
+-      maxpool1 = tf.nn.max_pool(conv1, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
++      maxpool1 = tf.nn.max_pool(conv1, ksize=[1, 1, k_h, k_w], strides=[1, 1, s_h, s_w], padding=padding, data_format="NCHW")
+ 
+       print("Pool1-Output shape: {}".format(maxpool1.shape))
+ 
+@@ -182,8 +184,8 @@ class CAlexNet(dl.network.CNetwork):
+       s_h = 2
+       s_w = 2
+       padding = 'SAME'
+-      maxpool2 = tf.nn.max_pool(conv2, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+-
++      maxpool2 = tf.nn.max_pool(conv2, ksize=[1, 1, k_h, k_w], strides=[1, 1, s_h, s_w], padding=padding,
++                                data_format="NCHW")
+       print("Pool2-Output shape: {}".format(maxpool2.shape))
+ 
+ 
+@@ -255,10 +257,11 @@ class CAlexNet(dl.network.CNetwork):
+       s_h = 2
+       s_w = 2
+       padding = 'VALID'
+-      maxpool5 = tf.nn.max_pool(conv5, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
+-
+-      print("Pool5-Output shape: {}".format(maxpool5.shape))
++      maxpool5 = tf.nn.max_pool(conv5, ksize=[1, 1, k_h, k_w], strides=[1, 1, s_h, s_w], padding=padding,
++                                data_format="NCHW")
+ 
++    maxpool5 = tf.transpose(maxpool5, [0, 2, 3, 1])
++    print("Pool5-Output shape: {}".format(maxpool5.shape))
+ 
+     # fc6
+     # fc(4096, name='fc6')
+diff --git a/python/modules/deep_learning/layer/Dense.py b/python/modules/deep_learning/layer/Dense.py
+index 61e3bf5..a2d3e4f 100644
+--- a/python/modules/deep_learning/layer/Dense.py
++++ b/python/modules/deep_learning/layer/Dense.py
+@@ -85,7 +85,7 @@ def createBatchNormalization(Input, Name="BN"):
+   with tf.name_scope(Name):
+     Setup.Log("   * With Batch-Normalization")
+     debug.Assert(Setup.IsTraining != None, "You must define the IsTraining boolean before using Batch-Normalization!")
+-    return tf.contrib.layers.batch_norm(Input, center=True, scale=True, is_training=Setup.IsTraining)
++    return tf.contrib.layers.batch_norm(Input, center=True, scale=True, fused=True, is_training=Setup.IsTraining, data_format="NCHW")
+ 
+ 
+ def createDropout(Input, KeepRatio=0.5, Name="Dropout"):
+-- 
+2.11.1.windows.1
+
