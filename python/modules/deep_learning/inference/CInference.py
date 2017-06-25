@@ -68,20 +68,22 @@ class CInference(internal.CBaseRunner):
 
     return self._postProcess(RawResults)
 
-
+  # Do not store the first 10 runs, due to much overhead here
+  _SampleOffset = 10
   def _addTimeStatistics(self, TimeDelta):
-    self._LastTime = TimeDelta
-    self._RunTime += TimeDelta
+    if self._SampleCount > self._SampleOffset:
+      self._LastTime = TimeDelta
+      self._RunTime += TimeDelta
 
-    if self._MaxTime is None:
-      self._MaxTime = TimeDelta
-    elif self._MaxTime < TimeDelta:
-      self._MaxTime = TimeDelta
+      if self._MaxTime is None:
+        self._MaxTime = TimeDelta
+      elif self._MaxTime < TimeDelta:
+        self._MaxTime = TimeDelta
 
-    if self._MinTime is None:
-      self._MinTime = TimeDelta
-    elif self._MinTime > TimeDelta:
-      self._MinTime = TimeDelta
+      if self._MinTime is None:
+        self._MinTime = TimeDelta
+      elif self._MinTime > TimeDelta:
+        self._MinTime = TimeDelta
 
 
   def getLastTime(self):
@@ -89,7 +91,9 @@ class CInference(internal.CBaseRunner):
 
 
   def getMeanTime(self):
-    return self._RunTime / self._SampleCount
+    if self._SampleCount > self._SampleOffset:
+      return self._RunTime / (self._SampleCount - self._SampleOffset)
+    return 0.0
 
 
   def getMaxTime(self):
