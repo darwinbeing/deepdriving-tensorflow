@@ -26,6 +26,7 @@ import dd.situation_view as ddsv
 from kivy.uix.widget import Widget
 from kivy.app import App
 from kivy.graphics import Rectangle, Color
+from kivy.properties import BooleanProperty
 
 import numpy as np
 
@@ -35,9 +36,9 @@ class SituationView(Widget):
   _Texture             = None
   _Memory              = None
   _GroundTruth         = None
-  _DrawReal            = False
+  _DrawReal            = BooleanProperty(False)
   _Labels              = None
-  _DrawEstimated       = False
+  _DrawEstimated       = BooleanProperty(False)
   _SituationView       = None
 
   def __init__(self, **kwargs):

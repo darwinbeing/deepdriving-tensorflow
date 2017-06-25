@@ -24,14 +24,16 @@
 import kivy
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.properties import BooleanProperty
 
 import threading
 
 class MainApp(App):
-  _Memory = None
-  _Labels = None
-  _Main   = None
-  IsUpdating = False
+  _Memory     = None
+  _Labels     = None
+  _DrawLabels = BooleanProperty(False)
+  _Main       = None
+  IsUpdating  = False
 
   def __init__(self, MainWindow, Memory, MainObject, **kwargs):
     super().__init__(**kwargs)
