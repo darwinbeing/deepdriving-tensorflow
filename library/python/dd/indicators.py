@@ -41,22 +41,7 @@ class Indicators_t(ctypes.Structure):
 
 
     def __init__(self):
-        if ARE_INDICATORS_VALID:
-            self.Speed  = 35
-            self.Fast   = 0
-            self.Angle  = 0
-            self.LL     = INVALID_INDICATORS.LL
-            self.ML     = -2
-            self.MR     = 2
-            self.RR     = INVALID_INDICATORS.RR
-            self.DistLL = INVALID_INDICATORS.DistLL
-            self.DistMM = INVALID_INDICATORS.DistMM
-            self.DistRR = INVALID_INDICATORS.DistRR
-            self.L      = INVALID_INDICATORS.L
-            self.M      = -2
-            self.R      = 2
-            self.DistL  = INVALID_INDICATORS.L
-            self.DistR  = INVALID_INDICATORS.R
+        self.reset()
 
     def __str__(self):
         String = ""
@@ -76,6 +61,43 @@ class Indicators_t(ctypes.Structure):
         String += "DistL={}\n".format(self.DistL)
         String += "DistR={}\n".format(self.DistR)
         return String
+
+
+    def reset(self):
+        if ARE_INDICATORS_VALID:
+            self.Speed  = 35
+            self.Fast   = 0
+            self.Angle  = 0
+            self.LL     = INVALID_INDICATORS.LL
+            self.ML     = -2
+            self.MR     = 2
+            self.RR     = INVALID_INDICATORS.RR
+            self.DistLL = INVALID_INDICATORS.DistLL
+            self.DistMM = INVALID_INDICATORS.DistMM
+            self.DistRR = INVALID_INDICATORS.DistRR
+            self.L      = INVALID_INDICATORS.L
+            self.M      = -2
+            self.R      = 2
+            self.DistL  = INVALID_INDICATORS.L
+            self.DistR  = INVALID_INDICATORS.R
+
+
+    def copyTo(self, Indicators):
+        Indicators.Speed  = self.Speed
+        Indicators.Fast   = self.Fast
+        Indicators.Angle  = self.Angle
+        Indicators.LL     = self.LL
+        Indicators.ML     = self.ML
+        Indicators.MR     = self.MR
+        Indicators.RR     = self.RR
+        Indicators.DistLL = self.DistLL
+        Indicators.DistMM = self.DistMM
+        Indicators.DistRR = self.DistRR
+        Indicators.L      = self.L
+        Indicators.M      = self.M
+        Indicators.R      = self.R
+        Indicators.DistL  = self.DistL
+        Indicators.DistR  = self.DistR
 
 
 def setupIndicators():

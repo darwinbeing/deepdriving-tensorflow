@@ -116,13 +116,13 @@ void CSituationView::update(Indicators_t *pReal, Indicators_t *pEstimated)
 
 int CSituationView::guessLanes(CSituation &rReal, CSituation &rEstimated)
 {
-  if (rReal.isValid())
-  {
-    return rReal.getNumberOfLanes();
-  }
-  else if (rEstimated.isValid())
+  if (rEstimated.isValid())
   {
     return rEstimated.getNumberOfLanes();
+  }
+  else if (rReal.isValid())
+  {
+    return rReal.getNumberOfLanes();
   }
 
   return 0;
@@ -135,13 +135,13 @@ void CSituationView::createBackground()
 
 int CSituationView::getLanePosition(CSituation &rReal, CSituation &rEstimated)
 {
-  if (rReal.isValid())
-  {
-    return getLanePosition(rReal);
-  }
-  else if (rEstimated.isValid())
+  if (rEstimated.isValid())
   {
     return getLanePosition(rEstimated);
+  }
+  else if (rReal.isValid())
+  {
+    return getLanePosition(rReal);
   }
 
   return mpSituationImage->size[0];
