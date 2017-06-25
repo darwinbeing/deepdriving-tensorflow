@@ -55,10 +55,10 @@ DLL_API void CSituationView_destroy(void * pObject)
   delete((CSituationView*)pObject);
 }
 
-DLL_API uint8_t * CSituationView_getImage(void * pObject)
+DLL_API void CSituationView_getImage(void * pObject, uint8_t * pImage)
 {
   assert(pObject);
-  return ((CSituationView*)pObject)->getImage()->data;
+  return ((CSituationView*)pObject)->getImage(pImage);
 }
 
 DLL_API void CSituationView_update(void * pObject, Indicators_t *pReal, Indicators_t *pEstimated)

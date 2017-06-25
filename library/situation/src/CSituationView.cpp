@@ -91,10 +91,12 @@ CSituationView::~CSituationView()
   delImage(&mpLane3);
 }
 
-cv::Mat * CSituationView::getImage()
+void CSituationView::getImage(uint8_t * pImage)
 {
+  cv::Mat Destination(mpSituationImage->size().height, mpSituationImage->size().width, CV_8UC3, pImage);
+
   assert(mpSituationImage);
-  return mpSituationImage;
+  mpSituationImage->copyTo(Destination);
 }
 
 void CSituationView::update(Indicators_t *pReal, Indicators_t *pEstimated)

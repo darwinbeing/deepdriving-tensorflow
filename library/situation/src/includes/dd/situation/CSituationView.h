@@ -56,7 +56,8 @@ class CSituationView
     ~CSituationView();
 
     /// @return Returns the situation image.
-    cv::Mat * getImage();
+    /// @param pImage      Is the object where to copy the image to.
+    void getImage(uint8_t * pImage);
 
     /// @brief Updates the situation view image.
     /// @param pReal      Are the real indicators that describe the situation.

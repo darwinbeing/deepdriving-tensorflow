@@ -58,6 +58,8 @@ class CSituationView():
 
         ImagePath = _CURRENT_SCRIPT_PATH
 
+        self._Image = np.empty(dtype=np.uint8, shape=[self._Height, self._Width, self._Channels])
+
         self._Object = ctypes.c_void_p(Constructor(Size, Color, ImagePath.encode('utf-8')))
         self.update()
 
@@ -68,11 +70,9 @@ class CSituationView():
 
     def getImage(self):
         getImage = _LIBRARY.CSituationView_getImage
-        getImage.restype = ctypes.POINTER(ctypes.c_uint8)
-        Buffer = getImage(self._Object)
-        RawImage = np.fromiter(Buffer, dtype=np.uint8, count=self._Width*self._Height*self._Channels)
-        Image = np.resize(RawImage, (self._Height, self._Width, self._Channels))
-        return Image
+        getImage.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_uint8)]
+        getImage(self._Object, self._Image.ctypes.data_as(ctypes.POINTER(ctypes.c_uint8)))
+        return self._Image
 
 
     def update(self, IsRealValid = True, IsEstimatedValid = True):

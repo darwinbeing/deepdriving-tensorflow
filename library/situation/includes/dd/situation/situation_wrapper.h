@@ -55,7 +55,8 @@ DLL_API void CSituationView_destroy(void * pObject);
 
 /// @return Returns the situation image object.
 /// @param pObject     The Object of the situation view.
-DLL_API uint8_t * CSituationView_getImage(void * pObject);
+/// @param pImage      Is the object where to copy the image to.
+DLL_API void CSituationView_getImage(void * pObject, uint8_t * pImage);
 
 /// @brief Updates the situation view image.
 /// @param pObject     The object to update.
