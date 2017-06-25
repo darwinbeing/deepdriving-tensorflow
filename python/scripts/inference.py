@@ -57,7 +57,7 @@ def main():
   Inference = Model.createInference(model.CInference, model.CInferenceReader, Settings)
   Inference.restore()
 
-  Database = db.CDBReader("../../../testing")
+  Database = db.CDBReader("../../../validation")
 
   for i in range(1000):
     if not Database.next():
@@ -65,7 +65,7 @@ def main():
       break
 
     cv2.imshow("Image", Database.Image)
-    if cv2.waitKey(0) == 27:
+    if cv2.waitKey(10) == 27:
       break
 
     print(Inference.run([Database.Image]))

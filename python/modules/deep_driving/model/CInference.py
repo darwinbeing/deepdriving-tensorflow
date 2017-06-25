@@ -22,6 +22,7 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import deep_learning as dl
+import dd
 
 from .. import db
 
@@ -34,4 +35,22 @@ class CInference(dl.inference.CInference):
 
   def _postProcess(self, Results):
     RealResults = db.denormalizeLabels(Results)
-    return RealResults
+
+    Indicators = dd.Indicators_t()
+    Indicators.Speed  = 0.0
+    Indicators.Fast   = RealResults[13]
+    Indicators.Angle  = RealResults[0]
+    Indicators.LL     = RealResults[6]
+    Indicators.ML     = RealResults[7]
+    Indicators.MR     = RealResults[8]
+    Indicators.RR     = RealResults[9]
+    Indicators.DistLL = RealResults[10]
+    Indicators.DistMM = RealResults[11]
+    Indicators.DistRR = RealResults[12]
+    Indicators.L      = RealResults[1]
+    Indicators.M      = RealResults[2]
+    Indicators.R      = RealResults[3]
+    Indicators.DistL  = RealResults[4]
+    Indicators.DistR  = RealResults[5]
+
+    return Indicators
