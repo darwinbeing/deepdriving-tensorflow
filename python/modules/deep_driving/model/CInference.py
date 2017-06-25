@@ -21,6 +21,9 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
+import tensorflow as tf
+from tensorflow.python.client import timeline
+
 import deep_learning as dl
 import dd
 
@@ -31,7 +34,23 @@ class CInference(dl.inference.CInference):
   def _runIteration(self, Session, RunTargets, Inputs, Reader, Iteration):
     Data = Reader.readSingle(Session, Inputs)
     AllTargets = self._Network.getOutputs()['Output']
-    return Session.run(AllTargets, feed_dict = Data)
+
+    if self.getUseTrace():
+      Options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+      Metadata = tf.RunMetadata()
+
+      Results = Session.run(AllTargets, feed_dict=Data, options=Options, run_metadata=Metadata)
+
+      Timeline = timeline.Timeline(Metadata.step_stats)
+      Trace = Timeline.generate_chrome_trace_format()
+
+      with open('inference_timeline.json', 'w') as File:
+        File.write(Trace)
+
+    else:
+      Results = Session.run(AllTargets, feed_dict=Data)
+
+    return Results
 
   def _postProcess(self, Results):
     RealResults = db.denormalizeLabels(Results)

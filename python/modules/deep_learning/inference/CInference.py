@@ -133,6 +133,8 @@ class CInference(internal.CBaseRunner):
   def getCheckpointDir(self):
     return self._getCheckpointDir(self._Settings)
 
+  def getUseTrace(self):
+    return self._getUseTrace(self._Settings)
 
   def _getCheckpointDir(self, Settings):
     # You can overrite this function to specify a checkpoint directory
@@ -141,6 +143,14 @@ class CInference(internal.CBaseRunner):
         return os.path.join(Settings['Inference']['CheckpointPath'], "State_{}".format(self._Network.State))
 
     return None
+
+  def _getUseTrace(self, Settings):
+    # You can overrite this function to specify a checkpoint directory
+    if 'Inference' in Settings:
+      if 'Trace' in Settings['Inference']:
+        return Settings['Inference']['Trace']
+
+    return False
 
   def _getSummaryDir(self, Settings):
     return None
