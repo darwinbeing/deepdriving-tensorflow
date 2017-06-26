@@ -43,16 +43,16 @@ def translateLabels(Indicators, Labels):
     Indicators.RR = 9
 
   Indicators.DistLL = Labels.DistLL
-  if Indicators.DistLL >= 60:
-    Indicators.DistLL = 90
+  #if Indicators.DistLL >= 60:
+  #  Indicators.DistLL = 90
 
   Indicators.DistMM = Labels.DistMM
-  if Indicators.DistMM >= 60:
-    Indicators.DistMM = 90
+  #if Indicators.DistMM >= 60:
+  #  Indicators.DistMM = 90
 
   Indicators.DistRR = Labels.DistRR
-  if Indicators.DistRR >= 60:
-    Indicators.DistRR = 90
+  #if Indicators.DistRR >= 60:
+  #  Indicators.DistRR = 90
 
   Indicators.L      = Labels.L
   if Indicators.L <= -5:
@@ -67,11 +67,11 @@ def translateLabels(Indicators, Labels):
     Indicators.R = 7
 
   Indicators.DistL  = Labels.DistL
-  if Indicators.DistL >= 60:
-    Indicators.DistL = 90
+  #if Indicators.DistL >= 60:
+  #  Indicators.DistL = 90
 
   Indicators.DistR  = Labels.DistR
-  if Indicators.DistR >= 60:
-    Indicators.DistR = 90
+  #if Indicators.DistR >= 60:
+  #  Indicators.DistR = 90
 
   return Indicators

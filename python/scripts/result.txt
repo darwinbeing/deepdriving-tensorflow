@@ -11,7 +11,6 @@ Creating network Graph...
    * With Dropout (keep=0.5)
    * With Batch-Normalization
    * With Dropout (keep=0.5)
-   * With Batch-Normalization
  * network Output-Shape: (64, 14)
    * Output 0 has shape (64, 1)
    * Output 1 has shape (64, 1)
@@ -27,10 +26,10 @@ Creating network Graph...
    * Output 11 has shape (64, 1)
    * Output 12 has shape (64, 1)
    * Output 13 has shape (64, 1)
-Finished to build network with 70533080 trainable variables in 45 tensors.
+Finished to build network with 70533038 trainable variables in 42 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_1850.ckpt
+* Checkpoint\State_0\model_1860.ckpt
 
 # Using Training-Settings:
 {
@@ -73,7 +72,7 @@ Finished to build network with 70533080 trainable variables in 45 tensors.
     "BatchSize": 64,
     "ImageHeight": 210,
     "ImageWidth": 280,
-    "ValidatingPath": "C:/Data/validation"
+    "ValidatingPath": "F:/Data/DeepDriving/validation"
   },
   "Evaluator": {
     "CheckpointPath": "Checkpoint",
@@ -89,12 +88,12 @@ Finished to build network with 70533080 trainable variables in 45 tensors.
 }
 
 # Evaluation Results:
-Full Summary:  ( Error: 43.70,  SD: 29.60 )
+Full Summary:  ( Error: 17.06,  SD: 18.76 )
 
 |  Type  | Angle  |   LL   |   ML   |   MR   |   RR   | DistLL | DistMM | DistRR |   L    |   M    |   R    | DistL  | DistR  |  Fast  |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|  MAE   |   0.02 |   0.33 |   0.14 |   0.14 |   0.44 |  11.58 |   9.55 |  10.92 |   0.18 |   0.26 |   0.18 |   4.98 |   4.93 |   0.04 |
-|   SD   |   0.04 |   0.33 |   0.35 |   0.33 |   0.37 |  14.54 |   8.38 |  12.50 |   0.42 |   0.72 |   0.48 |   8.19 |   8.39 |   0.16 |
+|  MAE   |   0.02 |   0.16 |   0.12 |   0.12 |   0.21 |   3.92 |   2.78 |   4.65 |   0.15 |   0.26 |   0.17 |   2.24 |   2.24 |   0.01 |
+|   SD   |   0.03 |   0.33 |   0.33 |   0.32 |   0.37 |   7.31 |   5.04 |   8.18 |   0.39 |   0.67 |   0.45 |   5.37 |   5.52 |   0.08 |
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
-|MAE/Ref |  70.9% | 176.0% |  90.1% |  85.6% | 241.4% | 227.8% | 201.6% | 136.8% |  56.8% |  84.1% |  60.4% |  55.9% |  45.4% |  N/A % |
-| SD/Ref |  44.6% |  60.9% |  83.4% |  74.8% |  70.1% | 159.7% | 107.2% |  99.4% |  59.9% |  99.5% |  87.1% |  63.4% |  57.3% |  N/A % |
+|MAE/Ref |  57.1% |  86.0% |  80.1% |  76.7% | 113.4% |  77.2% |  58.6% |  58.3% |  46.7% |  83.2% |  59.1% |  25.2% |  20.6% |  N/A % |
+| SD/Ref |  32.4% |  59.8% |  80.1% |  72.0% |  71.0% |  80.3% |  64.5% |  65.1% |  55.2% |  93.3% |  81.4% |  41.6% |  37.7% |  N/A % |

@@ -33,16 +33,16 @@ def normalizeLabels(Labels):
   OutLabels.append(Labels[1]  * 0.17778 + 1.34445) # L      - Range -7 .. -2.5 mapping to 0.1 .. 0.9
   OutLabels.append(Labels[2]  * 0.1149  + 0.6714)  # M      - Range -5 ..  2   mapping to 0.1 .. 0.9
   OutLabels.append(Labels[3]  * 0.17778 - 0.34445) # R      - Range 2.5 .. 7   mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[4]  / 112     + 0.1)     # DistL  - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[5]  / 112     + 0.1)     # DistR  - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[4]  / 95.0    + 0.12)    # DistL  - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[5]  / 95.0    + 0.12)    # DistR  - Range  0 ..  90  mapping to 0.1 .. 0.9
 
   OutLabels.append(Labels[6]  * 0.14545 + 1.40909) # LL     - Range -9 .. -3.5 mapping to 0.1 .. 0.9
   OutLabels.append(Labels[7]  * 0.16    + 0.9)     # ML     - Range -5 .. 0    mapping to 0.1 .. 0.9
   OutLabels.append(Labels[8]  * 0.16    + 0.1)     # MR     - Range  0 .. 5    mapping to 0.1 .. 0.9
   OutLabels.append(Labels[9]  * 0.14545 - 0.40909) # RR     - Range 3.5 .. 9   mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[10] / 112     + 0.1)     # DistLL - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[11] / 112     + 0.1)     # DistMM - Range  0 ..  90  mapping to 0.1 .. 0.9
-  OutLabels.append(Labels[12] / 112     + 0.1)     # DistRR - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[10] / 95.0    + 0.12)    # DistLL - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[11] / 95.0    + 0.12)    # DistMM - Range  0 ..  90  mapping to 0.1 .. 0.9
+  OutLabels.append(Labels[12] / 95.0    + 0.12)    # DistRR - Range  0 ..  90  mapping to 0.1 .. 0.9
 
   OutLabels.append(Labels[13])                     # Fast   - Range  0 .. 1    mapping to   0 .. 1
 
@@ -57,16 +57,16 @@ def denormalizeLabels(Labels):
   OutLabels.append((Labels[1]  - 1.34445) / 0.17778)  # L      - Range  0.1 .. 0.9  mapping to   -7 .. -2.5
   OutLabels.append((Labels[2]  - 0.6714)  / 0.1149)   # M      - Range  0.1 .. 0.9  mapping to   -5 .. 2
   OutLabels.append((Labels[3]  + 0.34445) / 0.17778)  # R      - Range  0.1 .. 0.9  mapping to  2.5 .. 7
-  OutLabels.append((Labels[4]  - 0.1)     * 112)      # DistL  - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[5]  - 0.1)     * 112)      # DistR  - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[4]  - 0.12)    * 95.0)     # DistL  - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[5]  - 0.12)    * 95.0)     # DistR  - Range  0.1 .. 0.9  mapping to    0 .. 90
 
   OutLabels.append((Labels[6]  - 1.40909) / 0.14545)  # LL     - Range  0.1 .. 0.9  mapping to   -9 .. -3.5
   OutLabels.append((Labels[7]  - 0.9)     / 0.16)     # ML     - Range  0.1 .. 0.9  mapping to   -5 .. 0
   OutLabels.append((Labels[8]  - 0.1)     / 0.16)     # MR     - Range  0.1 .. 0.9  mapping to    0 .. 5
   OutLabels.append((Labels[9]  + 0.40909) / 0.14545)  # RR     - Range  0.1 .. 0.9  mapping to  3.5 .. 9
-  OutLabels.append((Labels[10] - 0.1)     * 112)      # DistLL - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[11] - 0.1)     * 112)      # DistMM - Range  0.1 .. 0.9  mapping to    0 .. 90
-  OutLabels.append((Labels[12] - 0.1)     * 112)      # DistRR - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[10] - 0.12)    * 95.0)     # DistLL - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[11] - 0.12)    * 95.0)     # DistMM - Range  0.1 .. 0.9  mapping to    0 .. 90
+  OutLabels.append((Labels[12] - 0.12)    * 95.0)     # DistRR - Range  0.1 .. 0.9  mapping to    0 .. 90
 
   OutLabels.append(Labels[13])                        # Fast   - Range    0 .. 1    mapping to    0 .. 1
 
