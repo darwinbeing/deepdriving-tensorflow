@@ -40,6 +40,7 @@
 
 // standard library includes
 #include <iostream>
+#include <algorithm>
 
 // project includes
 #include <dd/drivecontroller/CDriveController.h>
@@ -145,44 +146,13 @@ void CDriveController::controlLane1(Indicators_t const &rIndicators, Control_t &
   steering_head++;
   if (steering_head==5) steering_head=0;
 
-  if (rIndicators.Fast==1)
-  {
-    desired_speed=mMaxSpeed;
-  }
-  else
-  {
-    desired_speed=mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
-  }
-
-  if (desired_speed<10) desired_speed=10;
-
-  if (slow_down<desired_speed) desired_speed=slow_down;
-
-  ///////////////////////////// speed control
-  if (desired_speed>=rIndicators.Speed) {
-    rControl.Accelerating = 0.1*(desired_speed-rIndicators.Speed+1);
-    if (rControl.Accelerating>1) rControl.Accelerating=1.0;
-    rControl.Breaking = 0.0;
-  } else {
-    rControl.Breaking = 0.1*(rIndicators.Speed-desired_speed);
-    if (rControl.Breaking>1) rControl.Breaking=1.0;
-    rControl.Accelerating = 0.0;
-  }
-  ///////////////////////////// END speed control
-
-  ///// Emergency Break
-  if (slow_down < 0.1)
-  {
-    rControl.Accelerating = 0.0;
-    rControl.Breaking     = 1.0;
-  }
-  /////
-
+  calcAccelerating(rIndicators.Fast, rIndicators.Speed, slow_down, rControl);
 }
 
 void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &rControl)
 {
   slow_down=100;
+  bool const IsFast = isFast(rIndicators.Fast);
 
   if (pre_dist_L<20 && rIndicators.DistLL<20) {   // left lane is occupied or not
     left_clear=0;
@@ -211,7 +181,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
 
     steer_trend=steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4];   // am I turning or not
 
-    if (rIndicators.LL>-8 && left_clear==1 && steer_trend>=0 && rIndicators.Fast == 1) {   // move to left lane
+    if (rIndicators.LL>-8 && left_clear==1 && steer_trend>=0 && IsFast) {   // move to left lane
       lane_change=-2;
       coe_steer=2;
       right_clear=0;
@@ -221,7 +191,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
       timer_set=30;
     }
 
-    else if (rIndicators.RR<8 && right_clear==1 && steer_trend<=0 && rIndicators.Fast == 1) {   // move to right lane
+    else if (rIndicators.RR<8 && right_clear==1 && steer_trend<=0 && IsFast) {   // move to right lane
       lane_change=2;
       coe_steer=2;
       left_clear=0;
@@ -237,7 +207,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
 
     steer_trend=steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4];  // am I turning or not
 
-    if (rIndicators.LL<-8 && right_clear==1 && steer_trend<=0 && steer_trend>-0.2 && rIndicators.Fast == 1) {  // in left lane, move to right lane
+    if (rIndicators.LL<-8 && right_clear==1 && steer_trend<=0 && steer_trend>-0.2 && IsFast) {  // in left lane, move to right lane
       lane_change=2;
       coe_steer=2;
       right_clear=0;
@@ -361,45 +331,13 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
   steering_head++;
   if (steering_head==5) steering_head=0;
 
-
-  if (rIndicators.Fast==1)
-  {
-    desired_speed=mMaxSpeed;
-  }
-  else
-  {
-    desired_speed=mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
-  }
-
-  if (desired_speed<10) desired_speed=10;
-
-  if (slow_down<desired_speed) desired_speed=slow_down;
-
-  ///////////////////////////// speed control
-  if (desired_speed>=rIndicators.Speed) {
-    rControl.Accelerating = 0.1*(desired_speed-rIndicators.Speed+1);
-    if (rControl.Accelerating>1) rControl.Accelerating=1.0;
-    rControl.Breaking = 0.0;
-  } else {
-    rControl.Breaking = 0.1*(rIndicators.Speed-desired_speed);
-    if (rControl.Breaking>1) rControl.Breaking=1.0;
-    rControl.Accelerating = 0.0;
-  }
-  ///////////////////////////// END speed control
-
-  ///// Emergency Break
-  if (slow_down < 0.1)
-  {
-    rControl.Accelerating = 0.0;
-    rControl.Breaking     = 1.0;
-  }
-  /////
-
+  calcAccelerating(rIndicators.Fast, rIndicators.Speed, slow_down, rControl);
 }
 
 void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &rControl)
 {
   slow_down = 100;
+  bool const IsFast = isFast(rIndicators.Fast);
 
   if (pre_dist_L < 20 && rIndicators.DistLL < 20)
   {   // left lane is occupied or not
@@ -436,7 +374,7 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
 
     steer_trend = steering_record[0] + steering_record[1] + steering_record[2] + steering_record[3] + steering_record[4];  // am I turning or not
 
-    if (rIndicators.LL > -8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2 && rIndicators.Fast == 1)
+    if (rIndicators.LL > -8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2 && IsFast)
     {  // move to left lane
       lane_change = -2;
       coe_steer = 2;
@@ -447,7 +385,7 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       timer_set = 60;
     }
 
-    else if (rIndicators.RR < 8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && rIndicators.Fast == 1)
+    else if (rIndicators.RR < 8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && IsFast)
     {  // move to right lane
       lane_change = 2;
       coe_steer = 2;
@@ -465,7 +403,7 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
 
     steer_trend = steering_record[0] + steering_record[1] + steering_record[2] + steering_record[3] + steering_record[4];  // am I turning or not
 
-    if (rIndicators.RR > 8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2 && rIndicators.Fast == 1)
+    if (rIndicators.RR > 8 && left_clear == 1 && steer_trend >= 0 && steer_trend < 0.2 && IsFast)
     {  // in right lane, move to central lane
       lane_change = -2;
       coe_steer = 2;
@@ -473,7 +411,7 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       left_timer = 30;
     }
 
-    else if (rIndicators.LL < -8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && rIndicators.Fast == 1)
+    else if (rIndicators.LL < -8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && IsFast)
     {  // in left lane, move to central lane
       lane_change = 2;
       coe_steer = 2;
@@ -618,41 +556,56 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
   steering_head++;
   if (steering_head == 5) steering_head = 0;
 
+  calcAccelerating(rIndicators.Fast, rIndicators.Speed, slow_down, rControl);
+}
 
-  if (rIndicators.Fast==1)
-  {
-    desired_speed=mMaxSpeed;
-  }
-  else
-  {
-    desired_speed=mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5; // reduce speed
-  }
+template<typename T> static T clamp(T Value, T Max, T Min)
+{
+  return std::max(Min, std::min(Max, Value));
+}
 
-  if (slow_down < desired_speed) desired_speed = slow_down;
+void CDriveController::calcAccelerating(double Fast, double const CurrentSpeed, double const MaxSpeed, Control_t &rControl)
+{
+  double const Kpa = 0.1;
+  double const Kpb = 0.2;
 
-  ///////////////////////////// speed control
-  if (desired_speed >= rIndicators.Speed)
-  {
-    rControl.Accelerating = 0.1 * (desired_speed - rIndicators.Speed + 1);
-    if (rControl.Accelerating > 1) rControl.Accelerating = 1.0;
-    rControl.Breaking = 0.0;
-  }
-  else
-  {
-    rControl.Breaking = 0.1 * (rIndicators.Speed - desired_speed);
-    if (rControl.Breaking > 1) rControl.Breaking = 1.0;
-    rControl.Accelerating = 0.0;
-  }
-  ///////////////////////////// END speed control}
+  Fast = clamp(Fast, 1.0, 0.0);
 
-  ///// Emergency Break
-  if (slow_down < 0.1)
+  double const FullSpeed  = mMaxSpeed;
+  double const CurvySpeed = mMaxCurvySpeed-fabs(steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4])*4.5;
+
+  // mix both speed levels depending on probability of Fast
+  double const ResultSpeed = std::min(Fast * FullSpeed + (1 - Fast) * CurvySpeed, MaxSpeed);
+
+  double DeltaSpeed = ResultSpeed - CurrentSpeed;
+
+  if (MaxSpeed > 0.1)
+  {
+    if (DeltaSpeed >= 0)
+    {
+      rControl.Breaking     = 0.0;
+      rControl.Accelerating = Kpa * DeltaSpeed;
+    }
+    else
+    {
+      DeltaSpeed = -DeltaSpeed;
+      rControl.Accelerating = 0.0;
+      rControl.Breaking     = Kpb * DeltaSpeed;
+    }
+  }
+  else // emergency break
   {
     rControl.Accelerating = 0.0;
     rControl.Breaking     = 1.0;
   }
-  /////
 
+  rControl.Accelerating = clamp(rControl.Accelerating, 1.0, 0.0);
+  rControl.Breaking     = clamp(rControl.Breaking,     1.0, 0.0);
+}
+
+bool CDriveController::isFast(double Fast)
+{
+  return Fast > 0.7;
 }
 
 }

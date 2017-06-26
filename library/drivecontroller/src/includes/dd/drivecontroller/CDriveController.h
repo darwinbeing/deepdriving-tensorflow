@@ -58,6 +58,9 @@ class CDriveController
     void controlLane2(Indicators_t const &rIndicators, Control_t &rControl);
     void controlLane3(Indicators_t const &rIndicators, Control_t &rControl);
 
+    bool isFast(double Fast);
+    void calcAccelerating(double Fast, double CurrentSpeed, double MaxSpeed, Control_t &rControl);
+
     int mLanes;
     double slow_down;
     double pre_dist_L;
