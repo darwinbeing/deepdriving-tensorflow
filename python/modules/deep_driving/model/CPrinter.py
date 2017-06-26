@@ -22,6 +22,7 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import deep_learning
+from .. import error
 
 class CPrinter(deep_learning.printer.CProgressPrinter):
   def __init__(self):
@@ -108,21 +109,20 @@ class CPrinter(deep_learning.printer.CProgressPrinter):
     CellWidth -= 2
     ProgressString = "|"
     ProgressString += str("{:^"+str(CellWidth+2)+"}").format("MAE/Ref") + "|"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Angle_MAE']/0.033) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/LL_MAE']/0.188) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/ML_MAE']/0.155) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/MR_MAE']/0.159) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/RR_MAE']/0.183) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistLL_MAE']/5.085) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistMM_MAE']/4.738) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistRR_MAE']/7.983) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/L_MAE']/0.316) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/M_MAE']/0.308) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/R_MAE']/0.294) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistL_MAE']/8.910) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistR_MAE']/10.861) + "% |"
-    #ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Fast_MAE']) + "% |"
-    ProgressString += str("{:>" + str(CellWidth) + "}").format("N/A ") + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Angle_MAE']/error.Reference['MAE']['Angle']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/LL_MAE']/error.Reference['MAE']['LL']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/ML_MAE']/error.Reference['MAE']['ML']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/MR_MAE']/error.Reference['MAE']['MR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/RR_MAE']/error.Reference['MAE']['RR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistLL_MAE']/error.Reference['MAE']['DistLL']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistMM_MAE']/error.Reference['MAE']['DistMM']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistRR_MAE']/error.Reference['MAE']['DistRR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/L_MAE']/error.Reference['MAE']['L']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/M_MAE']/error.Reference['MAE']['M']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/R_MAE']/error.Reference['MAE']['R']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistL_MAE']/error.Reference['MAE']['DistL']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistR_MAE']/error.Reference['MAE']['DistR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Fast_MAE']/error.Reference['MAE']['Fast']) + "% |"
     return ProgressString
 
 
@@ -153,19 +153,18 @@ class CPrinter(deep_learning.printer.CProgressPrinter):
     CellWidth -= 2
     ProgressString = "|"
     ProgressString += str("{:^"+str(CellWidth+2)+"}").format("SD/Ref") + "|"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Angle_SD']/0.086) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/LL_SD']/0.544) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/ML_SD']/0.415) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/MR_SD']/0.444) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/RR_SD']/0.528) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistLL_SD']/9.105) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistMM_SD']/7.816) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistRR_SD']/12.577) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/L_SD']/0.704) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/M_SD']/0.719) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/R_SD']/0.548) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistL_SD']/12.925) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistR_SD']/14.640) + "% |"
-    #ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Fast_SD']) + "% |"
-    ProgressString += str("{:>" + str(CellWidth) + "}").format("N/A ") + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Angle_SD']/error.Reference['SD']['Angle']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/LL_SD']/error.Reference['SD']['LL']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/ML_SD']/error.Reference['SD']['ML']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/MR_SD']/error.Reference['SD']['MR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/RR_SD']/error.Reference['SD']['RR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistLL_SD']/error.Reference['SD']['DistLL']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistMM_SD']/error.Reference['SD']['DistMM']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistRR_SD']/error.Reference['SD']['DistRR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/L_SD']/error.Reference['SD']['L']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/M_SD']/error.Reference['SD']['M']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/R_SD']/error.Reference['SD']['R']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistL_SD']/error.Reference['SD']['DistL']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistR_SD']/error.Reference['SD']['DistR']) + "% |"
+    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Fast_SD']/error.Reference['SD']['Fast']) + "% |"
     return ProgressString

@@ -21,7 +21,4 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from . import db
-from . import model
-from . import legacy
-from . import error
+from .Reference import Reference

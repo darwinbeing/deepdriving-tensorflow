@@ -21,7 +21,37 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-from . import db
-from . import model
-from . import legacy
-from . import error
+Reference = {
+  'MAE': {
+    'Angle': 0.033,
+    'Fast': 0.01,
+    'LL': 0.188,
+    'ML': 0.155,
+    'MR': 0.159,
+    'RR': 0.183,
+    'DistLL': 5.085,
+    'DistMM': 4.738,
+    'DistRR': 7.983,
+    'L': 0.316,
+    'M': 0.308,
+    'R': 0.294,
+    'DistL': 8.910,
+    'DistR': 10.861
+  },
+  'SD': {
+    'Angle': 0.086,
+    'Fast': 0.08,
+    'LL': 0.544,
+    'ML': 0.415,
+    'MR': 0.444,
+    'RR': 0.528,
+    'DistLL': 9.105,
+    'DistMM': 7.816,
+    'DistRR': 12.577,
+    'L': 0.704,
+    'M': 0.719,
+    'R': 0.648,
+    'DistL': 12.925,
+    'DistR': 14.640
+  }
+}
