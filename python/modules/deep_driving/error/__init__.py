@@ -22,3 +22,4 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 from .Reference import Reference
+from .Table import getTableHeader, getTableLine, getTableMean, getTableMeanRef, getTableSD, getTableSDRef

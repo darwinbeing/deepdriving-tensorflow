@@ -24,6 +24,40 @@
 import deep_learning
 from .. import error
 
+NameDictMAE = {
+  'Angle': 'DetailError/Angle_MAE',
+  'Fast': 'DetailError/Fast_MAE',
+  'LL': 'DetailError/LL_MAE',
+  'ML': 'DetailError/ML_MAE',
+  'MR': 'DetailError/MR_MAE',
+  'RR': 'DetailError/RR_MAE',
+  'DistLL': 'DetailError/DistLL_MAE',
+  'DistMM': 'DetailError/DistMM_MAE',
+  'DistRR': 'DetailError/DistRR_MAE',
+  'L': 'DetailError/L_MAE',
+  'M': 'DetailError/M_MAE',
+  'R': 'DetailError/R_MAE',
+  'DistL': 'DetailError/DistL_MAE',
+  'DistR': 'DetailError/DistR_MAE'
+}
+
+NameDictSD = {
+  'Angle': 'DetailError/Angle_SD',
+  'Fast': 'DetailError/Fast_SD',
+  'LL': 'DetailError/LL_SD',
+  'ML': 'DetailError/ML_SD',
+  'MR': 'DetailError/MR_SD',
+  'RR': 'DetailError/RR_SD',
+  'DistLL': 'DetailError/DistLL_SD',
+  'DistMM': 'DetailError/DistMM_SD',
+  'DistRR': 'DetailError/DistRR_SD',
+  'L': 'DetailError/L_SD',
+  'M': 'DetailError/M_SD',
+  'R': 'DetailError/R_SD',
+  'DistL': 'DetailError/DistL_SD',
+  'DistR': 'DetailError/DistR_SD'
+}
+
 class CPrinter(deep_learning.printer.CProgressPrinter):
   def __init__(self):
     super().__init__(LossName="Loss/LabelLoss")
@@ -44,127 +78,11 @@ class CPrinter(deep_learning.printer.CProgressPrinter):
     ProgressString += self._getErrorString(SummaryDict)+", "
     ProgressString += " SD: {:.2f}".format(SummaryDict['Error/StandardDeviation'])
     ProgressString += " )\n\n"
-    ProgressString += self._getTableHeader(8)+"\n"
-    ProgressString += self._getTableLine(8)+"\n"
-    ProgressString += self._getTableMean(SummaryDict, 8)+"\n"
-    ProgressString += self._getTableSD(SummaryDict, 8)+"\n"
-    ProgressString += self._getTableLine(8)+"\n"
-    ProgressString += self._getTableMeanRef(SummaryDict, 8)+"\n"
-    ProgressString += self._getTableSDRef(SummaryDict, 8)+"\n"
-    return ProgressString
-
-
-  def _getTableHeader(self, CellWidth):
-    ProgressString = "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("Type") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("Angle") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("LL") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("ML") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("MR") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("RR") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("DistLL") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("DistMM") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("DistRR") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("L") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("M") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("R") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("DistL") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("DistR") + "|"
-    ProgressString += str("{:^"+str(CellWidth)+"}").format("Fast") + "|"
-    return ProgressString
-
-
-  def _getTableLine(self, CellWidth):
-    ProgressString = "+"
-    for i in range(15):
-      ProgressString += str("{:-^"+str(CellWidth)+"}").format("") + "+"
-    return ProgressString
-
-
-  def _getTableMean(self, Dict, CellWidth):
-    CellWidth -= 1
-    ProgressString = "|"
-    ProgressString += str("{:^"+str(CellWidth+1)+"}").format("MAE") + "|"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/Angle_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/LL_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/ML_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/MR_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/RR_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistLL_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistMM_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistRR_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/L_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/M_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/R_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistL_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistR_MAE']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/Fast_MAE']) + " |"
-    return ProgressString
-
-
-  def _getTableMeanRef(self, Dict, CellWidth):
-    # Reference values taken from:
-    # "Extracting Cognition out of Images for the Purpose of Autonomous Driving".
-    # PhD Thesis of Chenyi Chen. May 2016.
-    CellWidth -= 2
-    ProgressString = "|"
-    ProgressString += str("{:^"+str(CellWidth+2)+"}").format("MAE/Ref") + "|"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Angle_MAE']/error.Reference['MAE']['Angle']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/LL_MAE']/error.Reference['MAE']['LL']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/ML_MAE']/error.Reference['MAE']['ML']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/MR_MAE']/error.Reference['MAE']['MR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/RR_MAE']/error.Reference['MAE']['RR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistLL_MAE']/error.Reference['MAE']['DistLL']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistMM_MAE']/error.Reference['MAE']['DistMM']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistRR_MAE']/error.Reference['MAE']['DistRR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/L_MAE']/error.Reference['MAE']['L']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/M_MAE']/error.Reference['MAE']['M']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/R_MAE']/error.Reference['MAE']['R']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistL_MAE']/error.Reference['MAE']['DistL']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistR_MAE']/error.Reference['MAE']['DistR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Fast_MAE']/error.Reference['MAE']['Fast']) + "% |"
-    return ProgressString
-
-
-  def _getTableSD(self, Dict, CellWidth):
-    CellWidth -= 1
-    ProgressString = "|"
-    ProgressString += str("{:^"+str(CellWidth+1)+"}").format("SD") + "|"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/Angle_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/LL_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/ML_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/MR_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/RR_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistLL_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistMM_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistRR_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/L_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/M_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/R_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistL_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/DistR_SD']) + " |"
-    ProgressString += str("{:>"+str(CellWidth)+".2f}").format(Dict['DetailError/Fast_SD']) + " |"
-    return ProgressString
-
-  def _getTableSDRef(self, Dict, CellWidth):
-    # Reference values taken from:
-    # "Extracting Cognition out of Images for the Purpose of Autonomous Driving".
-    # PhD Thesis of Chenyi Chen. May 2016.
-    CellWidth -= 2
-    ProgressString = "|"
-    ProgressString += str("{:^"+str(CellWidth+2)+"}").format("SD/Ref") + "|"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Angle_SD']/error.Reference['SD']['Angle']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/LL_SD']/error.Reference['SD']['LL']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/ML_SD']/error.Reference['SD']['ML']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/MR_SD']/error.Reference['SD']['MR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/RR_SD']/error.Reference['SD']['RR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistLL_SD']/error.Reference['SD']['DistLL']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistMM_SD']/error.Reference['SD']['DistMM']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistRR_SD']/error.Reference['SD']['DistRR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/L_SD']/error.Reference['SD']['L']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/M_SD']/error.Reference['SD']['M']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/R_SD']/error.Reference['SD']['R']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistL_SD']/error.Reference['SD']['DistL']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/DistR_SD']/error.Reference['SD']['DistR']) + "% |"
-    ProgressString += str("{:>"+str(CellWidth)+".1f}").format(100*Dict['DetailError/Fast_SD']/error.Reference['SD']['Fast']) + "% |"
+    ProgressString += error.getTableHeader(8)+"\n"
+    ProgressString += error.getTableLine(8)+"\n"
+    ProgressString += error.getTableMean(SummaryDict, 8, NameDictMAE)+"\n"
+    ProgressString += error.getTableSD(SummaryDict, 8, NameDictSD)+"\n"
+    ProgressString += error.getTableLine(8)+"\n"
+    ProgressString += error.getTableMeanRef(SummaryDict, 8, NameDictMAE)+"\n"
+    ProgressString += error.getTableSDRef(SummaryDict, 8, NameDictSD)+"\n"
     return ProgressString
