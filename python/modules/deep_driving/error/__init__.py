@@ -23,3 +23,4 @@
 
 from .Reference import Reference
 from .Table import getTableHeader, getTableLine, getTableMean, getTableMeanRef, getTableSD, getTableSDRef
+from .ErrorCalculator import CErrorCalculator

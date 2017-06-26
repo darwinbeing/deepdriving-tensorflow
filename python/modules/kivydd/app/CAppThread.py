@@ -53,6 +53,9 @@ class CAppThread():
     self._IsExit = True
     self._Thread.join()
     self._Thread = None
+
+    self._cleanUp(self._Memory, self._App)
+
     self._Memory = None
     self._App.deleteAll()
     self._App    = None
@@ -70,4 +73,7 @@ class CAppThread():
 
   def doLoop(self, Memory, App):
     return True
+
+  def _cleanUp(self, Memory, App):
+    pass
 

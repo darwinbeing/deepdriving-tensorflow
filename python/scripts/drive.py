@@ -33,6 +33,7 @@ import dd.drive_controller as dddc
 import dd
 from kivydd.app import CAppThread, Widget
 
+import deep_driving.error as error
 import deep_driving.model as model
 import deep_learning as dl
 import misc
@@ -63,11 +64,13 @@ class CApplication(CAppThread):
   _Model     = None
   _Settings  = None
   _Inference = None
+  _ErrorCalc = None
   def initMemory(self):
     self._Settings  = CInferenceSettings(SettingFile)
     self._Model     = dl.CModel(model.CAlexNet)
     self._Inference = self._Model.createInference(model.CInference, model.CInferenceReader, self._Settings)
     self._Inference.restore()
+    self._ErrorCalc = error.CErrorCalculator()
 
     Memory = sd.CSharedMemory()
     Memory.setSyncMode(True)
@@ -110,12 +113,19 @@ class CApplication(CAppThread):
   _DriveController = None
   _Indicators      = None
   _Control         = None
+  _FirstRace       = True
   def _initRace(self, Memory):
     print("Initialize a new race...")
     self._DriveController = dddc.CDriveController(Memory.Data.Game.Lanes)
     self._Indicators      = dd.Indicators_t()
     self._Control         = dd.Control_t()
     self._LastRaceID      = Memory.Data.Game.UniqueRaceID
+
+    if not self._FirstRace:
+      print(self._ErrorCalc)
+      self._ErrorCalc.reset()
+
+    self._FirstRace       = False
 
 
   _PerformanceOutput = 100
@@ -127,6 +137,8 @@ class CApplication(CAppThread):
       self._Indicators.Speed  = Memory.Data.Game.Speed
       self._Indicators.copyTo(self._Labels)
       App._DrawLabels = True
+
+      self._addError(Memory.Data.Labels, self._Indicators)
 
       self._CurrentRun += 1
       if self._CurrentRun > self._PerformanceOutput:
@@ -159,6 +171,47 @@ class CApplication(CAppThread):
     Memory.Data.Control.Steering      = self._Control.Steering
     Memory.Data.Control.Accelerating  = self._Control.Accelerating
     Memory.Data.Control.Breaking      = self._Control.Breaking
+
+
+  def _addError(self, Real, Estimated):
+    RealDict = {
+      'Angle': Real.Angle,
+      'Fast': Real.Angle,
+      'LL': Real.LL,
+      'ML': Real.ML,
+      'MR': Real.MR,
+      'RR': Real.RR,
+      'DistLL': Real.DistLL,
+      'DistMM': Real.DistMM,
+      'DistRR': Real.DistRR,
+      'L': Real.L,
+      'M': Real.M,
+      'R': Real.R,
+      'DistL': Real.DistL,
+      'DistR': Real.DistR
+    }
+    EstimatedDict = {
+      'Angle': Estimated.Angle,
+      'Fast': Estimated.Angle,
+      'LL': Estimated.LL,
+      'ML': Estimated.ML,
+      'MR': Estimated.MR,
+      'RR': Estimated.RR,
+      'DistLL': Estimated.DistLL,
+      'DistMM': Estimated.DistMM,
+      'DistRR': Estimated.DistRR,
+      'L': Estimated.L,
+      'M': Estimated.M,
+      'R': Estimated.R,
+      'DistL': Estimated.DistL,
+      'DistR': Estimated.DistR
+    }
+    self._ErrorCalc.add(RealDict, EstimatedDict)
+
+
+  def _cleanUp(self, Memory, App):
+    print(self._ErrorCalc)
+
 
 if __name__ == '__main__':
   CApplication("drive").run(DriveWindow)
