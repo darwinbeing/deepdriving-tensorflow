@@ -79,26 +79,23 @@ class CNetwork(dl.network.CNetwork):
       act1           = dl.layer.createActivation(conv1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
       pool1          = dl.layer.createPooling(act1, Size=3, Stride=2, Pool="MAX")
-      norm1          = dl.layer.createLRN(pool1, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
 
 
     dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.1))
 
     # conv2
     with tf.variable_scope('conv2') as scope:
-      conv2          = dl.layer.createConvolution2d(norm1, Size=5, Filters=64, WeightDecay=0.0)
+      conv2          = dl.layer.createConvolution2d(pool1, Size=5, Filters=64, WeightDecay=0.0)
       act2           = dl.layer.createActivation(conv2, Func="ReLU")
       dl.helpers.saveFeatureMap(act2, "Features")
-      norm2          = dl.layer.createLRN(act2, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
-      pool2          = dl.layer.createPooling(norm2, Size=3, Stride=2, Pool="MAX")
+      pool2          = dl.layer.createPooling(act2, Size=3, Stride=2, Pool="MAX")
 
     # conv3
     with tf.variable_scope('conv3') as scope:
       conv3          = dl.layer.createConvolution2d(pool2, Size=5, Filters=64, WeightDecay=0.0)
       act3           = dl.layer.createActivation(conv3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")
-      norm3          = dl.layer.createLRN(act3, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
-      pool3          = dl.layer.createPooling(norm3, Size=3, Stride=2, Pool="MAX")
+      pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
 
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
