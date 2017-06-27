@@ -92,17 +92,21 @@ class CNetwork(dl.network.CNetwork):
       norm2          = dl.layer.createLRN(act2, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
       pool2          = dl.layer.createPooling(norm2, Size=3, Stride=2, Pool="MAX")
 
+    # conv3
+    with tf.variable_scope('conv3') as scope:
+      conv3          = dl.layer.createConvolution2d(pool2, Size=5, Filters=64, WeightDecay=0.0)
+      act3           = dl.layer.createActivation(conv3, Func="ReLU")
+      dl.helpers.saveFeatureMap(act3, "Features")
+      norm3          = dl.layer.createLRN(act3, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
+      pool3          = dl.layer.createPooling(norm3, Size=3, Stride=2, Pool="MAX")
+
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
-
-    # local3
-    with tf.variable_scope('local3') as scope:
-      local3 = dl.layer.createFullyConnected(pool2, Size=384, Func="ReLU")
 
 
     # local4
     with tf.variable_scope('local4') as scope:
-      local4 = dl.layer.createFullyConnected(local3, Size=192, Func="ReLU")
+      local4 = dl.layer.createFullyConnected(pool3, Size=64, Func="ReLU")
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=1/192))
 
