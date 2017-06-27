@@ -74,7 +74,7 @@ def createFullyConnected(Input, Size, Func="ReLU", Name="FC", WeightDecay=1.0, W
   with tf.name_scope(Name):
     Setup.Log(" * Create Fully-Connected-Layer \"{}\" with {} output-nodes.".format(Name, Size))
     Output = createDense(Input=Output, Size=Size, Name=None, WeightDecay=WeightDecay, WeightLR = WeightLR, BiasLR = BiasLR)
-    #Output = createBatchNormalization(Input=Output)
+    Output = createBatchNormalization(Input=Output)
     Setup.Log("   * With Activation {}".format(Func))
     Output = createActivation(Input=Output, Func=Func)
 
