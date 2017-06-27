@@ -75,7 +75,7 @@ class CNetwork(dl.network.CNetwork):
     #
     # conv1
     with tf.variable_scope('conv1') as scope:
-      conv1 = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
+      conv1          = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
       act1           = dl.layer.createActivation(conv1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
       pool1          = dl.layer.createPooling(act1, Size=3, Stride=2, Pool="MAX")
@@ -86,7 +86,7 @@ class CNetwork(dl.network.CNetwork):
 
     # conv2
     with tf.variable_scope('conv2') as scope:
-      conv2 = dl.layer.createConvolution2d(norm1, Size=5, Filters=64, WeightDecay=0.0)
+      conv2          = dl.layer.createConvolution2d(norm1, Size=5, Filters=64, WeightDecay=0.0)
       act2           = dl.layer.createActivation(conv2, Func="ReLU")
       dl.helpers.saveFeatureMap(act2, "Features")
       norm2          = dl.layer.createLRN(act2, Radius=4, Alpha=0.001 / 9.0, Beta = 0.75)
@@ -102,23 +102,12 @@ class CNetwork(dl.network.CNetwork):
 
     # local4
     with tf.variable_scope('local4') as scope:
-      weights = _variable_with_weight_decay('weights', shape=[384, 192],
-                                            stddev=0.04, wd=1.0)
-      biases = _variable_on_cpu('biases', [192], tf.constant_initializer(0.1))
-      local4 = tf.nn.relu(tf.matmul(local3, weights) + biases, name=scope.name)
-      _activation_summary(local4)
+      local4 = dl.layer.createFullyConnected(local3, Size=192, Func="ReLU")
+
+    dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=1/192))
 
     NUM_CLASSES = 10
-    # linear layer(WX + b),
-    # We don't apply softmax here because
-    # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
-    # and performs the softmax internally for efficiency.
     with tf.variable_scope('softmax_linear') as scope:
-      weights = _variable_with_weight_decay('weights', [192, NUM_CLASSES],
-                                              stddev=1 / 192.0, wd=0.0)
-      biases = _variable_on_cpu('biases', [NUM_CLASSES],
-                                  tf.constant_initializer(0.0))
-      softmax_linear = tf.add(tf.matmul(local4, weights), biases, name=scope.name)
-      _activation_summary(softmax_linear)
+      softmax_linear = dl.layer.createFullyConnected(local4, Size=NUM_CLASSES, Func="id", WeightDecay=0.0)
 
     return softmax_linear

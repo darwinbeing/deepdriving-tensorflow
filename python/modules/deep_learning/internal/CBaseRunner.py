@@ -33,7 +33,9 @@ class CBaseRunner():
     else:
       GPUOptions = tf.GPUOptions()
 
-    self._Session = tf.Session(config=tf.ConfigProto(gpu_options=GPUOptions))
+    Config = tf.ConfigProto(gpu_options=GPUOptions)
+    Config.graph_options.optimizer_options.global_jit_level = tf.OptimizerOptions.ON_1
+    self._Session = tf.Session(config=Config)
     self._Saver = None
 
   def reset(self, CheckpointDir):

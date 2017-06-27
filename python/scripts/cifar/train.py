@@ -68,7 +68,7 @@ def main():
 
   Model = dl.CModel(cifar.CNetwork)
 
-  Trainer = Model.createTrainer(model.CTrainer, cifar.CReader, cifar.CError, Settings)
+  Trainer = Model.createTrainer(cifar.CTrainer, cifar.CReader, cifar.CError, Settings)
   Trainer.addPrinter(dl.printer.CProgressPrinter(LossName="Loss/Loss", ErrorName="ClassError/Error"))
   Trainer.addSummaryMerger(cifar.CMerger())
 

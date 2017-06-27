@@ -10,6 +10,10 @@ Creating network Graph...
  * Create Fully-Connected-Layer "FC" with 384 output-nodes.
    * Reshape layer input (64, 7, 7, 64) to vector with 3136 elements.
    * With Activation ReLU
+ * Create Fully-Connected-Layer "FC" with 192 output-nodes.
+   * With Activation ReLU
+ * Create Fully-Connected-Layer "FC" with 10 output-nodes.
+   * With Activation id
  * network Output-Shape: (64, 10)
 Finished to build network with 1387786 trainable variables in 10 tensors.
 
@@ -28,6 +32,7 @@ Finished to build network with 1387786 trainable variables in 10 tensors.
   "Optimizer": {
     "EpochsPerDecay": 1,
     "LearnRateDecay": 0.95,
+    "Momentum": 0.9,
     "StartingLearningRate": 0.005,
     "WeightDecay": 0.0
   },
@@ -66,4 +71,4 @@ Finished to build network with 1387786 trainable variables in 10 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 22.38%
+ *  Error: 22.80%
