@@ -2,20 +2,24 @@
 Creating network Graph...
  * network Input-Shape: (64, 28, 28, 3)
  * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 64 Feature Maps
+   * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
  * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 64 Feature Maps
+   * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
  * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 64 Feature Maps
+   * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
  * Create Fully-Connected-Layer "FC" with 512 output-nodes.
    * Reshape layer input (64, 4, 4, 64) to vector with 1024 elements.
+   * With Batch-Normalization
    * With Activation ReLU
  * Create Fully-Connected-Layer "FC" with 64 output-nodes.
+   * With Batch-Normalization
    * With Activation ReLU
- * Create Fully-Connected-Layer "FC" with 10 output-nodes.
-   * With Activation id
+ * Create Dense-Layer "Dense" with 10 output-nodes.
  * network Output-Shape: (64, 10)
-Finished to build network with 768074 trainable variables in 12 tensors.
+Finished to build network with 771146 trainable variables in 32 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_30.ckpt
@@ -71,4 +75,4 @@ Finished to build network with 768074 trainable variables in 12 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 23.67%
+ *  Error: 19.66%
