@@ -65,7 +65,7 @@ CDriveController::CDriveController(int Lanes)
   left_timer = 0;
   right_clear = 0;
   right_timer = 0;
-  timer_set = 60;
+  timer_set = 150;
   lane_change = 0;
   steer_trend = 0;
   steering_record[0] = 0;
@@ -176,7 +176,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
     right_timer=timer_set;
     right_clear=1;
   }
-
+  
   if (lane_change==0 && rIndicators.DistMM < 25) {   // if current lane is occupied
 
     steer_trend=steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4];   // am I turning or not
@@ -188,7 +188,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
       right_timer=0;
       left_clear=0;
       left_timer=0;
-      timer_set=30;
+      //timer_set=30;
     }
 
     else if (rIndicators.RR<8 && right_clear==1 && steer_trend<=0 && IsFast) {   // move to right lane
@@ -198,12 +198,12 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
       left_timer=0;
       right_clear=0;
       right_timer=0;
-      timer_set=30;
+      //timer_set=30;
     }
   }
 
     ///////////////////////////////////////////////// prefer to stay in the right lane
-  else if (lane_change==0 && rIndicators.DistMM>=25) {
+  else if (lane_change==0 && rIndicators.DistMM >= 25) {
 
     steer_trend=steering_record[0]+steering_record[1]+steering_record[2]+steering_record[3]+steering_record[4];  // am I turning or not
 
@@ -211,7 +211,7 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
       lane_change=2;
       coe_steer=2;
       right_clear=0;
-      right_timer=20;
+      right_timer=0;
     }
   }
   ///////////////////////////////////////////////// END prefer to stay in the right lane
@@ -232,9 +232,12 @@ void CDriveController::controlLane2(Indicators_t const &rIndicators, Control_t &
 
   ///////////////////////////////////////////////// implement lane changing or car-following
   if (lane_change==0) {
-    if (-rIndicators.ML+rIndicators.MR<5.5) {
-      coe_steer=1.0;
+    if (-rIndicators.ML+rIndicators.MR<5.5)
+    {
+      
       center_line=(rIndicators.ML+rIndicators.MR)/2;
+      coe_steer = calcLinScale(std::abs(center_line), 0.25, 1.5, 0.75, 0.5);
+      
       pre_ML=rIndicators.ML;
       pre_MR=rIndicators.MR;
       if ((rIndicators.M < 1) && (rIndicators.M > -1))
@@ -368,7 +371,6 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
     right_clear = 1;
   }
 
-
   if (lane_change == 0 && rIndicators.DistMM < 25)
   {  // if current lane is occupied
 
@@ -381,8 +383,8 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       right_clear = 0;
       right_timer = 0;
       left_clear = 0;
-      left_timer = 30;
-      timer_set = 60;
+      left_timer = 0;
+      //timer_set = 60;
     }
 
     else if (rIndicators.RR < 8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && IsFast)
@@ -392,12 +394,12 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       left_clear = 0;
       left_timer = 0;
       right_clear = 0;
-      right_timer = 30;
-      timer_set = 60;
+      right_timer = 0;
+      //timer_set = 60;
     }
   }
-
-    ///////////////////////////////////////////////// prefer to stay in the central lane
+  
+  ///////////////////////////////////////////////// prefer to stay in the central lane
   else if (lane_change == 0 && rIndicators.DistMM >= 25)
   {
 
@@ -408,7 +410,7 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       lane_change = -2;
       coe_steer = 2;
       left_clear = 0;
-      left_timer = 30;
+      left_timer = 0;
     }
 
     else if (rIndicators.LL < -8 && right_clear == 1 && steer_trend <= 0 && steer_trend > -0.2 && IsFast)
@@ -416,7 +418,7 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
       lane_change = 2;
       coe_steer = 2;
       right_clear = 0;
-      right_timer = 30;
+      right_timer = 0;
     }
   }
   ///////////////////////////////////////////////// END prefer to stay in the central lane
@@ -440,8 +442,9 @@ void CDriveController::controlLane3(Indicators_t const &rIndicators, Control_t &
   {
     if (-rIndicators.ML + rIndicators.MR < 5.5)
     {
-      coe_steer = 1;
       center_line = (rIndicators.ML + rIndicators.MR) / 2;
+      coe_steer = calcLinScale(std::abs(center_line), 0.25, 1.5, 0.75, 0.5);
+      
       pre_ML = rIndicators.ML;
       pre_MR = rIndicators.MR;
       if ((rIndicators.M < 1) && (rIndicators.M > -1))
@@ -606,6 +609,13 @@ void CDriveController::calcAccelerating(double Fast, double const CurrentSpeed, 
 bool CDriveController::isFast(double Fast)
 {
   return Fast > 0.7;
+}
+
+double CDriveController::calcLinScale(double Value, double MinValue, double MinReturn, double MaxValue, double MaxReturn)
+{
+  Value = clamp(Value, MaxValue, MinValue);
+  double const Gain = (Value - MinValue)/(MaxValue - MinValue);
+  return MinReturn + (MaxReturn - MinReturn)*Gain;
 }
 
 }

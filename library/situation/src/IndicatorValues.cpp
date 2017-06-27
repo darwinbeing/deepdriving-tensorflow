@@ -43,14 +43,14 @@ Indicators_t const gInvalidIndicators =
         -5.0,
         5.0,
         9.0,
-        90.0,
-        90.0,
-        90.0,
+        75.0,
+        75.0,
+        75.0,
         -7.0,
         -5.0,
         7.0,
-        90.0,
-        90.0
+        75.0,
+        75.0
     };
 
 Indicators_t const gMaxIndicators =

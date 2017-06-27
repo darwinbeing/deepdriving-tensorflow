@@ -60,6 +60,7 @@ class CDriveController
 
     bool isFast(double Fast);
     void calcAccelerating(double Fast, double CurrentSpeed, double MaxSpeed, Control_t &rControl);
+    double calcLinScale(double Value, double MinValue, double MinReturn, double MaxValue, double MaxReturn);
 
     int mLanes;
     double slow_down;
