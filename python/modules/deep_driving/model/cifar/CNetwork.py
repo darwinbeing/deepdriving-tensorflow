@@ -106,12 +106,16 @@ class CNetwork(dl.network.CNetwork):
 
     # local4
     with tf.variable_scope('local4') as scope:
-      local4 = dl.layer.createFullyConnected(pool3, Size=64, Func="ReLU")
+      local4 = dl.layer.createFullyConnected(pool3, Size=512, Func="ReLU")
+
+    # local5
+    with tf.variable_scope('local5') as scope:
+      local5 = dl.layer.createFullyConnected(local4, Size=64, Func="ReLU")
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=1/192))
 
     NUM_CLASSES = 10
     with tf.variable_scope('softmax_linear') as scope:
-      softmax_linear = dl.layer.createFullyConnected(local4, Size=NUM_CLASSES, Func="id", WeightDecay=0.0)
+      softmax_linear = dl.layer.createFullyConnected(local5, Size=NUM_CLASSES, Func="id", WeightDecay=0.0)
 
     return softmax_linear
