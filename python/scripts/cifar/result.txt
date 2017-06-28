@@ -38,7 +38,7 @@ Finished to build network with 771146 trainable variables in 32 tensors.
     "LearnRateDecay": 0.95,
     "Momentum": 0.9,
     "StartingLearningRate": 0.005,
-    "WeightDecay": 0.0002
+    "WeightDecay": 0.0
   },
   "PreProcessing": {
     "MeanFile": "image-mean.tfrecord"
@@ -75,4 +75,4 @@ Finished to build network with 771146 trainable variables in 32 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 14.56%
+ *  Error: 13.91%
