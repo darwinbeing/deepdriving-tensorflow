@@ -99,19 +99,19 @@ class CNetwork(dl.network.CNetwork):
       act3           = dl.layer.createActivation(norm3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")
       pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
-      pool3          = dl.layer.createDropout(Input=pool3, KeepRatio=0.5, Name="Drop")
+      #pool3          = dl.layer.createDropout(Input=pool3, KeepRatio=0.5, Name="Drop")
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
 
     # local4g
     with tf.variable_scope('local4') as scope:
       local4 = dl.layer.createFullyConnected(pool3, Size=512, Func="ReLU")
-      local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
+      #local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
 
     # local5
     with tf.variable_scope('local5') as scope:
       local5 = dl.layer.createFullyConnected(local4, Size=64, Func="ReLU")
-      local5 = dl.layer.createDropout(Input=local5, KeepRatio=0.5, Name="Drop")
+      #local5 = dl.layer.createDropout(Input=local5, KeepRatio=0.5, Name="Drop")
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=1/192))
 
