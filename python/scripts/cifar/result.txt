@@ -25,7 +25,7 @@ Creating network Graph...
 Finished to build network with 771146 trainable variables in 32 tensors.
 
 # Using Checkpoint:
-* Checkpoint\State_0\model_60.ckpt
+* Checkpoint\State_0\model_120.ckpt
 
 # Using Training-Settings:
 {
@@ -50,7 +50,7 @@ Finished to build network with 771146 trainable variables in 32 tensors.
     "CheckpointEpochs": 2,
     "CheckpointPath": "Checkpoint",
     "EpochSize": 50000,
-    "NumberOfEpochs": 60,
+    "NumberOfEpochs": 120,
     "SummaryPath": "Summary"
   },
   "Validation": {
@@ -78,4 +78,4 @@ Finished to build network with 771146 trainable variables in 32 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 16.10%
+ *  Error: 15.34%
