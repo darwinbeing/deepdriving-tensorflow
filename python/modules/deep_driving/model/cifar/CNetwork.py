@@ -75,8 +75,9 @@ class CNetwork(dl.network.CNetwork):
     #
     # conv1
     with tf.variable_scope('conv1') as scope:
-      conv1          = dl.layer.createConvolution2d(images, Size=5, Filters=128, WeightDecay=0.0)
-      norm1          = dl.layer.createBatchNormalization(conv1)
+      conv1a          = dl.layer.createConvolution2d(images, Size=5, Filters=128, WeightDecay=0.0)
+      conv1b          = dl.layer.createConvolution2d(conv1a, Size=5, Filters=128, WeightDecay=0.0)
+      norm1          = dl.layer.createBatchNormalization(conv1b)
       act1           = dl.layer.createActivation(norm1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
       pool1          = dl.layer.createPooling(act1, Size=3, Stride=2, Pool="MAX")
@@ -86,16 +87,18 @@ class CNetwork(dl.network.CNetwork):
 
     # conv2
     with tf.variable_scope('conv2') as scope:
-      conv2          = dl.layer.createConvolution2d(pool1, Size=5, Filters=128, WeightDecay=0.0)
-      norm2          = dl.layer.createBatchNormalization(conv2)
+      conv2a          = dl.layer.createConvolution2d(pool1, Size=5, Filters=128, WeightDecay=0.0)
+      conv2b          = dl.layer.createConvolution2d(conv2a, Size=5, Filters=128, WeightDecay=0.0)
+      norm2          = dl.layer.createBatchNormalization(conv2b)
       act2           = dl.layer.createActivation(norm2, Func="ReLU")
       dl.helpers.saveFeatureMap(act2, "Features")
       pool2          = dl.layer.createPooling(act2, Size=3, Stride=2, Pool="MAX")
 
     # conv3
     with tf.variable_scope('conv3') as scope:
-      conv3          = dl.layer.createConvolution2d(pool2, Size=5, Filters=128, WeightDecay=0.0)
-      norm3          = dl.layer.createBatchNormalization(conv3)
+      conv3a          = dl.layer.createConvolution2d(pool2, Size=5, Filters=128, WeightDecay=0.0)
+      conv3b          = dl.layer.createConvolution2d(conv3a, Size=5, Filters=128, WeightDecay=0.0)
+      norm3          = dl.layer.createBatchNormalization(conv3b)
       act3           = dl.layer.createActivation(norm3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")
       pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
