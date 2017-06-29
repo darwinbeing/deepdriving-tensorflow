@@ -109,7 +109,7 @@ class CNetwork(dl.network.CNetwork):
     # local4
     with tf.variable_scope('local4') as scope:
       local4 = dl.layer.createFullyConnected(pool3, Size=1024, Func="ReLU")
-      #local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
+      local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
 
     # local5
     with tf.variable_scope('local5') as scope:
