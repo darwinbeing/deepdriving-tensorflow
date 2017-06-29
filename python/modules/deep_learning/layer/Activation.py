@@ -36,6 +36,9 @@ def createActivation(Input, Func="ReLU", Name=None):
   elif Func == "ReLU" or Func == "relu":
     UseFunc = tf.nn.relu
 
+  elif Func == "PReLU" or Func == "prelu":
+    UseFunc = lambda Input, name: tf.contrib.keras.layers.PReLU()(Input)
+
   elif Func == "Tanh" or Func == "tanh":
     UseFunc = tf.tanh
 
