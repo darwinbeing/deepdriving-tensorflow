@@ -17,11 +17,9 @@ Creating network Graph...
    * Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
    * With Batch-Normalization
    * With Activation ReLU
-   * With Dropout (keep=0.5)
  * Create Fully-Connected-Layer "FC" with 256 output-nodes.
    * With Batch-Normalization
    * With Activation ReLU
-   * With Dropout (keep=0.5)
  * Create Fully-Connected-Layer "FC" with 64 output-nodes.
    * With Batch-Normalization
    * With Activation ReLU
@@ -83,4 +81,4 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 12.32%
+ *  Error: 13.01%
