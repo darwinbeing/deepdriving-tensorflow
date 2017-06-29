@@ -99,7 +99,7 @@ class CNetwork(dl.network.CNetwork):
       act3           = dl.layer.createActivation(norm3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")
       pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
-      pool3          = dl.layer.createDropout(Input=pool3, KeepRatio=0.5, Name="Drop")
+      #pool3          = dl.layer.createDropout(Input=pool3, KeepRatio=0.5, Name="Drop")
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
 
