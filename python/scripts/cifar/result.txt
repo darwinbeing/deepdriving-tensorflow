@@ -41,8 +41,8 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
     "ValidatingPath": "C:/Data/Cifar-10/validation"
   },
   "Optimizer": {
-    "EpochsPerDecay": 1,
-    "LearnRateDecay": 0.95,
+    "EpochsPerDecay": 30,
+    "LearnRateDecay": 0.5,
     "Momentum": 0.9,
     "StartingLearningRate": 0.001,
     "WeightDecay": 0.0
@@ -82,4 +82,4 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 11.57%
+ *  Error: 11.37%
