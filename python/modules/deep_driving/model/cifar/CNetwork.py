@@ -75,7 +75,7 @@ class CNetwork(dl.network.CNetwork):
     #
     # conv1
     with tf.variable_scope('conv1') as scope:
-      conv1          = dl.layer.createConvolution2d(images, Size=5, Filters=64, WeightDecay=0.0)
+      conv1          = dl.layer.createConvolution2d(images, Size=5, Filters=128, WeightDecay=0.0)
       norm1          = dl.layer.createBatchNormalization(conv1)
       act1           = dl.layer.createActivation(norm1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
@@ -86,7 +86,7 @@ class CNetwork(dl.network.CNetwork):
 
     # conv2
     with tf.variable_scope('conv2') as scope:
-      conv2          = dl.layer.createConvolution2d(pool1, Size=5, Filters=64, WeightDecay=0.0)
+      conv2          = dl.layer.createConvolution2d(pool1, Size=5, Filters=128, WeightDecay=0.0)
       norm2          = dl.layer.createBatchNormalization(conv2)
       act2           = dl.layer.createActivation(norm2, Func="ReLU")
       dl.helpers.saveFeatureMap(act2, "Features")
@@ -94,7 +94,7 @@ class CNetwork(dl.network.CNetwork):
 
     # conv3
     with tf.variable_scope('conv3') as scope:
-      conv3          = dl.layer.createConvolution2d(pool2, Size=5, Filters=64, WeightDecay=0.0)
+      conv3          = dl.layer.createConvolution2d(pool2, Size=5, Filters=128, WeightDecay=0.0)
       norm3          = dl.layer.createBatchNormalization(conv3)
       act3           = dl.layer.createActivation(norm3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")
@@ -103,7 +103,7 @@ class CNetwork(dl.network.CNetwork):
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
 
-    # local4g
+    # local4
     with tf.variable_scope('local4') as scope:
       local4 = dl.layer.createFullyConnected(pool3, Size=512, Func="ReLU")
       local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
