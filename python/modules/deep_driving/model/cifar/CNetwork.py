@@ -78,7 +78,7 @@ class CNetwork(dl.network.CNetwork):
       conv1a          = dl.layer.createConvolution2d(images, Size=5, Filters=128, WeightDecay=0.0)
       conv1b          = dl.layer.createConvolution2d(conv1a, Size=5, Filters=128, WeightDecay=0.0)
       norm1          = dl.layer.createBatchNormalization(conv1b)
-      act1           = dl.layer.createActivation(norm1, Func="PReLU")
+      act1           = dl.layer.createActivation(norm1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
       pool1          = dl.layer.createPooling(act1, Size=3, Stride=2, Pool="MAX")
 
@@ -90,7 +90,7 @@ class CNetwork(dl.network.CNetwork):
       conv2a          = dl.layer.createConvolution2d(pool1, Size=5, Filters=128, WeightDecay=0.0)
       conv2b          = dl.layer.createConvolution2d(conv2a, Size=5, Filters=128, WeightDecay=0.0)
       norm2          = dl.layer.createBatchNormalization(conv2b)
-      act2           = dl.layer.createActivation(norm2, Func="PReLU")
+      act2           = dl.layer.createActivation(norm2, Func="ReLU")
       dl.helpers.saveFeatureMap(act2, "Features")
       pool2          = dl.layer.createPooling(act2, Size=3, Stride=2, Pool="MAX")
 
@@ -99,27 +99,25 @@ class CNetwork(dl.network.CNetwork):
       conv3a          = dl.layer.createConvolution2d(pool2, Size=5, Filters=128, WeightDecay=0.0)
       conv3b          = dl.layer.createConvolution2d(conv3a, Size=5, Filters=128, WeightDecay=0.0)
       norm3          = dl.layer.createBatchNormalization(conv3b)
-      act3           = dl.layer.createActivation(norm3, Func="PReLU")
+      act3           = dl.layer.createActivation(norm3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")
       pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
-      #pool3          = dl.layer.createDropout(Input=pool3, KeepRatio=0.5, Name="Drop")
+
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
 
     # local4
     with tf.variable_scope('local4') as scope:
-      local4 = dl.layer.createFullyConnected(pool3, Size=1024, Func="PReLU")
+      local4 = dl.layer.createFullyConnected(pool3, Size=1024, Func="ReLU")
       local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
 
     # local5
     with tf.variable_scope('local5') as scope:
-      local5 = dl.layer.createFullyConnected(local4, Size=256, Func="PReLU")
-      #local5 = dl.layer.createDropout(Input=local5, KeepRatio=0.5, Name="Drop")
+      local5 = dl.layer.createFullyConnected(local4, Size=256, Func="ReLU")
 
     # local6
     with tf.variable_scope('local6') as scope:
-      local6 = dl.layer.createFullyConnected(local5, Size=64, Func="PReLU")
-      #local6 = dl.layer.createDropout(Input=local6, KeepRatio=0.5, Name="Drop")
+      local6 = dl.layer.createFullyConnected(local5, Size=64, Func="ReLU")
 
     dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=1/192))
 
