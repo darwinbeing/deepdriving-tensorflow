@@ -18,7 +18,6 @@ Creating network Graph...
  * Create Fully-Connected-Layer "FC" with 64 output-nodes.
    * With Batch-Normalization
    * With Activation ReLU
-   * With Dropout (keep=0.5)
  * Create Dense-Layer "Dense" with 10 output-nodes.
  * network Output-Shape: (64, 10)
 Finished to build network with 771146 trainable variables in 32 tensors.
@@ -77,4 +76,4 @@ Finished to build network with 771146 trainable variables in 32 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 13.90%
+ *  Error: 13.38%
