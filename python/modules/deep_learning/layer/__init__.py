@@ -26,3 +26,4 @@ from .Dense import createDense, createFullyConnected, createDropout, createBatch
 from .Activation import createActivation
 from .Convolution import createConvolution2d, createPooling, createLRN, createFeatureGroups, mergeFeatureGroups
 from .LearningRate import LearningRates
+from .Templates import *

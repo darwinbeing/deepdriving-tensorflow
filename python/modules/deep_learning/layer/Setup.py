@@ -21,6 +21,8 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and 
 # copyright is still valid. Keep this in mind, when using code from this project.
 
+import debug
+
 from .. import helpers
 
 class CSetup():
@@ -35,6 +37,7 @@ class CSetup():
       'Bias': helpers.ConstantInitializer(0),
       'Kernel2D': helpers.XavierInitializerConv()
     }
+    self._LogIndent = 0
 
   def logDefault(self, Text):
     print(Text)
@@ -88,6 +91,19 @@ class CSetup():
 
   def setupBiasInitializer(self, Initializer):
     self._Initializer["Bias"] = Initializer
+
+  _LogIndent = 0
+  def log(self, Text):
+    FormatString = str("{: >"+str(self._LogIndent)+"}")
+    String = FormatString.format("")+Text
+    self.Log(String)
+
+  def increaseLoggerIndent(self, Indent):
+    self._LogIndent += Indent
+
+  def decreaseLoggerIndent(self, Indent):
+    self._LogIndent -= Indent
+    debug.Assert(self._LogIndent >= 0)
 
   @property
   def StoreSparsity(self):
