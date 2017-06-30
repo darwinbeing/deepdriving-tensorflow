@@ -13,20 +13,28 @@ Creating network Graph...
  * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
    * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
- * Create Fully-Connected-Layer "FC" with 1024 output-nodes.
-* Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
-   * With Batch-Normalization
-   * With Activation ReLU
-   * With Dropout (keep=0.5)
- * Create Fully-Connected-Layer "FC" with 256 output-nodes.
-   * With Batch-Normalization
-   * With Activation ReLU
- * Create Fully-Connected-Layer "FC" with 64 output-nodes.
-   * With Batch-Normalization
-   * With Activation ReLU
-* Create Dense-Layer "Dense" with 10 output-nodes.
+* Apply sequence of 5 layers with name "Network":
+  * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+    * Apply layer "Dense"
+      * Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
+      * with 1024 Output-Nodes without Bias
+    * Batch-Normalization
+    * ReLU Activation function
+  * Dropout with keep ratio 0.5
+  * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+    * Apply layer "Dense"
+      * with 256 Output-Nodes without Bias
+    * Batch-Normalization
+    * ReLU Activation function
+  * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+    * Apply layer "Dense"
+      * with 64 Output-Nodes without Bias
+    * Batch-Normalization
+    * ReLU Activation function
+  * Apply layer "Dense"
+    * with 10 Output-Nodes
  * network Output-Shape: (64, 10)
-Finished to build network with 4442954 trainable variables in 44 tensors.
+Finished to build network with 4442944 trainable variables in 43 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_120.ckpt
@@ -82,4 +90,4 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 10.91%
+ *  Error: 11.50%

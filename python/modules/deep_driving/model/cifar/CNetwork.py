@@ -36,21 +36,19 @@ class CNetwork(dl.network.CNetwork):
     dl.layer.Setup.setupFeatureMap(True)
     dl.layer.Setup.setupStoreSparsity(True)
 
-    Scope = "Network"
-    with tf.variable_scope(Scope):
-      self.log("Creating network Graph...")
+    self.log("Creating network Graph...")
 
-      Input = Inputs['Image']
-      Output = Input
+    Input = Inputs['Image']
+    Output = Input
 
-      self.log(" * network Input-Shape: {}".format(Input.shape))
+    self.log(" * network Input-Shape: {}".format(Input.shape))
 
-      Output = self._buildNetwork(Input)
+    Output = self._buildNetwork(Input)
 
-      self.log(" * network Output-Shape: {}".format(Output.shape))
+    self.log(" * network Output-Shape: {}".format(Output.shape))
 
-      Variables, Tensors = dl.helpers.getTrainableVariablesInScope(Scope)
-      self.log("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
+    Variables, Tensors = dl.helpers.getTrainableVariablesInScope(dl.helpers.getNameScope())
+    self.log("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
 
     Structure = {
       "Input":  Input,
@@ -97,21 +95,35 @@ class CNetwork(dl.network.CNetwork):
       dl.helpers.saveFeatureMap(act3, "Features")
       pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
 
+    NumberOfClasses = 10
+    Seq = dl.layer.Sequence("Network")
+
+    Seq.add(dl.layer.Dense_BN_ReLU(1024))
+    Seq.add(dl.layer.Dropout(0.5))
+
+    Seq.add(dl.layer.Dense_BN_ReLU(256))
+
+    Seq.add(dl.layer.Dense_BN_ReLU(64))
+
+    Seq.add(dl.layer.Dense(NumberOfClasses))
+
+    return Seq.apply(pool3)
+
     # local4
-    with tf.variable_scope('local4') as scope:
-      local4 = dl.layer.createFullyConnected(pool3, Size=1024, Func="ReLU")
-      local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
+    #with tf.variable_scope('local4') as scope:
+    #  local4 = dl.layer.createFullyConnected(pool3, Size=1024, Func="ReLU")
+    #  local4 = dl.layer.createDropout(Input=local4, KeepRatio=0.5, Name="Drop")
 
     # local5
-    with tf.variable_scope('local5') as scope:
-      local5 = dl.layer.createFullyConnected(local4, Size=256, Func="ReLU")
+    #with tf.variable_scope('local5') as scope:
+    #  local5 = dl.layer.createFullyConnected(local4, Size=256, Func="ReLU")
 
     # local6
-    with tf.variable_scope('local6') as scope:
-      local6 = dl.layer.createFullyConnected(local5, Size=64, Func="ReLU")
+    #with tf.variable_scope('local6') as scope:
+    #  local6 = dl.layer.createFullyConnected(local5, Size=64, Func="ReLU")
 
-    NUM_CLASSES = 10
-    with tf.variable_scope('softmax_linear') as scope:
-      softmax_linear = dl.layer.createDense(local6, Size=NUM_CLASSES, WeightDecay=0.0)
+    #NUM_CLASSES = 10
+    #with tf.variable_scope('softmax_linear') as scope:
+    #  softmax_linear = dl.layer.createDense(local6, Size=NUM_CLASSES, WeightDecay=0.0)
 
-    return softmax_linear
+    #return softmax_linear
