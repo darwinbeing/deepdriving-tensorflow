@@ -21,38 +21,6 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-import misc.arguments as args
-import tensorflow as tf
-
-from .. import Setup
-from .. import struct
-
-class CActivation(struct.CLayer):
-  def __init__(self, Func, Name):
-    self._Func = Func
-    self._Name = Name
-
-
-  def copy(self):
-    New = CActivation(self._Func, self._Name)
-    return New
-
-
-  def __call__(self, Func = args.NotSet, Name = args.NotSet):
-    New = self.copy()
-
-    if args.isSet(Func):
-      self._Func = Func
-
-    if args.isSet(Name):
-      self._Name = Name
-
-    return New
-
-
-  def apply(self, Input):
-    Setup.log("* {} Activation function".format(self._Name))
-    Output = self._Func(Input)
-    return Output
-
-
+from .CConv2D import CConv2D
+from .CLogFeatureMap import CLogFeatureMap
+from .CPooling import CPooling

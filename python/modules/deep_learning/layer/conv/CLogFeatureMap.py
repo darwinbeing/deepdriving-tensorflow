@@ -26,23 +26,20 @@ import tensorflow as tf
 
 from .. import Setup
 from .. import struct
+from ... import helpers
 
-class CActivation(struct.CLayer):
-  def __init__(self, Func, Name):
-    self._Func = Func
+class CLogFeatureMap(struct.CLayer):
+  def __init__(self, Name = "Features"):
     self._Name = Name
 
 
   def copy(self):
-    New = CActivation(self._Func, self._Name)
+    New = CLogFeatureMap(self._Name)
     return New
 
 
-  def __call__(self, Func = args.NotSet, Name = args.NotSet):
+  def __call__(self, Name = args.NotSet):
     New = self.copy()
-
-    if args.isSet(Func):
-      self._Func = Func
 
     if args.isSet(Name):
       self._Name = Name
@@ -51,8 +48,8 @@ class CActivation(struct.CLayer):
 
 
   def apply(self, Input):
-    Setup.log("* {} Activation function".format(self._Name))
-    Output = self._Func(Input)
-    return Output
+    Setup.log("* Log Featute Map in summary")
+    helpers.saveFeatureMap(Input, self._Name)
+    return tf.identity(Input, self._Name)
 
 

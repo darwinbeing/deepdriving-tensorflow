@@ -43,6 +43,18 @@ class CCifarNet(dl.network.CNetwork):
 
     Seq = dl.layer.Sequence("Network")
 
+    Layer = Seq.add(dl.layer.Conv2D(3, 128))
+    Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+    Layer = Seq.add(dl.layer.MaxPooling(3, 2))
+
+    Layer = Seq.add(dl.layer.Conv2D(3, 128))
+    Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+    Layer = Seq.add(dl.layer.MaxPooling(3, 2))
+
+    Layer = Seq.add(dl.layer.Conv2D(3, 128))
+    Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+    Layer = Seq.add(dl.layer.MaxPooling(3, 2))
+
     Layer = Seq.add(dl.layer.Dense_BN_ReLU(1024))
     Layer = Seq.add(dl.layer.Dropout(0.5))
 

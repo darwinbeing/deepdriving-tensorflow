@@ -66,7 +66,7 @@ def main():
   Settings = CTrainSettings(SettingFile)
   dl.summary.cleanSummary(Settings['Trainer']['SummaryPath'], 30)
 
-  Model = dl.CModel(cifar.CNetwork)
+  Model = dl.CModel(cifar.CCifarNet)
 
   Trainer = Model.createTrainer(cifar.CTrainer, cifar.CReader, cifar.CError, Settings)
   Trainer.addPrinter(dl.printer.CProgressPrinter(LossName="Loss/Loss", ErrorName="ClassError/Error"))
