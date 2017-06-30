@@ -23,7 +23,6 @@
 
 from .CError import CError
 from .CMerger import CMerger
-from .CNetwork import CNetwork
 from .CCifarNet import CCifarNet
 from .CReader import CReader
 from .CMeanCalculator import CMeanCalculator
