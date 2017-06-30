@@ -14,7 +14,7 @@ Creating network Graph...
    * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
  * Create Fully-Connected-Layer "FC" with 1024 output-nodes.
-   * Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
+* Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
    * With Batch-Normalization
    * With Activation ReLU
    * With Dropout (keep=0.5)
@@ -24,7 +24,7 @@ Creating network Graph...
  * Create Fully-Connected-Layer "FC" with 64 output-nodes.
    * With Batch-Normalization
    * With Activation ReLU
- * Create Dense-Layer "Dense" with 10 output-nodes.
+* Create Dense-Layer "Dense" with 10 output-nodes.
  * network Output-Shape: (64, 10)
 Finished to build network with 4442954 trainable variables in 44 tensors.
 
@@ -44,7 +44,7 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
     "EpochsPerDecay": 30,
     "LearnRateDecay": 0.5,
     "Momentum": 0.9,
-    "StartingLearningRate": 0.001,
+    "StartingLearningRate": 0.002,
     "WeightDecay": 0.0
   },
   "PreProcessing": {
@@ -82,4 +82,4 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 11.42%
+ *  Error: 11.09%
