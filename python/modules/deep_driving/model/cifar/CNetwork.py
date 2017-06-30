@@ -65,8 +65,8 @@ class CNetwork(dl.network.CNetwork):
 ## Custom methods
 
   def _buildNetwork(self, images):
-    dl.layer.Setup.setupKernelInitializer(dl.helpers.NormalInitializer(mean=0, stddev=5e-2))
-    dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.0))
+    #dl.layer.Setup.setupKernelInitializer(dl.helpers.NormalInitializer(mean=0, stddev=5e-2))
+    dl.layer.Setup.setupKernelInitializer(dl.helpers.XavierInitializerConv())
 
     # We instantiate all variables using tf.get_variable() instead of
     # tf.Variable() in order to share variables across multiple GPU training runs.
@@ -81,9 +81,6 @@ class CNetwork(dl.network.CNetwork):
       act1           = dl.layer.createActivation(norm1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
       pool1          = dl.layer.createPooling(act1, Size=3, Stride=2, Pool="MAX")
-
-
-    dl.layer.Setup.setupBiasInitializer(dl.helpers.ConstantInitializer(0.1))
 
     # conv2
     with tf.variable_scope('conv2') as scope:
