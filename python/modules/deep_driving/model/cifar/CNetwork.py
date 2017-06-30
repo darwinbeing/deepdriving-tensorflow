@@ -65,9 +65,6 @@ class CNetwork(dl.network.CNetwork):
 ## Custom methods
 
   def _buildNetwork(self, images):
-    #dl.layer.Setup.setupKernelInitializer(dl.helpers.NormalInitializer(mean=0, stddev=5e-2))
-    dl.layer.Setup.setupKernelInitializer(dl.helpers.XavierInitializerConv())
-
     # We instantiate all variables using tf.get_variable() instead of
     # tf.Variable() in order to share variables across multiple GPU training runs.
     # If we only ran this model on a single GPU, we could simplify this function
@@ -100,9 +97,6 @@ class CNetwork(dl.network.CNetwork):
       dl.helpers.saveFeatureMap(act3, "Features")
       pool3          = dl.layer.createPooling(act3, Size=3, Stride=2, Pool="MAX")
 
-
-    dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=0.04))
-
     # local4
     with tf.variable_scope('local4') as scope:
       local4 = dl.layer.createFullyConnected(pool3, Size=1024, Func="ReLU")
@@ -115,8 +109,6 @@ class CNetwork(dl.network.CNetwork):
     # local6
     with tf.variable_scope('local6') as scope:
       local6 = dl.layer.createFullyConnected(local5, Size=64, Func="ReLU")
-
-    dl.layer.Setup.setupWeightInitializer(dl.helpers.NormalInitializer(mean=0, stddev=1/192))
 
     NUM_CLASSES = 10
     with tf.variable_scope('softmax_linear') as scope:

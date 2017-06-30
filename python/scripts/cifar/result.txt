@@ -82,4 +82,4 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 11.14%
+ *  Error: 11.42%
