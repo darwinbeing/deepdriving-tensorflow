@@ -38,7 +38,7 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0, WeightLR = 1.0, Bi
     InputShape = Input.shape
     if len(InputShape) > 2:
       InputLength = int(np.prod(InputShape[1:]))
-      Setup.Log("   * Reshape layer input {} to vector with {} elements.".format(InputShape, InputLength))
+      Setup.log("* Reshape layer input {} to vector with {} elements.".format(InputShape, InputLength))
       Input = tf.reshape(Input, shape=[-1, InputLength])
 
     else:
@@ -58,7 +58,7 @@ def createDense(Input, Size, Name="Dense", WeightDecay = 1.0, WeightLR = 1.0, Bi
     return S
 
   if Name != None:
-    Setup.Log(" * Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, Size))
+    Setup.log("* Create Dense-Layer \"{}\" with {} output-nodes.".format(Name, Size))
     with tf.name_scope(Name):
       Signal = create(Input, Size, WeightDecay, WeightLR, BiasLR)
 
