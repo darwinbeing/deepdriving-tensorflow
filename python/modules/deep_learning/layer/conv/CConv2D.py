@@ -191,6 +191,10 @@ class CConv2D(struct.CNamedLayer):
         Output = tf.nn.bias_add(Output, Bias)
 
     else:
+      # The basic idea of this group implementation is taken from the caffe-2-tensorflow
+      # generator at: https://github.com/ethereon/caffe-tensorflow
+      # Copyright (c) 2016 Saumitro Dasgupta (also MIT License)
+
       Setup.log("* Groups {}".format(Temp._Groups))
       Setup.increaseLoggerIndent(2)
       InputGroups  = tf.split(Input,  Temp._Groups, 3)
@@ -213,7 +217,7 @@ class CConv2D(struct.CNamedLayer):
 
     if Setup.StoreHistogram:
       tf.summary.histogram("Kernel", Kernel)
-      if not Temp._UseBias:
+      if Temp._UseBias:
         tf.summary.histogram("Bias",  Bias)
       tf.summary.histogram("Output",  Output)
 
