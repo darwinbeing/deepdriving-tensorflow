@@ -70,8 +70,8 @@ class CNetwork(dl.network.CNetwork):
     #
     # conv1
     with tf.variable_scope('conv1') as scope:
-      conv1a          = dl.layer.createConvolution2d(images, Size=5, Filters=128, WeightDecay=0.0)
-      conv1b          = dl.layer.createConvolution2d(conv1a, Size=5, Filters=128, WeightDecay=0.0)
+      conv1a          = dl.layer.createConvolution2d(images, Size=3, Filters=128, WeightDecay=0.0)
+      conv1b          = dl.layer.createConvolution2d(conv1a, Size=3, Filters=128, WeightDecay=0.0)
       norm1          = dl.layer.createBatchNormalization(conv1b)
       act1           = dl.layer.createActivation(norm1, Func="ReLU")
       dl.helpers.saveFeatureMap(act1, "Features")
@@ -79,8 +79,8 @@ class CNetwork(dl.network.CNetwork):
 
     # conv2
     with tf.variable_scope('conv2') as scope:
-      conv2a          = dl.layer.createConvolution2d(pool1, Size=5, Filters=128, WeightDecay=0.0)
-      conv2b          = dl.layer.createConvolution2d(conv2a, Size=5, Filters=128, WeightDecay=0.0)
+      conv2a          = dl.layer.createConvolution2d(pool1, Size=3, Filters=128, WeightDecay=0.0)
+      conv2b          = dl.layer.createConvolution2d(conv2a, Size=3, Filters=128, WeightDecay=0.0)
       norm2          = dl.layer.createBatchNormalization(conv2b)
       act2           = dl.layer.createActivation(norm2, Func="ReLU")
       dl.helpers.saveFeatureMap(act2, "Features")
@@ -88,8 +88,8 @@ class CNetwork(dl.network.CNetwork):
 
     # conv3
     with tf.variable_scope('conv3') as scope:
-      conv3a          = dl.layer.createConvolution2d(pool2, Size=5, Filters=128, WeightDecay=0.0)
-      conv3b          = dl.layer.createConvolution2d(conv3a, Size=5, Filters=128, WeightDecay=0.0)
+      conv3a          = dl.layer.createConvolution2d(pool2, Size=3, Filters=128, WeightDecay=0.0)
+      conv3b          = dl.layer.createConvolution2d(conv3a, Size=3, Filters=128, WeightDecay=0.0)
       norm3          = dl.layer.createBatchNormalization(conv3b)
       act3           = dl.layer.createActivation(norm3, Func="ReLU")
       dl.helpers.saveFeatureMap(act3, "Features")

@@ -1,16 +1,16 @@
 # Evaluation of Network:
 Creating network Graph...
  * network Input-Shape: (64, 28, 28, 3)
- * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
- * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
+ * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
+ * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
    * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
- * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
- * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
+ * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
+ * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
    * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
- * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
- * Create Conv2D Layer Conv2D with Kernel 5, Stride 1, Padding "SAME" and 128 Feature Maps
+ * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
+ * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
    * With Batch-Normalization
  * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
 * Apply sequence of 5 layers with name "Network":
@@ -34,7 +34,7 @@ Creating network Graph...
   * Apply layer "Dense"
     * with 10 Output-Nodes
  * network Output-Shape: (64, 10)
-Finished to build network with 4442944 trainable variables in 43 tensors.
+Finished to build network with 3126080 trainable variables in 43 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_120.ckpt
@@ -90,4 +90,4 @@ Finished to build network with 4442944 trainable variables in 43 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 11.50%
+ *  Error: 10.31%
