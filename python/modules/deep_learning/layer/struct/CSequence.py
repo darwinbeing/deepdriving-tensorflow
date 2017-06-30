@@ -32,10 +32,12 @@ class CSequence(CLayer):
   This class represents a sequence of layers.
   """
 
-  _Layers = []
-  _Name   = None
-  def __init__(self, Name = None):
-    self._Name = Name
+  def __init__(self, Layers = None, Name = None):
+    self._Name   = Name
+    self._Layers = []
+    if isinstance(Layers, list):
+      for Layer in Layers:
+        self.add(Layer)
 
 
   def add(self, Layer):

@@ -21,59 +21,36 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-import tensorflow as tf
 import misc.arguments as args
+import tensorflow as tf
 
-from .CLayer import CLayer
 from .. import Setup
+from .. import struct
 
-class CNamedLayer(CLayer):
-
-  def __init__(self, Name = None, DoPrint=True):
-    self._Name    = Name
-    self._DoPrint = DoPrint
+class CActivation(struct.CLayer):
+  def __init__(self, Func, Name):
+    self._Func = Func
+    self._Name = Name
 
 
   def copy(self):
-    New = CNamedLayer()
-    New = self._copyArgs(New)
+    New = CActivation(self._Func, self._Name)
     return New
 
-  def _copyArgs(self, New):
-    New._Name    = self._Name
-    New._DoPrint = self._DoPrint
-    return New
 
-  def __call__(self, Name = args.NotSet, DoPrint = args.NotSet):
+  def __call__(self, Func = args.NotSet, Name = args.NotSet):
     New = self.copy()
 
-    if args.isSet(Name):
-      New._Name = Name
+    if args.isSet(Func):
+      self._Func = Func
 
-    if args.isSet(DoPrint):
-      New._DoPrint = DoPrint
+    if args.isSet(Name):
+      self._Name = Name
 
     return New
 
-
   def apply(self, Input):
-    if self._Name is not None:
-      if self._DoPrint:
-        Setup.log("* Apply layer \"{}\"".format(self._Name))
-        Setup.increaseLoggerIndent(2)
-
-      with tf.name_scope(self._Name):
-        Input = self._apply(Input)
-
-      if self._DoPrint:
-        Setup.decreaseLoggerIndent(2)
-
-    else:
-      Input = self._apply(Input)
-
-    return Input
+    Setup.log("* {} Activation function".format(self._Name))
+    return self._Func(Input)
 
 
-  def _apply(self, Input):
-    raise Exception("This method must be overwritten!")
-    return Input

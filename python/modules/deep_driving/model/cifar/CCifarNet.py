@@ -43,6 +43,13 @@ class CCifarNet(dl.network.CNetwork):
 
     Seq = dl.layer.Sequence("Network")
 
+    Layer = Seq.add(dl.layer.Dense_BN_ReLU(1024))
+    Layer = Seq.add(dl.layer.Dropout(0.5))
+
+    Layer = Seq.add(dl.layer.Dense_BN_ReLU(256))
+
+    Layer = Seq.add(dl.layer.Dense_BN_ReLU(64))
+
     Layer = Seq.add(dl.layer.Dense(OutputNodes))
 
     Output = Seq.apply(Input)
