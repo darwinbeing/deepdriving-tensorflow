@@ -21,59 +21,41 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and
 # copyright is still valid. Keep this in mind, when using code from this project.
 
+import debug
 import tensorflow as tf
 import misc.arguments as args
 
-from .CLayer import CLayer
 from .. import Setup
+from .. import struct
 
-class CNamedLayer(CLayer):
-
-  def __init__(self, Name = None, DoPrint=True):
-    self._Name    = Name
-    self._DoPrint = DoPrint
-
+class CDropout(struct.CNamedLayer):
+  def __init__(self, KeepRatio = 0.5, Name = "Dropout"):
+    super().__init__(Name, DoPrint=False)
+    self._KeepRatio = KeepRatio
 
   def copy(self):
-    New = CNamedLayer()
+    New = CDropout()
     New = self._copyArgs(New)
     return New
 
+
   def _copyArgs(self, New):
-    New._Name    = self._Name
-    New._DoPrint = self._DoPrint
-    return New
-
-  def __call__(self, Name = args.NotSet, DoPrint = args.NotSet):
-    New = self.copy()
-
-    if args.isSet(Name):
-      New._Name = Name
-
-    if args.isSet(DoPrint):
-      New._DoPrint = DoPrint
-
+    New = super()._copyArgs(New)
+    New._KeepRatio = self._KeepRatio
     return New
 
 
-  def apply(self, Input):
-    if self._Name is not None:
-      if self._DoPrint:
-        Setup.log("* Apply layer \"{}\"".format(self._Name))
-        Setup.increaseLoggerIndent(2)
+  def __call__(self, KeepRatio = args.NotSet, Name = args.NotSet):
+    New = super().__call__(Name)
 
-      with tf.name_scope(self._Name):
-        Input = self._apply(Input)
+    if args.isSet(KeepRatio):
+      New._KeepRatio = KeepRatio
 
-      if self._DoPrint:
-        Setup.decreaseLoggerIndent(2)
-
-    else:
-      Input = self._apply(Input)
-
-    return Input
-
+    return New
 
   def _apply(self, Input):
-    raise Exception("This method must be overwritten!")
-    return Input
+    Temp = self.copy()
+
+    Setup.log("* Dropout with keep ratio {}".format(Temp._KeepRatio))
+    debug.Assert(Setup.IsTraining is not None, "You must define the IsTraining boolean before using Dropout!")
+    return tf.layers.dropout(Input, rate=Temp._KeepRatio, training=Setup.IsTraining)

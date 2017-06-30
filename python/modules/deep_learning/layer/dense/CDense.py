@@ -21,7 +21,6 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and
 # copyright is still valid. Keep this in mind, when using code from this project.
 
-import copy
 import numpy as np
 import tensorflow as tf
 import misc.arguments as args
@@ -34,19 +33,16 @@ from ... import helpers
 
 class CDense(struct.CNamedLayer):
 
-  _Nodes = None
-  _WeightLR    = 1.0
-  _BiasLR      = 1.0
-  _WeightDecay = 1.0
-  _BiasDecay   = 0.0
-  _WeightInit  = None
-  _BiasInit    = None
-  _UseBN       = False
   def __init__(self, Nodes, Name = "Dense"):
     super().__init__(Name)
     self._Nodes = Nodes
+    self._WeightLR = 1.0
+    self._BiasLR = 1.0
+    self._WeightDecay = 1.0
+    self._BiasDecay = 0.0
+    self._UseBias = True
     self._WeightInit = initializer.XavierInitializer()
-    self._BiasInit = initializer.ConstantInitializer(0.0)
+    self._BiasInit   = initializer.ConstantInitializer(0.0)
 
 
   def copy(self):
@@ -64,7 +60,7 @@ class CDense(struct.CNamedLayer):
     New._BiasDecay   = self._BiasDecay
     New._WeightInit  = self._WeightInit
     New._BiasInit    = self._BiasInit
-    New._UseBN       = self._UseBN
+    New._UseBias     = self._UseBias
     return New
 
 
@@ -101,8 +97,12 @@ class CDense(struct.CNamedLayer):
     self._BiasInit = Init
     return self
 
-  def setUseBN(self, UseBN):
-    self._UseBN = UseBN
+  def setUseBias(self, UseBias):
+    self._UseBias = UseBias
+    return self
+
+  def setNodes(self, Nodes):
+    self._Nodes = Nodes
     return self
 
 
@@ -120,7 +120,10 @@ class CDense(struct.CNamedLayer):
     else:
       InputLength = int(InputShape[1])
 
-    Setup.log("* with {} Output-Nodes".format(Temp._Nodes))
+    if Temp._UseBias:
+      Setup.log("* with {} Output-Nodes".format(Temp._Nodes))
+    else:
+      Setup.log("* with {} Output-Nodes without Bias".format(Temp._Nodes))
 
     X = Input
     W = helpers.createVariable(Shape=[InputLength, Temp._Nodes],
@@ -130,7 +133,7 @@ class CDense(struct.CNamedLayer):
                                Initializer=self._WeightInit,
                                LearningRate=Temp._WeightLR)
 
-    if not Temp._UseBN:
+    if not Temp._UseBias:
       B = helpers.createBias(Shape=[Temp._Nodes],
                              Name="Bias",
                              WeightDecayFactor=Temp._BiasDecay,
@@ -139,14 +142,13 @@ class CDense(struct.CNamedLayer):
 
     S = tf.matmul(X, W)
 
-    if not Temp._UseBN:
+    if not Temp._UseBias:
       S = tf.add(S, B)
-    else:
-      Setup.log("* and Batch-Normalization")
+
 
     if Setup.StoreHistogram:
       tf.summary.histogram("Weights", W)
-      if not Temp._UseBN:
+      if not Temp._UseBias:
         tf.summary.histogram("Bias",  B)
       tf.summary.histogram("Signal",  S)
 

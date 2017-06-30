@@ -23,6 +23,14 @@
 
 from . import struct
 from . import dense
+from . import activation
 
-Sequence = struct.CSequence()
-Dense    = dense.CDense(Nodes=None)
+Sequence      = struct.CSequence()
+Dense         = dense.CDense(Nodes=None)
+Dense_BN_ReLU = lambda Nodes = None: struct.CSequence(Name="Dense_BN_ReLU",
+                                                      Layers=[
+                                                        dense.CDense(Nodes=Nodes).setUseBias(False),
+                                                        dense.CBatchNormalization(),
+                                                        activation.ReLU()
+                                                      ])
+Dropout       = dense.CDropout()

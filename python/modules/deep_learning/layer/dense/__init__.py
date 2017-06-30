@@ -22,3 +22,5 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 from .CDense import CDense
+from .CBatchNormalization import CBatchNormalization
+from .CDropout import CDropout

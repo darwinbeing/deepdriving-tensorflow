@@ -27,3 +27,4 @@ from .Activation import createActivation
 from .Convolution import createConvolution2d, createPooling, createLRN, createFeatureGroups, mergeFeatureGroups
 from .LearningRate import LearningRates
 from .Templates import *
+from . import activation
