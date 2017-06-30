@@ -50,7 +50,7 @@ SettingFile = "eval.cfg"
 def main():
   Settings = CEvalSettings(SettingFile)
 
-  Model = dl.CModel(cifar.CNetwork)
+  Model = dl.CModel(cifar.CCifarNet)
 
   Evaluator = Model.createEvaluator(model.CEvaluator, cifar.CReader, cifar.CError, Settings)
   Evaluator.addPrinter(dl.printer.CProgressPrinter(LossName="Loss/Loss", ErrorName="ClassError/Error"))

@@ -43,29 +43,37 @@ class CCifarNet(dl.network.CNetwork):
 
     Seq = dl.layer.Sequence("Network")
 
-    Layer = Seq.add(dl.layer.Conv2D(3, 128))
-    Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
-    Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
-    Layer = Seq.add(dl.layer.Conv2D(3, 128))
-    Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
-    Layer = Seq.add(dl.layer.MaxPooling(3, 2))
+    with Seq.addLayerName("Conv"):
+      Layer = Seq.add(dl.layer.Conv2D(3, 128))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+      Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
-    Layer = Seq.add(dl.layer.Conv2D(3, 128))
-    Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
-    Layer = Seq.add(dl.layer.MaxPooling(3, 2))
+    with Seq.addLayerName("Conv"):
+      Layer = Seq.add(dl.layer.Conv2D(3, 128))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+      Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
-    Layer = Seq.add(dl.layer.Dense_BN_ReLU(1024))
-    Layer = Seq.add(dl.layer.Dropout(0.5))
+    with Seq.addLayerName("Conv"):
+      Layer = Seq.add(dl.layer.Conv2D(3, 128))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+      Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
-    Layer = Seq.add(dl.layer.Dense_BN_ReLU(256))
+    with Seq.addLayerName("Dense"):
+      Layer = Seq.add(dl.layer.Dense_BN_ReLU(1024))
+      Layer = Seq.add(dl.layer.Dropout(0.5))
 
-    Layer = Seq.add(dl.layer.Dense_BN_ReLU(64))
+    with Seq.addLayerName("Dense"):
+      Layer = Seq.add(dl.layer.Dense_BN_ReLU(256))
 
-    Layer = Seq.add(dl.layer.Dense(OutputNodes))
+    with Seq.addLayerName("Dense"):
+      Layer = Seq.add(dl.layer.Dense_BN_ReLU(64))
+
+    with Seq.addLayerName("Dense"):
+      Layer = Seq.add(dl.layer.Dense(OutputNodes))
+
 
     Output = Seq.apply(Input)
-
     self.log("* network Output-Shape: {}".format(Output.shape))
 
     Variables, Tensors = dl.helpers.getTrainableVariablesInScope(dl.helpers.getNameScope())

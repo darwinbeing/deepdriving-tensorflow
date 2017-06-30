@@ -129,26 +129,25 @@ class CDense(struct.CNamedLayer):
     W = helpers.createVariable(Shape=[InputLength, Temp._Nodes],
                                Name="Weights",
                                WeightDecayFactor=Temp._WeightDecay,
-                               #Initializer=Temp._WeightInit,
                                Initializer=self._WeightInit,
                                LearningRate=Temp._WeightLR)
 
-    if not Temp._UseBias:
+    if Temp._UseBias:
       B = helpers.createBias(Shape=[Temp._Nodes],
                              Name="Bias",
                              WeightDecayFactor=Temp._BiasDecay,
-                             #Initializer=Temp._BiasInit,
+                             Initializer=Temp._BiasInit,
                              LearningRate=Temp._BiasLR)
 
     S = tf.matmul(X, W)
 
-    if not Temp._UseBias:
+    if Temp._UseBias:
       S = tf.add(S, B)
 
 
     if Setup.StoreHistogram:
       tf.summary.histogram("Weights", W)
-      if not Temp._UseBias:
+      if Temp._UseBias:
         tf.summary.histogram("Bias",  B)
       tf.summary.histogram("Signal",  S)
 

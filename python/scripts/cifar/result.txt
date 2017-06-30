@@ -1,40 +1,89 @@
 # Evaluation of Network:
 Creating network Graph...
- * network Input-Shape: (64, 28, 28, 3)
- * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
- * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
-   * With Batch-Normalization
- * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
- * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
- * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
-   * With Batch-Normalization
- * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
- * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
- * Create Conv2D Layer Conv2D with Kernel 3, Stride 1, Padding "SAME" and 128 Feature Maps
-   * With Batch-Normalization
- * Create Pooling Layer Pooling with Window 3, Stride 2, Padding "SAME" and Function MAX 
-* Apply sequence of 5 layers with name "Network":
-  * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+* network Input-Shape: (64, 28, 28, 3)
+* Apply sequence of 28 layers with name "Network":
+  *** Layer: Conv_1 ***
+    * Apply layer "Conv2D"
+      * Kernel 3x3
+      * Stride 1x1
+      * Padding SAME
+      * with Output-Shape (64, 28, 28, 128)
+    * Apply sequence of 4 layers with name "Conv2D_BN_ReLU":
+      * Apply layer "Conv2D"
+        * Kernel 3x3
+        * Stride 1x1
+        * Padding SAME
+        * with Output-Shape (64, 28, 28, 128) without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+      * Log Featute Map in summary
+    * Apply layer "Pooling"
+      * Pooling-Type: MAX
+      * Pooling-Window: 3
+      * Stride: 2
+  *** Layer: Conv_2 ***
+    * Apply layer "Conv2D"
+      * Kernel 3x3
+      * Stride 1x1
+      * Padding SAME
+      * with Output-Shape (64, 14, 14, 128)
+    * Apply sequence of 4 layers with name "Conv2D_BN_ReLU":
+      * Apply layer "Conv2D"
+        * Kernel 3x3
+        * Stride 1x1
+        * Padding SAME
+        * with Output-Shape (64, 14, 14, 128) without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+      * Log Featute Map in summary
+    * Apply layer "Pooling"
+      * Pooling-Type: MAX
+      * Pooling-Window: 3
+      * Stride: 2
+  *** Layer: Conv_3 ***
+    * Apply layer "Conv2D"
+      * Kernel 3x3
+      * Stride 1x1
+      * Padding SAME
+      * with Output-Shape (64, 7, 7, 128)
+    * Apply sequence of 4 layers with name "Conv2D_BN_ReLU":
+      * Apply layer "Conv2D"
+        * Kernel 3x3
+        * Stride 1x1
+        * Padding SAME
+        * with Output-Shape (64, 7, 7, 128) without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+      * Log Featute Map in summary
+    * Apply layer "Pooling"
+      * Pooling-Type: MAX
+      * Pooling-Window: 3
+      * Stride: 2
+  *** Layer: Dense_4 ***
+    * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+      * Apply layer "Dense"
+        * Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
+        * with 1024 Output-Nodes without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+    * Dropout with keep ratio 0.5
+  *** Layer: Dense_5 ***
+    * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+      * Apply layer "Dense"
+        * with 256 Output-Nodes without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+  *** Layer: Dense_6 ***
+    * Apply sequence of 3 layers with name "Dense_BN_ReLU":
+      * Apply layer "Dense"
+        * with 64 Output-Nodes without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+  *** Layer: Dense_7 ***
     * Apply layer "Dense"
-      * Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
-      * with 1024 Output-Nodes without Bias
-    * Batch-Normalization
-    * ReLU Activation function
-  * Dropout with keep ratio 0.5
-  * Apply sequence of 3 layers with name "Dense_BN_ReLU":
-    * Apply layer "Dense"
-      * with 256 Output-Nodes without Bias
-    * Batch-Normalization
-    * ReLU Activation function
-  * Apply sequence of 3 layers with name "Dense_BN_ReLU":
-    * Apply layer "Dense"
-      * with 64 Output-Nodes without Bias
-    * Batch-Normalization
-    * ReLU Activation function
-  * Apply layer "Dense"
-    * with 10 Output-Nodes
- * network Output-Shape: (64, 10)
-Finished to build network with 3126080 trainable variables in 43 tensors.
+      * with 10 Output-Nodes
+* network Output-Shape: (64, 10)
+Finished to build network with 3124362 trainable variables in 38 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_120.ckpt
@@ -90,4 +139,4 @@ Finished to build network with 3126080 trainable variables in 43 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 10.31%
+ *  Error: 10.34%

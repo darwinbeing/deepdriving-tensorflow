@@ -27,6 +27,27 @@ import misc.arguments as args
 from .CLayer import CLayer
 from ..Setup import Setup
 
+class CNewLayerName():
+  def __init__(self, Sequence, Name, UseCounter):
+    self._Sequence   = Sequence
+    self._Name       = Name
+    self._UseCounter = UseCounter
+
+  def __enter__(self):
+    return self._Name
+
+  def __exit__(self, type, value, traceback):
+    self._Sequence.addLayerName(None, False)
+
+  @property
+  def Name(self):
+    return self._Name
+
+  @property
+  def UseCounter(self):
+    return self._UseCounter
+
+
 class CSequence(CLayer):
   """
   This class represents a sequence of layers.
@@ -69,13 +90,19 @@ class CSequence(CLayer):
     return New
 
 
+  def addLayerName(self, Name, UseCounter=True):
+    NameObject = CNewLayerName(self, Name, UseCounter)
+    self._Layers.append(NameObject)
+    return NameObject
+
+
   def apply(self, Signal):
 
     if self._Name is not None:
       Setup.log("* Apply sequence of {} layers with name \"{}\":".format(len(self._Layers), self._Name))
       Setup.increaseLoggerIndent(2)
 
-      with tf.name_scope(self._Name) as Scope:
+      with tf.variable_scope(self._Name) as Scope:
         Signal = self._applyAll(Signal)
 
       Setup.decreaseLoggerIndent(2)
@@ -89,7 +116,42 @@ class CSequence(CLayer):
 
   def _applyAll(self, Signal):
 
-    for Layer in self._Layers:
-      Signal = Layer.apply(Signal)
+    N       = len(self._Layers)
+    i       = 0
+    Counter = 0
+
+    while i < N:
+      Layer = self._Layers[i]
+
+      if isinstance(Layer, CNewLayerName):
+        if Layer.Name is not None:
+
+          FullName = Layer.Name
+          if (Layer.UseCounter):
+            Counter += 1
+            FullName = FullName + "_{}".format(Counter)
+
+          Setup.log("*** Layer: {} ***".format(FullName))
+          Setup.increaseLoggerIndent(2)
+          with tf.variable_scope(FullName) as Scope:
+            i += 1
+            LeaveScope = False
+            while (i < N) and (not LeaveScope):
+              Layer = self._Layers[i]
+              if not isinstance(Layer, CNewLayerName):
+                Signal = Layer.apply(Signal)
+                i += 1
+              else:
+                LeaveScope = True
+
+          Setup.decreaseLoggerIndent(2)
+
+        else:
+          # None names can be ignored
+          i += 1
+
+      else:
+        Signal = Layer.apply(Signal)
+        i += 1
 
     return Signal

@@ -62,7 +62,7 @@ class CNamedLayer(CLayer):
         Setup.log("* Apply layer \"{}\"".format(self._Name))
         Setup.increaseLoggerIndent(2)
 
-      with tf.name_scope(self._Name):
+      with tf.variable_scope(self._Name):
         Input = self._apply(Input)
 
       if self._DoPrint:
