@@ -44,7 +44,7 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
     "EpochsPerDecay": 30,
     "LearnRateDecay": 0.5,
     "Momentum": 0.9,
-    "StartingLearningRate": 0.002,
+    "StartingLearningRate": 0.003,
     "WeightDecay": 0.0
   },
   "PreProcessing": {
@@ -82,4 +82,4 @@ Finished to build network with 4442954 trainable variables in 44 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 11.09%
+ *  Error: 10.91%
