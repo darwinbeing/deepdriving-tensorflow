@@ -31,14 +31,18 @@ class CInitializer():
     self._InitArgs = {}
     self._InitArgList = []
 
+
   def __call__(self, *args, **kwargs):
-    self._InitArgs = kwargs
-    self._InitArgList = args
-    self._FullInit = self._TFInit(*args, **kwargs)
-    return self
+    New = CInitializer(TFInit=self._TFInit, Name=self._Name)
+    New._InitArgs = kwargs
+    New._InitArgList = args
+    New._FullInit = New._TFInit(*args, **kwargs)
+    return New
+
 
   def getInit(self):
     return self._FullInit
+
 
   def __str__(self):
     String = self._Name
