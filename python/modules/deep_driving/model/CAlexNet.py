@@ -38,7 +38,7 @@ class CAlexNet(dl.network.CNetwork):
     dl.layer.Setup.setupFeatureMap(True)
     dl.layer.Setup.setupStoreSparsity(True)
 
-    OriginalNet = False
+    OriginalNet = True
     if OriginalNet:
       Scope = "Network"
       with tf.variable_scope(Scope):
@@ -364,8 +364,8 @@ class CAlexNet(dl.network.CNetwork):
       fc9b = _variable_on_cpu('biases', [14], tf.constant_initializer(0.0))
 
       fc9_in = tf.matmul(fc8_drop, fc9W) + fc9b
-      #fc9 = tf.nn.sigmoid(fc9_in)
-      fc9 = fc9_in
+      fc9 = tf.nn.sigmoid(fc9_in)
+      #fc9 = fc9_in
       _activation_summary(fc9)
 
       print("fc9-Output shape: {}".format(fc9.shape))
