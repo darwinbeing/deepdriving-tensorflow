@@ -54,7 +54,7 @@ class CSequence(CLayer):
   This class represents a sequence of layers.
   """
 
-  def __init__(self, Layers = None, DefaultLayer = None, Name = None):
+  def __init__(self, Name = None, Layers = None, DefaultLayer = None):
     self._Name   = Name
     self._Layers = []
     self._DefaultLayer = DefaultLayer
@@ -113,7 +113,7 @@ class CSequence(CLayer):
       return New
 
 
-  def _doCall(self, Layers = args.NotSet, DefaultLayer = args.NotSet, Name = args.NotSet):
+  def _doCall(self, Name = args.NotSet, Layers = args.NotSet, DefaultLayer = args.NotSet):
     New = self.copy()
 
     if not args.isNotSet(Name):

@@ -62,8 +62,6 @@ class CAlexNet(dl.network.CNetwork):
       Conv2D_BN_ReLU = dl.layer.Conv2D_BN_ReLU.setKernelInit(init.NormalInitializer(stddev=0.01))
       Dense_BN_ReLU  = dl.layer.Dense_BN_ReLU.setWeightInit(init.NormalInitializer(stddev=0.005))
 
-      print(Conv2D_BN_ReLU)
-
       with Seq.addLayerName("Conv"):
         Seq.add(Conv2D_BN_ReLU(Kernel=11, Filters=96, Stride=4, Padding="VALID"))
         Seq.add(dl.layer.MaxPooling(Window=3, Stride=2))
