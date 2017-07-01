@@ -114,4 +114,7 @@ class CPooling(struct.CNamedLayer):
     Setup.log("* Stride: {}".format(StrideShape[1], StrideShape[2]))
 
     Input = Func(Input, ksize=WindowShape, strides=StrideShape, padding=Temp._Padding)
+
+    Setup.log("* Output-Shape: {}".format(Input.shape))
+
     return Input
