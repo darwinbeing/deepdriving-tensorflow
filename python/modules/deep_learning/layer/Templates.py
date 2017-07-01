@@ -30,24 +30,24 @@ Sequence       = struct.CSequence()
 
 # Dense layers
 Dense          = dense.CDense(Nodes=None)
-Dense_BN_ReLU  = lambda Nodes, Name = "Dense_BN_ReLU": \
-  struct.CSequence(Name=Name,
-                   Layers=[
-                     dense.CDense(Nodes=Nodes).setUseBias(False),
-                     dense.CBatchNormalization(),
-                     activation.ReLU(),
-                   ])
+Dense_BN_ReLU  = struct.CSequence(Name="Dense_BN_ReLU",
+                                  DefaultLayer=0,
+                                  Layers=[
+                                    dense.CDense(Nodes = None).setUseBias(False),
+                                    dense.CBatchNormalization(),
+                                    activation.ReLU(),
+                                  ])
 Dropout        = dense.CDropout()
 
 # Convolution layers
 Conv2D         = conv.CConv2D(Kernel=None, Filters=None)
-Conv2D_BN_ReLU = lambda Kernel, Filters, Stride = 1, Padding = "SAME", Groups = 1, Name = "Conv2D_BN_ReLU": \
-  struct.CSequence(Name=Name,
-                  Layers=[
-                    conv.CConv2D(Kernel=Kernel, Filters=Filters, Stride=Stride, Padding=Padding, Groups=Groups).setUseBias(False),
-                    dense.CBatchNormalization(),
-                    activation.ReLU(),
-                    conv.CLogFeatureMap(),
-                  ])
+Conv2D_BN_ReLU = struct.CSequence(Name="Conv2D_BN_ReLU",
+                                  DefaultLayer=0,
+                                  Layers=[
+                                    conv.CConv2D(Kernel = None, Filters=None).setUseBias(False),
+                                    dense.CBatchNormalization(),
+                                    activation.ReLU(),
+                                    conv.CLogFeatureMap(),
+                                  ])
 MaxPooling     = conv.CPooling(Window=None, Stride=None, Type="MAX")
 AvgPooling     = conv.CPooling(Window=None, Stride=None, Type="AVG")
