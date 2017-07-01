@@ -55,7 +55,7 @@ class CActivation(struct.CLayer):
     Setup.log("* {} Activation function".format(self._Name))
     Output = self._Func(Input)
 
-    tensor_name = re.sub('tower_[0-9]*/', '', Output.op.name)
+    tensor_name = re.sub('tower_[0-9]*/', '', Output.name)
     tf.summary.scalar(tensor_name + '/sparsity', tf.nn.zero_fraction(Output))
 
     return Output
