@@ -23,7 +23,10 @@ def getTrainableVariables():
 
   return Variables, Tensors
 
-def getTrainableVariablesInScope(ScopeName):
+def getTrainableVariablesInScope(ScopeName = None):
+  if ScopeName is None:
+    ScopeName = getNameScope()
+
   Variables = 0
   Tensors   = 0
   for Tensor in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=ScopeName):
