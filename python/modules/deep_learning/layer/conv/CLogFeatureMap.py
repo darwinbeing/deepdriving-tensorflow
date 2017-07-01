@@ -29,7 +29,7 @@ from .. import struct
 from ... import helpers
 
 class CLogFeatureMap(struct.CLayer):
-  def __init__(self, Name = "Features"):
+  def __init__(self, Name = "LogFeatures"):
     self._Name = Name
 
 
@@ -49,7 +49,10 @@ class CLogFeatureMap(struct.CLayer):
 
   def apply(self, Input):
     Setup.log("* Log Featute Map in summary")
-    helpers.saveFeatureMap(Input, self._Name)
-    return tf.identity(Input, self._Name)
+
+    with tf.variable_scope(self._Name):
+      helpers.saveFeatureMap(Input, self._Name)
+
+    return tf.identity(Input, "Features")
 
 
