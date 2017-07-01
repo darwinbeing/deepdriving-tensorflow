@@ -21,6 +21,7 @@
 # were not a derivative of the original DeepDriving project. For the derived parts, the original license and
 # copyright is still valid. Keep this in mind, when using code from this project.
 
+import re
 import misc.arguments as args
 import tensorflow as tf
 
@@ -53,6 +54,10 @@ class CActivation(struct.CLayer):
   def apply(self, Input):
     Setup.log("* {} Activation function".format(self._Name))
     Output = self._Func(Input)
+
+    tensor_name = re.sub('tower_[0-9]*/', '', Output.op.name)
+    tf.summary.scalar(tensor_name + '/sparsity', tf.nn.zero_fraction(Output))
+
     return Output
 
 
