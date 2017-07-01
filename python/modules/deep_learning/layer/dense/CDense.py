@@ -138,7 +138,7 @@ class CDense(struct.CNamedLayer):
     W = helpers.createVariable(Shape=[InputLength, Temp._Nodes],
                                Name="Weights",
                                WeightDecayFactor=Temp._WeightDecay,
-                               Initializer=self._WeightInit.getInit(),
+                               Initializer=Temp._WeightInit.getInit(),
                                LearningRate=Temp._WeightLR)
 
     if Temp._UseBias:
