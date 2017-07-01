@@ -22,6 +22,7 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 import deep_learning as dl
+import deep_learning.layer.initializer as init
 import numpy as np
 import tensorflow as tf
 
@@ -37,26 +38,79 @@ class CAlexNet(dl.network.CNetwork):
     dl.layer.Setup.setupFeatureMap(True)
     dl.layer.Setup.setupStoreSparsity(True)
 
-    Scope = "Network"
-    with tf.variable_scope(Scope):
-      self.log("Creating network Graph...")
+    OriginalNet = False
+    if OriginalNet:
+      Scope = "Network"
+      with tf.variable_scope(Scope):
+        self.log("Creating network Graph...")
 
-      Input       = Inputs['Image']
+        Input       = Inputs['Image']
+        OutputNodes = len(Inputs['Labels'])
+        Output = Input
+
+        Output = self._buildAlexNet(Output, OutputNodes)
+
+        self.log(" * network Output-Shape: {}".format(Output.shape))
+
+    else:
+      Input = Inputs['Image']
       OutputNodes = len(Inputs['Labels'])
-      Output = Input
 
-      Output = self._buildAlexNet(Output, OutputNodes)
+      Seq = dl.layer.Sequence("Network")
 
-      self.log(" * network Output-Shape: {}".format(Output.shape))
+      # Setup standard initializer
+      Conv2D_BN_ReLU = dl.layer.Conv2D_BN_ReLU.setKernelInit(init.NormalInitializer(stddev=0.01))
+      Dense_BN_ReLU  = dl.layer.Dense_BN_ReLU.setWeightInit(init.NormalInitializer(stddev=0.005))
 
-      # We have 14 outputs, output 1 is the only probability output, the remaining are regression outputs
-      Outputs = tf.split(Output, 14, axis=1)
+      print(Conv2D_BN_ReLU)
 
-      for i, O in enumerate(Outputs):
-        self.log("   * Output {} has shape {}".format(i, O.shape))
+      with Seq.addLayerName("Conv"):
+        Seq.add(Conv2D_BN_ReLU(Kernel=11, Filters=96, Stride=4, Padding="VALID"))
+        Seq.add(dl.layer.MaxPooling(Window=3, Stride=2))
 
-      Variables, Tensors = dl.helpers.getTrainableVariablesInScope(Scope)
-      self.log("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
+      with Seq.addLayerName("Conv"):
+        Seq.add(Conv2D_BN_ReLU(Kernel=5, Filters=256, Groups=2))
+        Seq.add(dl.layer.MaxPooling(Window=3, Stride=2))
+
+      with Seq.addLayerName("Conv"):
+        Seq.add(Conv2D_BN_ReLU(Kernel=3, Filters=384, Groups=1))
+
+      with Seq.addLayerName("Conv"):
+        Seq.add(Conv2D_BN_ReLU(Kernel=3, Filters=384, Groups=2))
+
+      with Seq.addLayerName("Conv"):
+        Seq.add(Conv2D_BN_ReLU(Kernel=3, Filters=256, Groups=2))
+        Seq.add(dl.layer.MaxPooling(Window=3, Stride=2, Padding="VALID"))
+
+      with Seq.addLayerName("Dense"):
+        Seq.add(Dense_BN_ReLU(4096))
+        Seq.add(dl.layer.Dropout(0.5))
+
+      with Seq.addLayerName("Dense"):
+        Seq.add(Dense_BN_ReLU(4096))
+        Seq.add(dl.layer.Dropout(0.5))
+
+      with Seq.addLayerName("Dense"):
+        Seq.add(Dense_BN_ReLU(256))
+        Seq.add(dl.layer.Dropout(0.5))
+
+      with Seq.addLayerName("Output"):
+        Seq.add(dl.layer.Dense(OutputNodes)
+                .setWeightDecay(0.0)
+                .setWeightInit(init.NormalInitializer(stddev=0.01)))
+        Seq.add(dl.layer.activation.Sigmoid())
+
+
+      Output = Seq.apply(Input)
+
+    # We have 14 outputs, output 1 is the only probability output, the remaining are regression outputs
+    Outputs = tf.split(Output, 14, axis=1)
+
+    for i, O in enumerate(Outputs):
+      self.log("* Output {} has shape {}".format(i, O.shape))
+
+    Variables, Tensors = dl.helpers.getTrainableVariablesInScope()
+    self.log("Finished to build network with {} trainable variables in {} tensors.".format(Variables, Tensors))
 
     Structure = {
       "Input":  Input,
