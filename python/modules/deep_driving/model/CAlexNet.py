@@ -89,7 +89,8 @@ class CAlexNet(dl.network.CNetwork):
         Seq.add(dl.layer.Dropout(0.5))
 
       with Seq.addLayerName("Dense"):
-        Seq.add(Dense_BN_ReLU(256))
+        Seq.add(Dense_BN_ReLU(256)
+                .setWeightInit(init.NormalInitializer(stddev=0.01)))
         Seq.add(dl.layer.Dropout(0.5))
 
       with Seq.addLayerName("Output"):
