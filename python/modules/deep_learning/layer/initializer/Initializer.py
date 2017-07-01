@@ -23,7 +23,45 @@
 
 import tensorflow as tf
 
-from tensorflow.contrib.layers import xavier_initializer_conv2d    as XavierInitializerConv
-from tensorflow.contrib.layers import xavier_initializer           as XavierInitializer
-from tensorflow                import truncated_normal_initializer as NormalInitializer
-from tensorflow                import constant_initializer         as ConstantInitializer
+class CInitializer():
+  def __init__(self, TFInit, Name):
+    self._TFInit   = TFInit
+    self._Name     = Name
+    self._FullInit = None
+    self._InitArgs = {}
+    self._InitArgList = []
+
+  def __call__(self, *args, **kwargs):
+    self._InitArgs = kwargs
+    self._InitArgList = args
+    self._FullInit = self._TFInit(*args, **kwargs)
+    return self
+
+  def getInit(self):
+    return self._FullInit
+
+  def __str__(self):
+    String = self._Name
+    String += "("
+
+    ArgStrings = []
+    for Key, Value in self._InitArgs.items():
+      ArgStrings.append("{} = {}".format(Key, Value))
+
+    for Value in self._InitArgList:
+      ArgStrings.append("{}".format(Value))
+
+    for i, ArgString in enumerate(ArgStrings):
+      String += ArgString
+      if i < len(ArgStrings)-1:
+        String += ", "
+
+    String += ")"
+    return String
+
+
+XavierInitializerConv = CInitializer(tf.contrib.layers.xavier_initializer_conv2d, "XavierInitializerConv")
+XavierInitializer     = CInitializer(tf.contrib.layers.xavier_initializer, "XavierInitializer")
+NormalInitializer     = CInitializer(tf.truncated_normal_initializer, "NormalInitializer")
+ConstantInitializer   = CInitializer(tf.constant_initializer, "ConstantInitializer")
+

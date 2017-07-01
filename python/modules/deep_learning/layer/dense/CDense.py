@@ -126,17 +126,34 @@ class CDense(struct.CNamedLayer):
       Setup.log("* with {} Output-Nodes without Bias".format(Temp._Nodes))
 
     X = Input
+
+    if Temp._WeightLR != 1.0:
+      Setup.log("* Weight-LR: {}".format(Temp._WeightLR))
+
+    if Temp._WeightDecay != 1.0:
+      Setup.log("* Weight-Decay: {}".format(Temp._WeightDecay))
+
+    Setup.log("* Weight-Initializer: {}".format(Temp._WeightInit))
+
     W = helpers.createVariable(Shape=[InputLength, Temp._Nodes],
                                Name="Weights",
                                WeightDecayFactor=Temp._WeightDecay,
-                               Initializer=self._WeightInit,
+                               Initializer=self._WeightInit.getInit(),
                                LearningRate=Temp._WeightLR)
 
     if Temp._UseBias:
+      if Temp._BiasLR != 1.0:
+        Setup.log("* Bias-LR: {}".format(Temp._BiasLR))
+
+      if Temp._BiasDecay != 1.0:
+        Setup.log("* Bias-Decay: {}".format(Temp._BiasDecay))
+
+      Setup.log("* Bias-Initializer: {}".format(Temp._BiasInit))
+
       B = helpers.createBias(Shape=[Temp._Nodes],
                              Name="Bias",
                              WeightDecayFactor=Temp._BiasDecay,
-                             Initializer=Temp._BiasInit,
+                             Initializer=Temp._BiasInit.getInit(),
                              LearningRate=Temp._BiasLR)
 
     S = tf.matmul(X, W)
@@ -150,5 +167,7 @@ class CDense(struct.CNamedLayer):
       if Temp._UseBias:
         tf.summary.histogram("Bias",  B)
       tf.summary.histogram("Signal",  S)
+
+    Setup.log("* Output-Shape: {}".format(S.shape))
 
     return S

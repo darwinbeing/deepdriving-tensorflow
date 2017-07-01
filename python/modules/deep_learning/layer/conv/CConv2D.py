@@ -173,15 +173,31 @@ class CConv2D(struct.CNamedLayer):
 
     Setup.log("* Padding {}".format(Padding))
 
+    if Temp._KernelLR != 1.0:
+      Setup.log("* Kernel-LR: {}".format(Temp._KernelLR))
+
+    if Temp._KernelDecay != 1.0:
+      Setup.log("* Kernel-Decay: {}".format(Temp._KernelDecay))
+
+    Setup.log("* Kernel-Initializer: {}".format(Temp._KernelInit))
+
     Kernel = helpers.createKernel2D(Shape=KernelShape,
-                                    Initializer=Temp._KernelInit,
+                                    Initializer=Temp._KernelInit.getInit(),
                                     WeightDecayFactor=Temp._KernelDecay,
                                     LearningRate=Temp._KernelLR)
 
     if Temp._UseBias:
+      if Temp._BiasLR != 1.0:
+        Setup.log("* Bias-LR: {}".format(Temp._BiasLR))
+
+      if Temp._BiasDecay != 1.0:
+        Setup.log("* Bias-Decay: {}".format(Temp._BiasDecay))
+
+      Setup.log("* Bias-Initializer: {}".format(Temp._BiasInit))
+
       Bias   = helpers.createBias(Shape=[Temp._Filters],
                                   Name="Bias",
-                                  Initializer=Temp._BiasInit,
+                                  Initializer=Temp._BiasInit.getInit(),
                                   WeightDecayFactor=Temp._BiasDecay,
                                   LearningRate=Temp._BiasLR)
 
