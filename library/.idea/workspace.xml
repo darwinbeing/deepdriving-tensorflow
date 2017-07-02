@@ -5,9 +5,9 @@
       <config projectName="dd" targetName="ContinuousConfigure" />
       <config projectName="dd" targetName="leveldbutil" />
       <config projectName="dd" targetName="leveldb_dbformat_test" />
-      <config projectName="dd" targetName="ContinuousSubmit" />
+      <config projectName="dd" targetName="leveldb_coding_test" />
       <config projectName="dd" targetName="NightlyConfigure" />
-      <config projectName="dd" targetName="leveldb_ddfaultinjection_test" />
+      <config projectName="dd" targetName="ContinuousUpdate" />
       <config projectName="dd" targetName="NightlyMemoryCheck" />
       <config projectName="dd" targetName="leveldb_hash_test" />
       <config projectName="dd" targetName="install_dd-datareader" />
@@ -16,7 +16,8 @@
       <config projectName="dd" targetName="leveldb_test_rt" />
       <config projectName="dd" targetName="leveldb_table_test" />
       <config projectName="dd" targetName="leveldb_skiplist_test" />
-      <config projectName="dd" targetName="dd-situation-view" />
+      <config projectName="dd" targetName="dd-drivecontroller" />
+      <config projectName="dd" targetName="ContinuousSubmit" />
       <config projectName="dd" targetName="leveldb_db_bench_test" />
       <config projectName="dd" targetName="leveldb_db_test" />
       <config projectName="dd" targetName="leveldb_bloom_test" />
@@ -28,11 +29,11 @@
       <config projectName="dd" targetName="ExperimentalUpdate" />
       <config projectName="dd" targetName="ExperimentalBuild" />
       <config projectName="dd" targetName="ContinuousTest" />
-      <config projectName="dd" targetName="NightlyCoverage" />
+      <config projectName="dd" targetName="dd-datareader" />
       <config projectName="dd" targetName="ExperimentalCoverage" />
       <config projectName="dd" targetName="leveldb" />
       <config projectName="dd" targetName="NightlyBuild" />
-      <config projectName="dd" targetName="leveldb_coding_test" />
+      <config projectName="dd" targetName="NightlyCoverage" />
       <config projectName="dd" targetName="Continuous" />
       <config projectName="dd" targetName="install_dd-situation-view" />
       <config projectName="dd" targetName="ExperimentalSubmit" />
@@ -40,29 +41,28 @@
       <config projectName="dd" targetName="leveldb_env_test" />
       <config projectName="dd" targetName="ExperimentalMemCheck" />
       <config projectName="dd" targetName="ContinuousCoverage" />
-      <config projectName="dd" targetName="install_dd" />
       <config projectName="dd" targetName="ExperimentalTest" />
       <config projectName="dd" targetName="leveldb_write_batch_test" />
       <config projectName="dd" targetName="leveldb_arena_test" />
       <config projectName="dd" targetName="ContinuousStart" />
       <config projectName="dd" targetName="leveldb_log_test" />
       <config projectName="dd" targetName="leveldb_filename_test" />
-      <config projectName="dd" targetName="ContinuousUpdate" />
+      <config projectName="dd" targetName="NightlyMemCheck" />
       <config projectName="dd" targetName="leveldb_version_set_test" />
-      <config projectName="dd" targetName="ContinuousBuild" />
+      <config projectName="dd" targetName="dd-situation-view" />
       <config projectName="dd" targetName="leveldb_c_test" />
-      <config projectName="dd" targetName="dd-drivecontroller" />
-      <config projectName="dd" targetName="dd-datareader" />
+      <config projectName="dd" targetName="leveldb_ddfaultinjection_test" />
       <config projectName="dd" targetName="install_dd-drivecontroller" />
       <config projectName="dd" targetName="NightlyTest" />
       <config projectName="dd" targetName="NightlyUpdate" />
       <config projectName="dd" targetName="RUN_LEVELDB_UNIT_TESTS" />
+      <config projectName="dd" targetName="install_dd" />
       <config projectName="dd" targetName="ExperimentalConfigure" />
       <config projectName="dd" targetName="ContinuousMemCheck" />
-      <config projectName="dd" targetName="leveldb_autocompact_test" />
+      <config projectName="dd" targetName="ContinuousBuild" />
       <config projectName="dd" targetName="leveldb_filter_block_test" />
       <config projectName="dd" targetName="leveldb_version_edit_test" />
-      <config projectName="dd" targetName="NightlyMemCheck" />
+      <config projectName="dd" targetName="leveldb_autocompact_test" />
       <config projectName="dd" targetName="NightlyStart" />
     </generated>
   </component>
@@ -85,12 +85,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file leaf-file-name="CDriveController.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drivecontroller/src/includes/dd/drivecontroller/CDriveController.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1054">
-              <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="107" />
+            <state relative-caret-position="494">
+              <caret line="53" column="30" lean-forward="true" selection-start-line="53" selection-start-column="30" selection-end-line="53" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -99,11 +99,11 @@
       <file leaf-file-name="CDriveController.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/drivecontroller/src/CDriveController.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="709">
-              <caret line="371" column="3" lean-forward="false" selection-start-line="371" selection-start-column="3" selection-end-line="371" selection-end-column="3" />
+            <state relative-caret-position="386">
+              <caret line="55" column="49" lean-forward="false" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
               <folding>
                 <element signature="e#1609#1628#0" expanded="true" />
-                <element signature="e#15753#15765#0" expanded="true" />
+                <element signature="e#15751#15763#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -193,7 +193,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="1294" />
     <option name="height" value="1407" />
@@ -643,28 +643,31 @@
       <workItem from="1498550918119" duration="851000" />
       <workItem from="1498558963431" duration="6851000" />
       <workItem from="1498570720017" duration="188000" />
+      <workItem from="1498985424000" duration="12000" />
+      <workItem from="1498987652744" duration="1305000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116858000" />
+    <option name="totallyTimeSpent" value="118175000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1416" extended-state="7" />
+    <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18476562" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0921875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2392638" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.327454" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2392638" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1031,19 +1034,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/drivecontroller/src/includes/dd/drivecontroller/CDriveController.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="107" />
+        <state relative-caret-position="494">
+          <caret line="53" column="30" lean-forward="true" selection-start-line="53" selection-start-column="30" selection-end-line="53" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/drivecontroller/src/CDriveController.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="709">
-          <caret line="371" column="3" lean-forward="false" selection-start-line="371" selection-start-column="3" selection-end-line="371" selection-end-column="3" />
+        <state relative-caret-position="386">
+          <caret line="55" column="49" lean-forward="false" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
           <folding>
             <element signature="e#1609#1628#0" expanded="true" />
-            <element signature="e#15753#15765#0" expanded="true" />
+            <element signature="e#15751#15763#0" expanded="true" />
           </folding>
         </state>
       </provider>

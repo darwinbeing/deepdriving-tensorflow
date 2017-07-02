@@ -53,7 +53,7 @@ namespace drivecontroller
 
 
 float const CDriveController::mMaxSpeed      = 21;
-float const CDriveController::mMaxCurvySpeed = 16.5;
+float const CDriveController::mMaxCurvySpeed = 14;
 
 CDriveController::CDriveController(int Lanes)
 {
