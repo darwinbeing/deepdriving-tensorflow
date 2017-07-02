@@ -92,7 +92,6 @@ class CSetup():
   def setupBiasInitializer(self, Initializer):
     self._Initializer["Bias"] = Initializer
 
-  _LogIndent = 0
   def log(self, Text):
     FormatString = str("{: >"+str(self._LogIndent)+"}")
     String = FormatString.format("")+Text

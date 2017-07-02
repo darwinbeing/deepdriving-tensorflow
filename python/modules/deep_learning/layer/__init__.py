@@ -22,9 +22,11 @@
 # copyright is still valid. Keep this in mind, when using code from this project.
 
 from .Setup import Setup
-from .Dense import createDense, createFullyConnected, createDropout, createBatchNormalization
-from .Activation import createActivation
-from .Convolution import createConvolution2d, createPooling, createLRN, createFeatureGroups, mergeFeatureGroups
 from .LearningRate import LearningRates
 from .Templates import *
+
 from . import activation
+from . import conv
+from . import dense
+from . import struct
+
