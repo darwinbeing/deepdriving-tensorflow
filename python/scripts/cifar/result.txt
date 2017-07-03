@@ -3,16 +3,22 @@ Creating network Graph...
 * network Input-Shape: (64, 28, 28, 3)
 * Apply sequence of 28 layers with name "Network":
   *** Layer: Conv_1 ***
-    * Apply layer "Conv2D"
-      * Kernel 3x3
-      * Stride 1x1
-      * Padding SAME
-      * with Output-Shape (64, 28, 28, 128)
-    * Apply sequence of 4 layers with name "Conv2D_BN_ReLU":
+    * Apply sequence of 4 layers with name "C1":
       * Apply layer "Conv2D"
         * Kernel 3x3
         * Stride 1x1
         * Padding SAME
+        * Kernel-Initializer: XavierInitializerConv()
+        * with Output-Shape (64, 28, 28, 128) without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+      * Log Featute Map in summary
+    * Apply sequence of 4 layers with name "C2":
+      * Apply layer "Conv2D"
+        * Kernel 3x3
+        * Stride 1x1
+        * Padding SAME
+        * Kernel-Initializer: XavierInitializerConv()
         * with Output-Shape (64, 28, 28, 128) without Bias
       * Batch-Normalization
       * ReLU Activation function
@@ -21,17 +27,25 @@ Creating network Graph...
       * Pooling-Type: MAX
       * Pooling-Window: 3
       * Stride: 2
+      * Padding: SAME
+      * Output-Shape: (64, 14, 14, 128)
   *** Layer: Conv_2 ***
-    * Apply layer "Conv2D"
-      * Kernel 3x3
-      * Stride 1x1
-      * Padding SAME
-      * with Output-Shape (64, 14, 14, 128)
-    * Apply sequence of 4 layers with name "Conv2D_BN_ReLU":
+    * Apply sequence of 4 layers with name "C1":
       * Apply layer "Conv2D"
         * Kernel 3x3
         * Stride 1x1
         * Padding SAME
+        * Kernel-Initializer: XavierInitializerConv()
+        * with Output-Shape (64, 14, 14, 128) without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+      * Log Featute Map in summary
+    * Apply sequence of 4 layers with name "C2":
+      * Apply layer "Conv2D"
+        * Kernel 3x3
+        * Stride 1x1
+        * Padding SAME
+        * Kernel-Initializer: XavierInitializerConv()
         * with Output-Shape (64, 14, 14, 128) without Bias
       * Batch-Normalization
       * ReLU Activation function
@@ -40,17 +54,25 @@ Creating network Graph...
       * Pooling-Type: MAX
       * Pooling-Window: 3
       * Stride: 2
+      * Padding: SAME
+      * Output-Shape: (64, 7, 7, 128)
   *** Layer: Conv_3 ***
-    * Apply layer "Conv2D"
-      * Kernel 3x3
-      * Stride 1x1
-      * Padding SAME
-      * with Output-Shape (64, 7, 7, 128)
-    * Apply sequence of 4 layers with name "Conv2D_BN_ReLU":
+    * Apply sequence of 4 layers with name "C1":
       * Apply layer "Conv2D"
         * Kernel 3x3
         * Stride 1x1
         * Padding SAME
+        * Kernel-Initializer: XavierInitializerConv()
+        * with Output-Shape (64, 7, 7, 128) without Bias
+      * Batch-Normalization
+      * ReLU Activation function
+      * Log Featute Map in summary
+    * Apply sequence of 4 layers with name "C2":
+      * Apply layer "Conv2D"
+        * Kernel 3x3
+        * Stride 1x1
+        * Padding SAME
+        * Kernel-Initializer: XavierInitializerConv()
         * with Output-Shape (64, 7, 7, 128) without Bias
       * Batch-Normalization
       * ReLU Activation function
@@ -59,11 +81,15 @@ Creating network Graph...
       * Pooling-Type: MAX
       * Pooling-Window: 3
       * Stride: 2
+      * Padding: SAME
+      * Output-Shape: (64, 4, 4, 128)
   *** Layer: Dense_4 ***
     * Apply sequence of 3 layers with name "Dense_BN_ReLU":
       * Apply layer "Dense"
         * Reshape layer input (64, 4, 4, 128) to vector with 2048 elements.
         * with 1024 Output-Nodes without Bias
+        * Weight-Initializer: XavierInitializer()
+        * Output-Shape: (64, 1024)
       * Batch-Normalization
       * ReLU Activation function
     * Dropout with keep ratio 0.5
@@ -71,19 +97,27 @@ Creating network Graph...
     * Apply sequence of 3 layers with name "Dense_BN_ReLU":
       * Apply layer "Dense"
         * with 256 Output-Nodes without Bias
+        * Weight-Initializer: XavierInitializer()
+        * Output-Shape: (64, 256)
       * Batch-Normalization
       * ReLU Activation function
   *** Layer: Dense_6 ***
     * Apply sequence of 3 layers with name "Dense_BN_ReLU":
       * Apply layer "Dense"
         * with 64 Output-Nodes without Bias
+        * Weight-Initializer: XavierInitializer()
+        * Output-Shape: (64, 64)
       * Batch-Normalization
       * ReLU Activation function
   *** Layer: Dense_7 ***
     * Apply layer "Dense"
       * with 10 Output-Nodes
+      * Weight-Initializer: XavierInitializer()
+      * Bias-Decay: 0.0
+      * Bias-Initializer: ConstantInitializer(0.0)
+      * Output-Shape: (64, 10)
 * network Output-Shape: (64, 10)
-Finished to build network with 3124362 trainable variables in 38 tensors.
+Finished to build network with 3125514 trainable variables in 47 tensors.
 
 # Using Checkpoint:
 * Checkpoint\State_0\model_120.ckpt
@@ -139,4 +173,4 @@ Finished to build network with 3124362 trainable variables in 38 tensors.
 
 # Evaluation Results:
 Full Summary:
- *  Error: 10.34%
+ *  Error: 8.79%

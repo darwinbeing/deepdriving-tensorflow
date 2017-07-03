@@ -45,18 +45,18 @@ class CCifarNet(dl.network.CNetwork):
 
 
     with Seq.addLayerName("Conv"):
-      Layer = Seq.add(dl.layer.Conv2D(3, 128))
-      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128, Name="C1"))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128, Name="C2"))
       Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
     with Seq.addLayerName("Conv"):
-      Layer = Seq.add(dl.layer.Conv2D(3, 128))
-      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128, Name="C1"))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128, Name="C2"))
       Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
     with Seq.addLayerName("Conv"):
-      Layer = Seq.add(dl.layer.Conv2D(3, 128))
-      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128, Name="C1"))
+      Layer = Seq.add(dl.layer.Conv2D_BN_ReLU(3, 128, Name="C2"))
       Layer = Seq.add(dl.layer.MaxPooling(3, 2))
 
     with Seq.addLayerName("Dense"):
