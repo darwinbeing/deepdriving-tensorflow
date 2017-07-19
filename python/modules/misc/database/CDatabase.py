@@ -53,7 +53,7 @@ class CDatabase():
 
 
   def encode(self, String):
-    String = urllib.parse.quote(str(String).encode('utf-8'), safe='')
+    String = urllib.parse.quote(str(String), safe='')
     return String
 
 

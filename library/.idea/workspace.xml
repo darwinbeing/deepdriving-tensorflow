@@ -2,13 +2,13 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
+      <config projectName="dd" targetName="leveldb_autocompact_test" />
       <config projectName="dd" targetName="ContinuousConfigure" />
       <config projectName="dd" targetName="leveldbutil" />
       <config projectName="dd" targetName="leveldb_dbformat_test" />
-      <config projectName="dd" targetName="leveldb_coding_test" />
+      <config projectName="dd" targetName="ContinuousSubmit" />
       <config projectName="dd" targetName="NightlyConfigure" />
-      <config projectName="dd" targetName="ContinuousUpdate" />
-      <config projectName="dd" targetName="NightlyMemoryCheck" />
+      <config projectName="dd" targetName="leveldb_write_batch_test" />
       <config projectName="dd" targetName="leveldb_hash_test" />
       <config projectName="dd" targetName="install_dd-datareader" />
       <config projectName="dd" targetName="Experimental" />
@@ -16,54 +16,54 @@
       <config projectName="dd" targetName="leveldb_test_rt" />
       <config projectName="dd" targetName="leveldb_table_test" />
       <config projectName="dd" targetName="leveldb_skiplist_test" />
-      <config projectName="dd" targetName="dd-drivecontroller" />
-      <config projectName="dd" targetName="ContinuousSubmit" />
+      <config projectName="dd" targetName="dd-situation-view" />
+      <config projectName="dd" targetName="NightlyCoverage" />
       <config projectName="dd" targetName="leveldb_db_bench_test" />
       <config projectName="dd" targetName="leveldb_db_test" />
       <config projectName="dd" targetName="leveldb_bloom_test" />
       <config projectName="dd" targetName="Nightly" />
-      <config projectName="dd" targetName="leveldb_corruption_test" />
+      <config projectName="dd" targetName="leveldb_ddfaultinjection_test" />
+      <config projectName="dd" targetName="leveldb_version_edit_test" />
       <config projectName="dd" targetName="NightlySubmit" />
-      <config projectName="dd" targetName="leveldb_dbrecovery_test" />
       <config projectName="dd" targetName="leveldb_crc32_test" />
       <config projectName="dd" targetName="ExperimentalUpdate" />
+      <config projectName="dd" targetName="NightlyStart" />
       <config projectName="dd" targetName="ExperimentalBuild" />
       <config projectName="dd" targetName="ContinuousTest" />
       <config projectName="dd" targetName="dd-datareader" />
       <config projectName="dd" targetName="ExperimentalCoverage" />
       <config projectName="dd" targetName="leveldb" />
       <config projectName="dd" targetName="NightlyBuild" />
-      <config projectName="dd" targetName="NightlyCoverage" />
+      <config projectName="dd" targetName="leveldb_filter_block_test" />
+      <config projectName="dd" targetName="leveldb_coding_test" />
       <config projectName="dd" targetName="Continuous" />
       <config projectName="dd" targetName="install_dd-situation-view" />
       <config projectName="dd" targetName="ExperimentalSubmit" />
       <config projectName="dd" targetName="ExperimentalStart" />
-      <config projectName="dd" targetName="leveldb_env_test" />
-      <config projectName="dd" targetName="ExperimentalMemCheck" />
+      <config projectName="dd" targetName="install_dd" />
       <config projectName="dd" targetName="ContinuousCoverage" />
       <config projectName="dd" targetName="ExperimentalTest" />
-      <config projectName="dd" targetName="leveldb_write_batch_test" />
+      <config projectName="dd" targetName="leveldb_corruption_test" />
       <config projectName="dd" targetName="leveldb_arena_test" />
       <config projectName="dd" targetName="ContinuousStart" />
-      <config projectName="dd" targetName="leveldb_log_test" />
       <config projectName="dd" targetName="leveldb_filename_test" />
-      <config projectName="dd" targetName="NightlyMemCheck" />
+      <config projectName="dd" targetName="ContinuousUpdate" />
       <config projectName="dd" targetName="leveldb_version_set_test" />
-      <config projectName="dd" targetName="dd-situation-view" />
+      <config projectName="dd" targetName="leveldb_env_test" />
       <config projectName="dd" targetName="leveldb_c_test" />
-      <config projectName="dd" targetName="leveldb_ddfaultinjection_test" />
-      <config projectName="dd" targetName="install_dd-drivecontroller" />
+      <config projectName="dd" targetName="dd-drivecontroller" />
+      <config projectName="dd" targetName="ContinuousMemCheck" />
       <config projectName="dd" targetName="NightlyTest" />
       <config projectName="dd" targetName="NightlyUpdate" />
       <config projectName="dd" targetName="RUN_LEVELDB_UNIT_TESTS" />
-      <config projectName="dd" targetName="install_dd" />
+      <config projectName="dd" targetName="install_dd-drivecontroller" />
       <config projectName="dd" targetName="ExperimentalConfigure" />
-      <config projectName="dd" targetName="ContinuousMemCheck" />
+      <config projectName="dd" targetName="ExperimentalMemCheck" />
       <config projectName="dd" targetName="ContinuousBuild" />
-      <config projectName="dd" targetName="leveldb_filter_block_test" />
-      <config projectName="dd" targetName="leveldb_version_edit_test" />
-      <config projectName="dd" targetName="leveldb_autocompact_test" />
-      <config projectName="dd" targetName="NightlyStart" />
+      <config projectName="dd" targetName="leveldb_log_test" />
+      <config projectName="dd" targetName="NightlyMemoryCheck" />
+      <config projectName="dd" targetName="NightlyMemCheck" />
+      <config projectName="dd" targetName="leveldb_dbrecovery_test" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -85,25 +85,46 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="CDriveController.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drivecontroller/src/includes/dd/drivecontroller/CDriveController.h">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="port_win.cc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leveldb/port/port_win.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="494">
-              <caret line="53" column="30" lean-forward="true" selection-start-line="53" selection-start-column="30" selection-end-line="53" selection-end-column="30" />
+            <state relative-caret-position="-1971">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CDriveController.cpp" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/drivecontroller/src/CDriveController.cpp">
+      <file leaf-file-name="FindSnappy.cmake" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leveldb/cmake/FindSnappy.cmake">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="55" column="49" lean-forward="false" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
+            <state relative-caret-position="306">
+              <caret line="18" column="34" lean-forward="false" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="port_posix.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leveldb/port/port_posix.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="41" column="13" lean-forward="true" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
               <folding>
-                <element signature="e#1609#1628#0" expanded="true" />
-                <element signature="e#15751#15763#0" expanded="true" />
+                <element signature="e#1494#1513#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="port_win.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/leveldb/port/port_win.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="426">
+              <caret line="132" column="13" lean-forward="false" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
+              <folding>
+                <element signature="e#2054#2071#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,10 +145,14 @@
       <find>un</find>
       <find>size()</find>
       <find>rReal.isValid()</find>
+      <find>SNAPPY</find>
     </findStrings>
     <replaceStrings>
       <replace>rControl</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>D:\Projects\Uni\DeepDriving\main\library\leveldb</dir>
+    </dirStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -158,7 +183,6 @@
         <option value="$PROJECT_DIR$/python/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/python/dd/data_reader/__init__.py" />
         <option value="$PROJECT_DIR$/datareader/src/CDataReader.h" />
-        <option value="$PROJECT_DIR$/leveldb/port/port_win.h" />
         <option value="$PROJECT_DIR$/datareader/src/CDataEntry.h" />
         <option value="$PROJECT_DIR$/common/includes/dd/common/datatypes.h" />
         <option value="$PROJECT_DIR$/datareader/src/includes/dd/datareader/CDataReader.h" />
@@ -183,6 +207,7 @@
         <option value="$PROJECT_DIR$/situation/src/IndicatorValues.cpp" />
         <option value="$PROJECT_DIR$/drivecontroller/src/includes/dd/drivecontroller/CDriveController.h" />
         <option value="$PROJECT_DIR$/drivecontroller/src/CDriveController.cpp" />
+        <option value="$PROJECT_DIR$/leveldb/port/port_win.h" />
       </list>
     </option>
   </component>
@@ -193,7 +218,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
     <option name="width" value="1294" />
     <option name="height" value="1407" />
@@ -284,6 +309,29 @@
             <path>
               <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="leveldb" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="leveldb" type="462c0819:PsiDirectoryNode" />
+              <item name="db" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="leveldb" type="462c0819:PsiDirectoryNode" />
+              <item name="port" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
+              <item name="leveldb" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dd" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="library" type="462c0819:PsiDirectoryNode" />
               <item name="python" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -321,18 +369,18 @@
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Projects\Uni\DeepDriving\main\library\datareader" />
-      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller\src\includes\dd\drivecontroller" />
-      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller" />
-      <recent name="D:\Projects\Uni\DeepDriving\main\library\python" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\Uni\DeepDriving\main\library\datareader\src\includes\dd\datareader" />
       <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\common\includes\dd\common" />
       <recent name="D:\Projects\Uni\DeepDriving\main\library\python\dd" />
       <recent name="D:\Projects\Uni\DeepDriving\main\library\situation\src" />
       <recent name="D:\Projects\Uni\DeepDriving\main\library\situation\includes\dd\situation" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\Uni\DeepDriving\main\library\datareader" />
+      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller\src\includes\dd\drivecontroller" />
+      <recent name="C:\Projects\Uni\SAM\deepdriving\main\library\drivecontroller" />
+      <recent name="D:\Projects\Uni\DeepDriving\main\library\python" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -645,21 +693,22 @@
       <workItem from="1498570720017" duration="188000" />
       <workItem from="1498985424000" duration="12000" />
       <workItem from="1498987652744" duration="1305000" />
+      <workItem from="1499786204343" duration="255000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118175000" />
+    <option name="totallyTimeSpent" value="118430000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
+    <frame x="-7" y="0" width="1294" height="1407" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0921875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18466353" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2392638" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.327454" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -668,11 +717,11 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2392638" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -684,25 +733,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/situation/src/includes/dd/situation/ImageHelpers.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/includes/dd/common/settings.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/situation/src/CSituation.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2652">
@@ -826,20 +861,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="13" lean-forward="false" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leveldb/port/port_win.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="687">
-          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leveldb/port/port_posix.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="131" column="2" lean-forward="false" selection-start-line="131" selection-start-column="2" selection-end-line="131" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -1032,14 +1053,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drivecontroller/src/includes/dd/drivecontroller/CDriveController.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="53" column="30" lean-forward="true" selection-start-line="53" selection-start-column="30" selection-end-line="53" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/drivecontroller/src/CDriveController.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
@@ -1047,6 +1060,50 @@
           <folding>
             <element signature="e#1609#1628#0" expanded="true" />
             <element signature="e#15751#15763#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drivecontroller/src/includes/dd/drivecontroller/CDriveController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="53" column="30" lean-forward="false" selection-start-line="53" selection-start-column="30" selection-end-line="53" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leveldb/port/port_win.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1971">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leveldb/cmake/FindSnappy.cmake">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="34" lean-forward="false" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leveldb/port/port_posix.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="41" column="13" lean-forward="true" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
+          <folding>
+            <element signature="e#1494#1513#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leveldb/port/port_win.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="132" column="13" lean-forward="false" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
+          <folding>
+            <element signature="e#2054#2071#0" expanded="true" />
           </folding>
         </state>
       </provider>
