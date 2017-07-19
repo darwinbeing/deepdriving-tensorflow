@@ -1,10 +1,14 @@
 import sqlite3 as db
 
 import debug
+import threading
+import urllib
+import datetime
 
 class CDatabase():
   def __init__(self):
     self._DB = None
+    self._Mutex = threading.Lock()
 
 
   def __del__(self):
@@ -16,7 +20,7 @@ class CDatabase():
       self.close()
 
     print("Connect to database file {}...".format(File))
-    self._DB = db.connect(File)
+    self._DB = db.connect(File, check_same_thread=False)
 
     Cursor = self.Cursor
     Cursor.execute('SELECT SQLITE_VERSION()')
@@ -38,9 +42,30 @@ class CDatabase():
 
 
   def __enter__(self):
+    self._Mutex.acquire()
     return self.Cursor
 
 
   def __exit__(self, type, value, traceback):
     debug.Assert(self._DB is not None, "database must be opened before requesting a cursor!")
     self._DB.commit()
+    self._Mutex.release()
+
+
+  def encode(self, String):
+    String = urllib.parse.quote(str(String).encode('utf-8'), safe='')
+    return String
+
+
+  def encodeDatetime(self, Datetime):
+    String = Datetime.strftime("%Y-%m-%d %H:%M:%S.%f")
+    return String
+
+
+  def decodeDatetime(self, String):
+    Datetime = datetime.datetime.strptime("%Y-%m-%d %H:%M:%S.%f", String)
+    return Datetime
+
+
+  def decode(self, String):
+    return urllib.parse.unquote(String)
