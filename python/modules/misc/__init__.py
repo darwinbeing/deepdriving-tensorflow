@@ -25,3 +25,4 @@ from . import time
 from . import strings
 from . import settings
 from . import arguments
+from . import database
