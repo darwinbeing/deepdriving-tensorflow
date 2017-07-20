@@ -53,7 +53,7 @@ class CDatabase():
 
 
   def encode(self, String):
-    String = urllib.parse.quote(str(String), safe='')
+    String = urllib.parse.quote(str(String), safe=' -_')
     return String
 
 
@@ -68,4 +68,4 @@ class CDatabase():
 
 
   def decode(self, String):
-    return urllib.parse.unquote(String)
+    return urllib.parse.unquote(String, safe=" -_")
