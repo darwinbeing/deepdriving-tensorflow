@@ -56,8 +56,8 @@ class CDatabase():
     self._Mutex.release()
 
 
-  def encode(self, String):
-    String = urllib.parse.quote(str(String), safe=' -_')
+  def encode(self, String, AllowChars=""):
+    String = urllib.parse.quote(str(String), safe=' -_'+AllowChars)
     return String
 
 
