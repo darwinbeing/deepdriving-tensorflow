@@ -178,7 +178,7 @@ class SelectableItem(RecycleDataViewBehavior, Widget):
     self.ids.Layout.clear_widgets()
 
     for i, Column in enumerate(self._Data):
-      NewLabel = ItemLabel(text=Column)
+      NewLabel = ItemLabel(text=str(Column))
       NewLabel.color = self._TextColor
       NewLabel._BackgroundColor = [0, 0, 0, 0]
 
