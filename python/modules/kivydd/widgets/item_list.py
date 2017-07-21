@@ -26,12 +26,13 @@ from kivy.lang import Builder
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.label import Label
-from kivy.properties import BooleanProperty, ListProperty, ColorProperty, NumericProperty, StringProperty
+from kivy.properties import BooleanProperty, ListProperty, ColorProperty, NumericProperty, StringProperty, Property
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivydd.app import Widget
 from kivy.uix.splitter import Splitter
+from kivy.clock import Clock
 
 Builder.load_string("""
 
@@ -130,11 +131,14 @@ Builder.load_string("""
             size_hint: 1, None
                         
         ItemListView:
-            _ItemHeight:      self.parent.parent._ItemHeight
-            _Data:            self.parent.parent._Data
-            _Sizes:           self.parent.parent._Sizes        
-            _BackgroundColor: self.parent.parent._BackgroundColor
-            
+            _ItemHeight:                self.parent.parent._ItemHeight
+            _Data:                      self.parent.parent._Data
+            _Sizes:                     self.parent.parent._Sizes        
+            _BackgroundColor:           self.parent.parent._BackgroundColor
+            _IsSelectableByDoubleClick: self.parent.parent._IsSelectableByDoubleClick
+            _DoubleClickFunction:       self.parent.parent._DoubleClickFunction
+            _SingleClickFunction:       self.parent.parent._DoubleClickFunction
+            _HideData:                  self.parent.parent._HideData
 
 """)
 
@@ -157,37 +161,49 @@ class ItemHeader(Widget):
 
 
 class SelectableItem(RecycleDataViewBehavior, Widget):
-  _Index           = None
-  _IsSelected      = BooleanProperty(False)
-  _IsSelectable    = BooleanProperty(True)
-  _Data            = ListProperty([])
-  _Sizes           = ListProperty([])
-  _TextColor       = ColorProperty([0, 0, 0, 1])
-  _BackgroundColor = ColorProperty([0.75, 0.75, 0.75, 1])
-  _SelectedColor   = ColorProperty([0.44, 0.77, 0.89, 1])
+  _Index                     = None
+  _IsSelected                = BooleanProperty(False)
+  _IsSelectable              = BooleanProperty(True)
+  _IsSelectableByDoubleClick = BooleanProperty(False)
+  _Data                      = ListProperty([])
+  _Sizes                     = ListProperty([])
+  _TextColor                 = ColorProperty([0, 0, 0, 1])
+  _BackgroundColor           = ColorProperty([0.75, 0.75, 0.75, 1])
+  _SelectedColor             = ColorProperty([0.44, 0.77, 0.89, 1])
+  _DoubleClickFunction       = Property(None)
+  _SingleClickFunction       = Property(None)
+  _HideData                  = ListProperty([])
 
 
   def __init__(self, **kwargs):
     super().__init__(**kwargs)
     self.bind(_Data      = self.onDataChange)
+    self.bind(_HideData  = self.onDataChange)
     self.bind(_TextColor = self.onDataChange)
     self.bind(_Sizes     = self.onDataChange)
+    self.current_touch        = None
+    self.scheduled_func       = None
 
 
   def onDataChange(self, Instance, Columns):
     self.ids.Layout.clear_widgets()
 
+    HiddenCount = 0
     for i, Column in enumerate(self._Data):
-      NewLabel = ItemLabel(text=str(Column))
-      NewLabel.color = self._TextColor
-      NewLabel._BackgroundColor = [0, 0, 0, 0]
+      if i in self._HideData:
+        HiddenCount += 1
 
-      if len(self._Sizes) > i:
-        if self._Sizes[i] is not None:
-          NewLabel.size_hint = (None, 1)
-          NewLabel.size      = (self._Sizes[i], 1)
+      else:
+        NewLabel = ItemLabel(text=str(Column))
+        NewLabel.color = self._TextColor
+        NewLabel._BackgroundColor = [0, 0, 0, 0]
 
-      self.ids.Layout.add_widget(NewLabel)
+        if len(self._Sizes) > (i-HiddenCount):
+          if self._Sizes[i-HiddenCount] is not None:
+            NewLabel.size_hint = (None, 1)
+            NewLabel.size      = (self._Sizes[i-HiddenCount], 1)
+
+        self.ids.Layout.add_widget(NewLabel)
 
 
   def refresh_view_attrs(self, rv, index, data):
@@ -200,8 +216,38 @@ class SelectableItem(RecycleDataViewBehavior, Widget):
     ''' Add selection on touch down '''
     if super().on_touch_down(touch):
       return True
-    if self.collide_point(*touch.pos) and self._IsSelectable:
-      return self.parent.select_with_touch(self._Index, touch)
+
+    if self.collide_point(*touch.pos):
+      if self.current_touch is not None:
+        Clock.unschedule(self.scheduled_func)
+        self.on_double_press(touch)
+        self.current_touch = None
+
+      else:
+        self.current_touch = touch
+        from functools import partial
+        self.scheduled_func = partial(self.on_single_press, touch)
+        Clock.schedule_once(self.scheduled_func, 0.2)
+
+
+  def on_double_press(self, Touch, *largs):
+    self.current_touch = None
+
+    if self._DoubleClickFunction is not None:
+      self._DoubleClickFunction(self)
+
+    if self._IsSelectableByDoubleClick:
+      return self.parent.select_with_touch(self._Index, Touch)
+
+
+  def on_single_press(self, Touch, *largs):
+    self.current_touch = None
+
+    if self._SingleClickFunction is not None:
+      self._SingleClickFunction(self)
+
+    if self._IsSelectable:
+      return self.parent.select_with_touch(self._Index, Touch)
 
 
   def apply_selection(self, rv, index, is_selected):
@@ -219,29 +265,48 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 
 
 class ItemListView(RecycleView):
-  _ItemHeight      = NumericProperty(30)
-  _Sizes           = ListProperty([])
-  _Data            = ListProperty([])
-  _BackgroundColor = ColorProperty([1, 1, 1, 1])
+  _ItemHeight                = NumericProperty(30)
+  _Sizes                     = ListProperty([])
+  _Data                      = ListProperty([])
+  _BackgroundColor           = ColorProperty([1, 1, 1, 1])
+  _IsSelectableByDoubleClick = BooleanProperty(False)
+  _DoubleClickFunction       = Property(None)
+  _SingleClickFunction       = Property(None)
+  _HideData                  = ListProperty([])
+
 
   def __init__(self, **kwargs):
     super().__init__(**kwargs)
     self.bind(_Data=self._onDataChange)
+    self.bind(_HideData=self._onDataChange)
     self.bind(_Sizes=self._onDataChange)
 
   def _onDataChange(self, Instance, Value):
-    List = [{'_BackgroundColor': self._BackgroundColor, '_Sizes': self._Sizes, '_Data': Date} for Date in self._Data]
+    List = [{
+      '_BackgroundColor': self._BackgroundColor,
+      '_Sizes': self._Sizes,
+      '_Data': Date,
+      '_IsSelectableByDoubleClick': self._IsSelectableByDoubleClick,
+      '_DoubleClickFunction': self._DoubleClickFunction,
+      '_SingleClickFunction': self._SingleClickFunction,
+      '_HideData': self._HideData
+    } for Date in self._Data]
     self.data = List
 
 
 class ItemList(Widget):
-  _Header          = ListProperty([])
-  _ItemHeight      = NumericProperty(30)
-  _HeaderTextColor = ColorProperty([1, 1, 1, 1])
-  _BackgroundColor = ColorProperty([0.75, 0.75, 0.75, 1])
-  _Sizes           = ListProperty([])
-  _Data            = ListProperty([])
-  _UpdateFunc      = None
+  _Header                    = ListProperty([])
+  _ItemHeight                = NumericProperty(30)
+  _HeaderTextColor           = ColorProperty([1, 1, 1, 1])
+  _BackgroundColor           = ColorProperty([0.75, 0.75, 0.75, 1])
+  _Sizes                     = ListProperty([])
+  _Data                      = ListProperty([])
+  _HideData                  = ListProperty([])
+  _UpdateFunc                = None
+  _HeaderClickFunc           = None
+  _IsSelectableByDoubleClick = BooleanProperty(False)
+  _DoubleClickFunction       = Property(None)
+  _SingleClickFunction       = Property(None)
 
 
   def __init__(self, **kwargs):
@@ -281,4 +346,5 @@ class ItemList(Widget):
 
 
   def _onHeaderClick(self, Instance, Index, Text):
-    print("Click on Header \"{}\" ({}).".format(Text, Index))
+    if self._HeaderClickFunc is not None:
+      self._HeaderClickFunc(self, Index, Text)
