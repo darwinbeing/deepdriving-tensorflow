@@ -19,8 +19,12 @@ class CDatabase():
     if self._DB is not None:
       self.close()
 
+    def stringDecoder(ByteString):
+      return self.decode(ByteString.decode("utf-8"))
+
     print("Connect to database file {}...".format(File))
     self._DB = db.connect(File, check_same_thread=False)
+    self._DB.text_factory = stringDecoder
 
     Cursor = self.Cursor
     Cursor.execute('SELECT SQLITE_VERSION()')
@@ -68,4 +72,4 @@ class CDatabase():
 
 
   def decode(self, String):
-    return urllib.parse.unquote(String, safe=" -_")
+    return urllib.parse.unquote(String)
