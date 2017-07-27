@@ -137,7 +137,7 @@ Builder.load_string("""
             _BackgroundColor:           self.parent.parent._BackgroundColor
             _IsSelectableByDoubleClick: self.parent.parent._IsSelectableByDoubleClick
             _DoubleClickFunction:       self.parent.parent._DoubleClickFunction
-            _SingleClickFunction:       self.parent.parent._DoubleClickFunction
+            _SingleClickFunction:       self.parent.parent._SingleClickFunction
             _HideData:                  self.parent.parent._HideData
 
 """)
