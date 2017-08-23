@@ -4,7 +4,7 @@ import os
 if os.name == 'nt':
     _LIBRARY_FILE = "dd-situation-view.dll"
 else:
-    _LIBRARY_FILE = "dd-situation-view.so"
+    _LIBRARY_FILE = "libdd-situation-view.so"
 
 try:
     _CURRENT_SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))

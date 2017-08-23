@@ -39,7 +39,7 @@
 /// @param pImagePath Is the directory from this file.
 /// @param pFileName  Is the name of this file.
 /// @return Returns a cv::Mat object.
-cv::Mat * loadImage(char * pImagePath, char * pFileName);
+cv::Mat * loadImage(char const * pImagePath, char const * pFileName);
 
 /// @brief Deletes the memory of a cv::Mat object, if it is defined.
 /// @param ppImage Is the image to delete. If this *ppImage is 0, nothing will be deleted. After deletion the *ppImage will be 0.

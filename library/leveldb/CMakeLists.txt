@@ -173,19 +173,25 @@ set(LEVEL_DB_FILES
 
 if(WIN32)
 	MESSAGE(STATUS "Enable Win32 port...")
-    list(APPEND LEVEL_DB_FILES
-        port/port_win.h
-        port/port_win.cc
-        util/win_logger.h
-        util/win_logger.cc
-        util/env_boost.cc)
+    	list(APPEND LEVEL_DB_FILES
+	        port/port_win.h
+        	port/port_win.cc
+	        util/win_logger.h
+        	util/win_logger.cc
+	        util/env_boost.cc
+	)
 else()
 	MESSAGE(STATUS "Enable Posix port...")
-    list(APPEND LEVEL_DB_FILES
-        port/port_posix.h
-        port/port_posix.cc
-        util/posix_logger.h
-        util/env_posix.cc)
+    	list(APPEND LEVEL_DB_FILES
+        	port/port_posix.h
+	        port/port_posix.cc
+	        port/port_posix_sse.cc
+        	util/posix_logger.h
+	        util/env_posix.cc
+	)
+	add_definitions(
+    		-DLEVELDB_PLATFORM_POSIX
+	)	
 endif()
 
 add_library(leveldb ${LEVEL_DB_FILES})
@@ -201,6 +207,8 @@ target_link_libraries(leveldb
     ${Pthread_LIBRARY}
 	${SNAPPY_LIBRARY}	
 )
+
+SET_PROPERTY(TARGET leveldb PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 add_executable(leveldbutil
     db/leveldbutil.cc)

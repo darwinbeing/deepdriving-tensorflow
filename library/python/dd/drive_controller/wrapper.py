@@ -6,7 +6,7 @@ from .. import Indicators_t, Control_t
 if os.name == 'nt':
     _LIBRARY_FILE = "dd-drivecontroller.dll"
 else:
-    _LIBRARY_FILE = "dd-drivecontroller.so"
+    _LIBRARY_FILE = "libdd-drivecontroller.so"
 
 try:
     _CURRENT_SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))

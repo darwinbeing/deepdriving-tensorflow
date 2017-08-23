@@ -7,7 +7,7 @@ from .. import Indicators_t
 if os.name == 'nt':
     _LIBRARY_FILE = "dd-situation-view.dll"
 else:
-    _LIBRARY_FILE = "dd-situation-view.so"
+    _LIBRARY_FILE = "libdd-situation-view.so"
 
 try:
     _CURRENT_SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -35,7 +35,7 @@ class Color_t(ctypes.Structure):
 
 
 class CSituationView():
-    def __init__(self):
+    def __init__(self):        
         Background=_BACKGROUND_COLOR
         self._Width = 320
         self._Height = 660
@@ -59,10 +59,8 @@ class CSituationView():
         ImagePath = _CURRENT_SCRIPT_PATH
 
         self._Image = np.empty(dtype=np.uint8, shape=[self._Height, self._Width, self._Channels])
-
         self._Object = ctypes.c_void_p(Constructor(Size, Color, ImagePath.encode('utf-8')))
         self.update()
-
 
     def __del__(self):
         _LIBRARY.CSituationView_destroy(self._Object)

@@ -21,6 +21,8 @@ set(${SUBPROJECT}_INCLUDE_DIRS
         src/includes
         )
 
+set (CMAKE_CXX_STANDARD 11)
+
 DD_ADD_LIBRARY(${SUBPROJECT} "${${SUBPROJECT}_SOURCE}" "${${SUBPROJECT}_HEADER}" "${${SUBPROJECT}_INCLUDE_DIRS}" bin)
 
 target_link_libraries(${SUBPROJECT} leveldb)

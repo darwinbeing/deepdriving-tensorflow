@@ -30,10 +30,14 @@
 #ifndef DD_SETTINGS_H
 #define DD_SETTINGS_H
 
+#if defined(_WIN32)
 #ifdef COMPILE_DLL
   #define DLL_API __declspec(dllexport)
 #else
   #define DLL_API __declspec(dllimport)
+#endif
+#else
+  #define DLL_API
 #endif
 
 #ifndef NULL

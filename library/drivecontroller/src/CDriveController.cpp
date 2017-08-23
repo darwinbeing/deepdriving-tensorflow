@@ -41,6 +41,7 @@
 // standard library includes
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 // project includes
 #include <dd/drivecontroller/CDriveController.h>

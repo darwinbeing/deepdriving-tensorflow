@@ -30,6 +30,7 @@
 
 // standard library includes
 #include <assert.h>
+#include <cstring>
 
 // project includes
 #include <dd/datareader/CProtoMessage.h>

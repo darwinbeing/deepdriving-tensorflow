@@ -34,7 +34,7 @@
 // project includes
 #include <dd/situation/ImageHelpers.h>
 
-cv::Mat * loadImage(char * pImagePath, char * pFileName)
+cv::Mat * loadImage(char const * const pImagePath, char const * const pFileName)
 {
   using namespace boost::filesystem;
 

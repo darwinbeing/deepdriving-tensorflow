@@ -7,7 +7,7 @@ from ..labels import Labels_t
 if os.name == 'nt':
     _LIBRARY_FILE = "dd-datareader.dll"
 else:
-    _LIBRARY_FILE = "dd-datareader.so"
+    _LIBRARY_FILE = "libdd-datareader.so"
 
 try:
     _CURRENT_SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
